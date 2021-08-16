@@ -1,0 +1,13 @@
+:root{
+    --border-custom: 1px solid green;
+}
+.topSet{
+    border-top: var(--border-custom);
+    border-right: var(--border-custom);
+    border-left: var(--border-custom);
+}
+.bottomSet{
+    border-right: var(--border-custom);
+    border-left: var(--border-custom);
+    border-bottom: var(--border-custom);
+}

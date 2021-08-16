@@ -1,9 +1,10 @@
-import React from "react";
+import logo from './assets/svg/logo.svg';
+//import './assets/css/App.css';
 import {BrowserRouter as Router, Switch, Route, Link} from 'react-router-dom';
 //components
 import Register from "./Components/Register"
 import Login from "./Components/Login";
-export default ()=>{
+function App() {
     return <Router>
         <Switch>
             <Route exact path={"/login"}>
@@ -20,3 +21,5 @@ export default ()=>{
         </Switch>
     </Router>
 }
+
+export default App;
