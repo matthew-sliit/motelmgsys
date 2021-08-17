@@ -9,6 +9,8 @@ function useForceUpdate(){
 export default function EmployeeAccountMg(){
     let [profiles, setProfiles] = useState([]);
     let [profileList, setList] = useState([]);
+    let [newPassword, setNewPassword] = useState(null);
+    let [errorMsg, setErrorMsg] = useState(null);
     //component did mount
     useEffect(async ()=>{
         //get records from server database
@@ -36,11 +38,23 @@ export default function EmployeeAccountMg(){
     const onClickResetUserPassword = async (index) =>{
         //tell server to remove
         const profile = profiles[index];
-        await fetch("http://localhost:3001/login/reset/"+profile._id,{
-            method:"put",
+        await fetch("http://localhost:3001/login/reset/",{
+            method:"post",
             headers: {'Content-Type':'application/json'},
             body:JSON.stringify({nic:profile.nic, email:profile.email})
-        }).then(r=>r.text()).then(d=>console.log(d)).catch(e=>console.log(e));
+        }).then(r=>r.text()).then(d => {
+            if(d.length>8){
+                const server_response = d.split(":");
+                if(server_response[0]==="success"){
+                    setNewPassword("For "+profile.nic +" is " +server_response[1]);
+                    setErrorMsg(null);
+                }else if(server_response[0]==="error"){
+                    setErrorMsg(server_response[1]);
+                    setNewPassword(null);
+                }
+                console.log("newPassword: "+server_response[1]);
+            }
+        }).catch(e=>console.log(e));
     }
     const searchRecruitments = () =>{
         const nameLike = document.getElementById("user-fullname").value;
@@ -127,6 +141,8 @@ export default function EmployeeAccountMg(){
             <button className={"btn btn-success mx-1"} onClick={()=>searchRecruitments()}>Search</button>
         </div>
         <p/>
+        <span style={{color:"green"}}>{newPassword!==null?"New Password "+newPassword:""}</span>
+        <span style={{color:"red"}}>{errorMsg!==null?errorMsg:""}</span>
         <p/>
         <table style={{position:"relative"}} className={"table"}>
             <thead><tr>
