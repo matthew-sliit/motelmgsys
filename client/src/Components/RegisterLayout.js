@@ -1,7 +1,7 @@
 import React from "react";
 import Profile from "../models/Profile";
 export default function RegisterLayout(props){
-    const {register, role, profileData, saveFunction} = props;
+    const {register, role, profileData, saveFunction, registerReference} = props;
     let prefix = "",profile=new Profile();
     if(register){
         prefix="Enter ";
@@ -26,7 +26,9 @@ export default function RegisterLayout(props){
         editedProfile.contact=document.getElementById("user-contact").value;
         editedProfile.role=document.getElementById("user-role").value;
         editedProfile.address=document.getElementById("user-address").value;
-        editedProfile.setPassword(document.getElementById('user-password').value);
+        const password = document.getElementById('user-password').value;
+        editedProfile.setPassword(password);
+        //console.log("password: "+password);
         if(editedProfile.fullname.length<1){
             errorMsgSpan.innerText = "Name cannot be empty!";
             return null;
@@ -55,6 +57,7 @@ export default function RegisterLayout(props){
     }
     return <React.Fragment>
         <div style={{position:"relative", left:"100px", top:"200px"}} className={"w-50"}>
+            <span style={{color:"green"}}>{registerReference!=="0"?registerReference:""}</span>
             <span style={{color:"red"}} id={"error-show"}></span>
             <div className="form-group mb-2">
                 <label>{prefix}Name with Initials</label>

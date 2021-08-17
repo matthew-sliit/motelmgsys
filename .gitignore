@@ -1,4 +1,4 @@
-frontend/node_modules
-frontend/dist
-frontend/.parcel-cache
+client/node_modules
+client/dist
+client/.parcel-cache
 server/node_modules
