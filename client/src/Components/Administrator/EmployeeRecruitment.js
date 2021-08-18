@@ -102,7 +102,7 @@ export default function EmployeeRecruitment(){
 
         </tr>;
     }
-    return <div style={{position:"relative",top:"100px"}}>
+    return <div style={{position:"relative"}}>
         <div style={{display:"table-cell", padding:"6px", border:"1px solid green"}}>
             <label>Name</label>
             <input type={"text"} className={"mx-1"} id={"user-fullname"}/>
