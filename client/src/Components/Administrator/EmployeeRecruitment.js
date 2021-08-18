@@ -103,7 +103,9 @@ export default function EmployeeRecruitment(){
         </tr>;
     }
     return <div style={{position:"relative"}}>
-        <div style={{display:"table-cell", padding:"6px", border:"1px solid green"}}>
+        <h4 style={{fontfamily:"fontawesome", color:"#566573"}}>Employee Recruitments</h4>
+        <p/>
+        <div style={{display:"table-cell", padding:"6px", border:"1px solid #7DCEA0"}}>
             <label>Name</label>
             <input type={"text"} className={"mx-1"} id={"user-fullname"}/>
             <label>Reference</label>
@@ -113,7 +115,7 @@ export default function EmployeeRecruitment(){
                 <option>any</option>
                 {Profile.getUserRoles().map(role => {return <option>{role}</option>})}
             </select>
-            <button className={"btn btn-success mx-1"} onClick={()=>searchRecruitments()}>Search</button>
+            <button className={"btn btn-green mx-1"} onClick={()=>searchRecruitments()}>Search</button>
         </div>
         <p/>
         <p/>

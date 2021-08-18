@@ -27,8 +27,8 @@ export default function Login(){
             if(d.length>8){
                 const server_response = d.split(":");
                 if(server_response[0]==="success"){
-                    Cookie.set('id',server_response[2]);
                     Cookie.set('role',server_response[1]);
+                    Cookie.set('id',server_response[2]);
                     setErrorMsg("");
                     //console.log("login success: role:"+server_response[1]);
                 }else if(server_response[0]==="error"){

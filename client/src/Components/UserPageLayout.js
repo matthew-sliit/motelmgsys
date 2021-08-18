@@ -100,7 +100,7 @@ export default function UserPageLayout(){
         <script src={"https://cdn.jsdelivr.net/gh/codedthemes/datta-able-bootstrap-dashboard@master/template/assets/js/pcoded.min.js"}></script>
         <script src={"https://cdn.jsdelivr.net/gh/codedthemes/datta-able-bootstrap-dashboard@master/template/assets/js/vendor-all.min.js"}></script>
         <div style={{position:"relative", top:"150px",left:"300px", width:"73%"}}>
-            <p>Hello</p>
+            <p>Main content here</p>
             <button>click me</button>
         </div>
     </React.Fragment>

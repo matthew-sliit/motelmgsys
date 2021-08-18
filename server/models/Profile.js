@@ -49,9 +49,9 @@ exports.Profile = class Profile{
     }
     getProfileDataWithoutPassword(){
         if(this.status!==undefined){
-            return {"_id":this._id,"fullname":this.fullname,"nic":this.nic,"email":this.email,"contact":this.contact,"role":this.role, "status":this.status};
+            return {"_id":this._id,"fullname":this.fullname,"nic":this.nic,"email":this.email,"contact":this.contact,"address":this.address,"role":this.role, "status":this.status};
         }
-        return {"_id":this._id,"fullname":this.fullname,"nic":this.nic,"email":this.email,"contact":this.contact,"role":this.role};
+        return {"_id":this._id,"fullname":this.fullname,"nic":this.nic,"email":this.email,"contact":this.contact,"address":this.address,"role":this.role};
     }
     static getUserRoles(){
         return ['Bar Manager','Reception','Reservation Manager'];

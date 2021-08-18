@@ -10598,3 +10598,22 @@ div.code-toolbar > .toolbar span:hover {
 		box-shadow: 0 0 0 0 rgba(4, 169, 245, 0)
 	}
 }
+/*
+
+ */
+.btn-orange{
+  background-color:#F1C40F;
+  color:#212F3D;
+}
+.btn-orange:hover{
+  background-color:#F5B041;
+  color:#212F3D;
+}
+.btn-green{
+  background-color: #229954;
+  color: #f0f3f6;
+}
+.btn-green:hover{
+  background-color: #117A65;
+  color: #f0f3f6;
+}

@@ -2,13 +2,19 @@ import {BrowserRouter as Router, Switch, Route, Link} from 'react-router-dom';
 //components
 import Register from "./Components/Register"
 import Login from "./Components/Login";
+import Profile from "./Components/Profile";
+//admin components
 import EmployeeRecruitment from "./Components/Administrator/EmployeeRecruitment";
 import EmployeeAccountMg from "./Components/Administrator/EmployeeAccountMg";
-import UserPageLayout from "./Components/UserPageLayout";
 import UserNavigationFormat from "./Components/Navigation/UserNavigationFormat";
 import Dashboard from "./Components/Administrator/Dashboard";
 import AdminNavigations from "./Components/Administrator/AdminNavigations";
+//extra
+import UserPageLayout from "./Components/UserPageLayout";
+import Cookie from "js-cookie";
 function App() {
+    const role = Cookie.get('role');
+    const profileNavigations = AdminNavigations();
     return <Router>
         <Switch>
             <Route exact path={"/login"}>
@@ -28,6 +34,9 @@ function App() {
             </Route>
             <Route exact path={"/admin-recruitments"}>
                 <UserNavigationFormat navigations={AdminNavigations()} content={<EmployeeRecruitment/>} type={"Administrator"}/>
+            </Route>
+            <Route exact path={"/profile"}>
+                <UserNavigationFormat navigations={profileNavigations} content={<Profile/>} type={role}/>
             </Route>
             <Route exact path={"/user"}>
                 <UserPageLayout/>

@@ -6,7 +6,7 @@ import "../../assets/plugins/animation/css/animate.min.css";
 import "../../assets/css/style.css";
 import Cookie from "js-cookie";
 export default function UserNavigationFormat(props){
-    let profileNic = Cookie.get('nic');
+    let profileNic = Cookie.get('id');
     const {navigations, content, type} = props;
     //if(profileNic==="undefined")
     function navigationItemHolder(sectionName, values){
@@ -28,11 +28,14 @@ export default function UserNavigationFormat(props){
         </React.Fragment>
     }
     let navigationContent = [];
-    //console.log(JSON.stringify(navigations()));
     for(const [key, value] of Object.entries(navigations.sections)){
         //console.log("k: "+key+" v:"+JSON.stringify(value));
         navigationContent.push(navigationItemHolder(key,value));
-
+    }
+    function logout(){
+        Cookie.remove('role');
+        Cookie.remove('id');
+        window.location.href = "/";
     }
     return <React.Fragment>
         <nav className="pcoded-navbar">
@@ -49,6 +52,19 @@ export default function UserNavigationFormat(props){
                 <div className="navbar-content scroll-div">
                     <ul className="nav pcoded-inner-navbar">
                         {navigationContent}
+                        <li className="nav-item pcoded-menu-caption">
+                            <label>Account</label>
+                        </li>
+                        <li data-username="dashboard Default Ecommerce CRM Analytics Crypto Project"
+                            className="nav-item">
+                            <a href={"/profile"} className="nav-link "><span className="pcoded-micon">
+                    <i className={"feather icon-sidebar"}/></span><span className="pcoded-mtext">Profile</span></a>
+                        </li>
+                        <li data-username="dashboard Default Ecommerce CRM Analytics Crypto Project"
+                            className="nav-item">
+                            <a href={"#"} onClick={()=>logout()} className="nav-link "><span className="pcoded-micon">
+                    <i className={"feather icon-power"}/></span><span className="pcoded-mtext">Logout</span></a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -57,7 +73,7 @@ export default function UserNavigationFormat(props){
         <script src={"https://cdn.jsdelivr.net/gh/codedthemes/datta-able-bootstrap-dashboard@master/template/assets/js/vendor-all.min.js"}></script>
         <div style={{position:"relative", top:"30px",float:"right", right:"20px", cursor:"pointer"}}>
             <label>{profileNic}&nbsp;</label>
-            <img src={"https://cdn.jsdelivr.net/gh/matthew-sliit/conferencemgtool@master/client/user/assets/img/profile.png"} height={"50px"} width={"50px"} alt={"profile"} onClick={()=>console.log("profile load!")}/>
+            <img src={"https://cdn.jsdelivr.net/gh/matthew-sliit/conferencemgtool@master/client/user/assets/img/profile.png"} height={"50px"} width={"50px"} alt={"profile"} onClick={()=>window.location.href="/profile"}/>
         </div>
         <div style={{position:"relative", top:"130px",left:"300px", width:"73%"}}>
             {content}

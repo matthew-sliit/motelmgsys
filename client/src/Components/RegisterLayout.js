@@ -8,10 +8,14 @@ export default function RegisterLayout(props){
     }else{
         Object.assign(profile,profileData);
     }
+    //console.log(JSON.stringify(profileData));
     //setUserProfile Role or all Roles in registration
     function setRole_s(){
         if(register){
-            return <datalist className={"mx-2"} id={"user-roles"}>{Profile.getUserRoles().map(role=>{return <option>{role}</option>})}</datalist>;
+            return <React.Fragment>
+                <input type={"text"} list={"user-roles"} className={"mx-2"} defaultValue={profile.role} id={"user-role"}/>
+                <datalist className={"mx-2"} id={"user-roles"}>{Profile.getUserRoles().map(role=>{return <option>{role}</option>})}</datalist>;
+            </React.Fragment>;
         }else{
             return <input type={"text"} value={role} disabled={"disabled"}/>
         }
@@ -24,9 +28,19 @@ export default function RegisterLayout(props){
         editedProfile.nic=document.getElementById("user-nic").value;
         editedProfile.email=document.getElementById("user-email").value;
         editedProfile.contact=document.getElementById("user-contact").value;
-        editedProfile.role=document.getElementById("user-role").value;
+        if(register) {
+            editedProfile.role = document.getElementById("user-role").value;
+        }else{
+            editedProfile.role = role;
+        }
         editedProfile.address=document.getElementById("user-address").value;
         const password = document.getElementById('user-password').value;
+        if(!register){
+            const newpassword = document.getElementById('user-new-password').value;
+            if(newpassword.length>6){
+                editedProfile.setNewPassword(newpassword);
+            }
+        }
         editedProfile.setPassword(password);
         //console.log("password: "+password);
         if(editedProfile.fullname.length<1){
@@ -56,7 +70,7 @@ export default function RegisterLayout(props){
         return editedProfile.getProfileData();
     }
     return <React.Fragment>
-        <div style={{position:"relative", left:"100px", top:"200px"}} className={"w-50"}>
+        <div style={{position:"relative", left:"100px", top:"50px"}} className={"w-50"}>
             <span style={{color:"green"}}>{registerReference!=="0"?registerReference:""}</span>
             <span style={{color:"red"}} id={"error-show"}></span>
             <div className="form-group mb-2">
@@ -84,22 +98,25 @@ export default function RegisterLayout(props){
                 <textarea className="form-control" aria-describedby="emailHelp"
                        placeholder="no 8/1, Green bay avenue, park 3, Edinberg" defaultValue={profile.address} id={"user-address"}/>
             </div>
+            {!register?<div className="form-group mb-2">
+                <label>Change Password</label>
+                <input type="password" className="form-control" placeholder="New Password" id={"user-new-password"}/>
+            </div>:""}
             <div className="form-group mb-2">
                 <label>{prefix==="Enter "?prefix:"Confirm "}Password</label>
                 <input type="password" className="form-control" placeholder="Password" id={"user-password"}/>
             </div>
             <div className="form-group mb-2">
-                <label>{prefix==="Enter "?"Select ":""}Role</label>
-                <input type={"text"} list={"user-roles"} className={"mx-2"} defaultValue={profile.role} id={"user-role"}/>
+                <label>{prefix==="Enter "?"Select ":""}Role&nbsp;</label>
                 {setRole_s()}
             </div>
-            <div className="form-check">
+            {register?<div className="form-check">
                 <input type="checkbox" className="form-check-input"/>
                 <label className="form-check-label">I have provided the true details</label>
-            </div>
+            </div>:""}
             <div style={{float:"right"}}>
-                <button className={"btn btn-warning mx-2"}>Clear form</button>
-                <button className={"btn btn-success"} onClick={()=>saveFunction(getProfile())}>Save</button>
+                <button className={"btn btn-orange mx-2"}>{register?"Clear form":"Cancel"}</button>
+                <button className={"btn btn-green"} onClick={()=>saveFunction(getProfile())}>Save</button>
             </div>
         </div>
     </React.Fragment>
