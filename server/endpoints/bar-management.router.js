@@ -8,7 +8,7 @@ const {readAllDocuments} = require("../api/mongodb.api");
 //endpoint first url
 const router = new Router({prefix:'/bar'});
 
-const {BarDrink} = require("../models/BarDrink");
+const {BarDrink} = require("../models/bar-drink");
 router.get("/all",async ctx=>{
     ctx.response.set('content-type','application/json');
     await readAllDocuments(BarDrink.COLLECTION_NAME).then(

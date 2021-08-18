@@ -9,6 +9,7 @@ const LoginEndpoint = require("./endpoints/login.router").LoginEndpoint;
 const AccountManagerEndpoint = require("./endpoints/account-manager.router").AccountManagerEndpoint;
 const ProfileEndpoint = require("./endpoints/profile.router").ProfileEndpoint;
 const BarManagementEndpoint = require("./endpoints/bar-management.router").BarManagementEndpoint;
+const ReservationEndpoint = require('./endpoints/reservation.router').ReservationEndpoint;
 //server usable
 server.use(cors('Access-Control-Allow-Origin'));
 server.use(bodyparser())
@@ -17,6 +18,7 @@ server.use(bodyparser())
     .use(AccountManagerEndpoint.routes()).use(AccountManagerEndpoint.allowedMethods())
     .use(ProfileEndpoint.routes()).use(ProfileEndpoint.allowedMethods())
     .use(BarManagementEndpoint.routes()).use(BarManagementEndpoint.allowedMethods())
+    .use(ReservationEndpoint.routes()).use(ReservationEndpoint.allowedMethods())
     .use(context=>{
     //where the request is to an invalid endpoint
     context.body="Access Denied!";

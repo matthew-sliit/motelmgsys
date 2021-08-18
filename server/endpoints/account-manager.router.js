@@ -1,7 +1,5 @@
 const Profile = require("../models/Profile").Profile;
 const mongo = require('mongodb');
-const saveDocument = require('../api/mongodb.api').saveDocument;
-const saveDocumentGetId = require('../api/mongodb.api').saveDocumentGetId;
 const readDocument = require('../api/mongodb.api').readDocument;
 const Router = require('@koa/router');
 const {updateDocument} = require("../api/mongodb.api");
