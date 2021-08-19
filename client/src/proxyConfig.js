@@ -1,3 +1,3 @@
 export default function getProxy(endpoint){
-    return "http://localhost:3001"+endpoint;
+    return "http://localhost:5001"+endpoint;
 }

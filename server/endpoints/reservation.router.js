@@ -17,7 +17,7 @@ router.post("/", async ctx=>{
     ctx.response.set('content-type','application/json');
     ctx.body = "success";
 })
-router.get("/all", async ctx=>{
+router.get("/", async ctx=>{
     ctx.response.set('content-type','application/json');
     let found = false;
     await readAllDocuments(Reservation.COLLECTION_NAME).then(
@@ -28,27 +28,38 @@ router.get("/all", async ctx=>{
     )
     if(!found){ctx.body=null;}
 })
-router.get("/:roomNo", async ctx=>{
-    const roomNo = ctx.request.params.roomNo;
+router.get("/:id", async ctx=>{
+    const id = ctx.request.params.id;
+    const mongoId = new mongo.ObjectId(id);
     ctx.response.set('content-type','application/json');
-    await readDocument(Reservation.COLLECTION_NAME,"roomNo",roomNo).then(
+    await readDocument(Reservation.COLLECTION_NAME,"_id",mongoId).then(
         function (res){
-            ctx.body = res;
+            ctx.body = res[0];
         }
     )
 })
-router.put("/:roomNo", async ctx=>{
-    const roomNo = ctx.request.params.roomNo;
+router.put("/:id", async ctx=>{
+    const id = ctx.request.params.id;
+    const mongoId = new mongo.ObjectId(id);
     const reservationRaw = ctx.request.body.reservation;
     let reservation = new Reservation();
+    console.log(typeof reservationRaw.date);
+    if(reservationRaw.date === undefined) {
+        await readDocument(Reservation.COLLECTION_NAME, "_id", mongoId).then(
+            function (res) {
+                reservationRaw['date'] = res[0].date;
+            }
+        )
+    }
     Object.assign(reservation,reservationRaw);
     ctx.response.set('content-type','application/json');
-    await updateDocument(Reservation.COLLECTION_NAME,"roomNo",roomNo,reservation.getReservation());
+    await updateDocument(Reservation.COLLECTION_NAME,"_id",mongoId,reservation.getReservation());
     ctx.body = "success";
 })
-router.delete("/:roomNo", async ctx=>{
-    const roomNo = ctx.request.params.roomNo;
-    await deleteDocument(Reservation.COLLECTION_NAME,"roomNo",roomNo);
+router.delete("/:id", async ctx=>{
+    const id = ctx.request.params.id;
+    const mongoId = new mongo.ObjectId(id);
+    await deleteDocument(Reservation.COLLECTION_NAME,"_id",mongoId);
     ctx.response.set('content-type','application/json');
     ctx.body = "success";
 })

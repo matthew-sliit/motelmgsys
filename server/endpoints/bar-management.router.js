@@ -9,7 +9,7 @@ const {readAllDocuments} = require("../api/mongodb.api");
 const router = new Router({prefix:'/bar'});
 
 const {BarDrink} = require("../models/bar-drink");
-router.get("/all",async ctx=>{
+router.get("/",async ctx=>{
     ctx.response.set('content-type','application/json');
     await readAllDocuments(BarDrink.COLLECTION_NAME).then(
         function (res){
@@ -34,8 +34,10 @@ router.post("/", async ctx=>{
     ctx.response.set('content-type','application/json');
     await readDocument(BarDrink.COLLECTION_NAME,"name",barDrink.name).then(
         function (result){
-            exists = true;
-            ctx.body = "Already Added!";
+            if(result.length>0){
+                exists = true;
+                ctx.body = "Already Added!";
+            }
         }
     )
     if(!exists){
@@ -56,7 +58,7 @@ router.delete("/:id", async ctx=>{
     const mongoId = new mongo.ObjectId(id);
     ctx.response.set('content-type','application/json');
     await deleteDocument(BarDrink.COLLECTION_NAME,"_id",mongoId);
-    ctx.body = "Successfully Updated!";
+    ctx.body = "Successfully Deleted!";
 })
 
 exports.BarManagementEndpoint=router;

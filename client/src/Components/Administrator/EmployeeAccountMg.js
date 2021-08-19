@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
 import Profile from "../../models/Profile";
+import getProxy from "../../proxyConfig";
 //forceUpdate hook
 function useForceUpdate(){
     const [value, setValue] = useState(0); // integer state
@@ -19,7 +20,7 @@ export default function EmployeeAccountMg(){
     const onClickSetUserBanStatus = async (index, status) =>{
         //tell server to accept
         const profile = profiles[index];
-        await fetch("http://localhost:3001/management/user-ban-status/"+profile._id,{
+        await fetch(getProxy( "/management/user-ban-status/")+profile._id,{
             method:"put",
             headers: {'Content-Type':'application/json'},
             body:JSON.stringify({status:status})
@@ -27,7 +28,7 @@ export default function EmployeeAccountMg(){
         await fetchUserProfilesFromServer();
     }
     const fetchUserProfilesFromServer = async () =>{
-        await fetch("http://localhost:3001/management/profiles",{
+        await fetch(getProxy("/management/profiles"),{
             method:"get"
         }).then(r=>r.json()).then(d=>{
             setProfiles(d);
@@ -38,7 +39,7 @@ export default function EmployeeAccountMg(){
     const onClickResetUserPassword = async (index) =>{
         //tell server to remove
         const profile = profiles[index];
-        await fetch("http://localhost:3001/login/reset/",{
+        await fetch(getProxy("/login/reset/"),{
             method:"post",
             headers: {'Content-Type':'application/json'},
             body:JSON.stringify({nic:profile.nic, email:profile.email})

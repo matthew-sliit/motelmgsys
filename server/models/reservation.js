@@ -10,7 +10,7 @@ exports.Reservation = class Reservation{
     }
     addReservation(reservation){
         Object.assign(this,reservation);
-        this.date = new Date().toLocaleDateString() // today
+        //this.date = new Date().toLocaleDateString() // today
     }
     getReservation(){
         return {"roomNo":this.roomNo,"type":this.type,"email":this.email,"date":this.date,"roomCount":this.roomCount,"nightCount":this.nightCount};

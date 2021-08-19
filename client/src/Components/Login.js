@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import "../assets/css/login-style.css"
 import Profile from "../models/Profile";
 import Cookie from "js-cookie";
+import getProxy from "../proxyConfig";
 export default function Login(){
     let [resetPassword, setState]= useState(false);
     let [errorMsg, setErrorMsg] = useState("");
@@ -18,7 +19,7 @@ export default function Login(){
         const password = document.getElementById("user-password").value;
         let profile = new Profile();
         profile.setPassword(password);//hash256
-        await fetch("http://localhost:3001/login",{
+        await fetch(getProxy("/login"),{
             method:'post',
             headers: {'Content-Type':'application/json'},
             body: JSON.stringify({nic:nic,password:profile.getPassword()})
@@ -41,7 +42,7 @@ export default function Login(){
     async function requestResetPassword(){
         const nic = document.getElementById("user-nic").value;
         const email = document.getElementById("user-email").value;
-        await fetch("http://localhost:3001/login/reset",{
+        await fetch(getProxy("/login/reset"),{
             method:'post',
             headers: {'Content-Type':'application/json'},
             body: JSON.stringify({nic:nic,email:email})

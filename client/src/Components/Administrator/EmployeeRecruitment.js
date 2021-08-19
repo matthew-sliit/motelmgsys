@@ -1,12 +1,13 @@
 import React, {useEffect, useState} from "react";
 import Profile from "../../models/Profile";
+import getProxy from "../../proxyConfig";
 export default function EmployeeRecruitment(){
     let [recruitments, setRecruitments] = useState([]);
     let [recruitmentList, setList] = useState([]);
     //component did mount
     useEffect(async ()=>{
         //get records from server database
-        await fetch("http://localhost:3001/register/recruitments",{
+        await fetch(getProxy("/register/recruitments"),{
             method:"get"
         }).then(r=>r.json()).then(d=>{
             setRecruitments(d);
@@ -18,7 +19,7 @@ export default function EmployeeRecruitment(){
     const onClickAcceptRecruitment = async (index) =>{
         //tell server to accept
         const recruitment = recruitments[index];
-        await fetch("http://localhost:3001/register/accept/"+recruitment._id,{
+        await fetch(getProxy("/register/accept/")+recruitment._id,{
             method:"put",
             headers: {'Content-Type':'application/json'},
             body:JSON.stringify({nic:recruitment.nic})
@@ -28,7 +29,7 @@ export default function EmployeeRecruitment(){
     const onClickRejectRecruitment = async (index) =>{
         //tell server to remove
         const recruitment = recruitments[index];
-        await fetch("http://localhost:3001/register/reject/"+recruitment._id,{
+        await fetch(getProxy("/register/reject/")+recruitment._id,{
             method:"put",
             headers: {'Content-Type':'application/json'},
             body:JSON.stringify({nic:recruitment.nic})

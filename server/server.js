@@ -10,6 +10,8 @@ const AccountManagerEndpoint = require("./endpoints/account-manager.router").Acc
 const ProfileEndpoint = require("./endpoints/profile.router").ProfileEndpoint;
 const BarManagementEndpoint = require("./endpoints/bar-management.router").BarManagementEndpoint;
 const ReservationEndpoint = require('./endpoints/reservation.router').ReservationEndpoint;
+const HousekeepingEndpoint = require('./endpoints/housekeeping.router').HousekeepingEndpoint;
+const MaintenanceEndpoint = require('./endpoints/maintenance.router').MaintenanceEndpoint;
 //server usable
 server.use(cors('Access-Control-Allow-Origin'));
 server.use(bodyparser())
@@ -19,10 +21,12 @@ server.use(bodyparser())
     .use(ProfileEndpoint.routes()).use(ProfileEndpoint.allowedMethods())
     .use(BarManagementEndpoint.routes()).use(BarManagementEndpoint.allowedMethods())
     .use(ReservationEndpoint.routes()).use(ReservationEndpoint.allowedMethods())
+    .use(HousekeepingEndpoint.routes()).use(HousekeepingEndpoint.allowedMethods())
+    .use(MaintenanceEndpoint.routes()).use(MaintenanceEndpoint.allowedMethods())
     .use(context=>{
     //where the request is to an invalid endpoint
     context.body="Access Denied!";
     //context.redirect('http://localhost:1234/backendbrowser/index.html');
 });
-server.listen(3001);
-console.log("Application is running on port 3001");
+server.listen(5001);
+console.log("Application is running on port 5001");
