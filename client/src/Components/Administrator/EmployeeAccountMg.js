@@ -143,6 +143,9 @@ export default function EmployeeAccountMg(){
             </select>
             <button className={"btn btn-green mx-1"} onClick={()=>searchRecruitments()}>Search</button>
         </div>
+        <div style={{float:"right", marginBottom:"3px"}}>
+            <button className={"btn btn-blue"}>Generate Report</button>
+        </div>
         <p/>
         <span style={{color:"green"}}>{newPassword!==null?"New Password "+newPassword:""}</span>
         <span style={{color:"red"}}>{errorMsg!==null?errorMsg:""}</span>

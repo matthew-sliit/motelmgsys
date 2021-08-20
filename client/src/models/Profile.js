@@ -14,6 +14,24 @@ export default class Profile{
     setNewPassword(password){
         this.#passwordNew = crypto.createHash('sha256').update(password).digest('hex');
     }
+    isPasswordValid(password){
+        if(password.length<6){
+            return "Password should have more than 6 characters";
+        }else if(!/\d/.test(password)){
+            return "Password should have at least 1 number";
+        }else if(!/[A-Z]/.test(password)){
+            return "Password should have at least 1 upper case letter";
+        }else if(!/[!@#\$%\^&\*]/.test(password)){
+            return "Password should have at least 1 symbol";
+        }else if(!/[a-z]/.test(password)){
+            return "Password should have at least 1 lower case letter";
+        }
+        return true;
+    }
+    isEmailValid(email){
+        const email_regex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return email_regex.test(String(email).toLowerCase());
+    }
     setPassword(password){
         this.#password = crypto.createHash('sha256').update(password).digest('hex');
     }

@@ -10617,3 +10617,11 @@ div.code-toolbar > .toolbar span:hover {
   background-color: #117A65;
   color: #f0f3f6;
 }
+.btn-blue{
+  background-color:#3498DB;
+  color:#EBF5FB;
+}
+.btn-blue:hover{
+  background-color:#21618C;
+  color:#EBF5FB;
+}

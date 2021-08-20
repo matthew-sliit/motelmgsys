@@ -23,6 +23,7 @@ export default function RegisterLayout(props){
     function getProfile(){
         let editedProfile = new Profile();
         let errorMsgSpan = document.getElementById("error-show");
+        let passwordErrorMSgSpan = document.getElementById("password-error");
         errorMsgSpan.innerText= "";
         editedProfile.fullname = document.getElementById("user-fullname").value;
         editedProfile.nic=document.getElementById("user-nic").value;
@@ -35,13 +36,7 @@ export default function RegisterLayout(props){
         }
         editedProfile.address=document.getElementById("user-address").value;
         const password = document.getElementById('user-password').value;
-        if(!register){
-            const newpassword = document.getElementById('user-new-password').value;
-            if(newpassword.length>6){
-                editedProfile.setNewPassword(newpassword);
-            }
-        }
-        editedProfile.setPassword(password);
+
         //console.log("password: "+password);
         if(editedProfile.fullname.length<1){
             errorMsgSpan.innerText = "Name cannot be empty!";
@@ -55,16 +50,38 @@ export default function RegisterLayout(props){
             errorMsgSpan.innerText = "Invalid Contact Number!";
             return null;
         }
+        if(!register){
+            //profile change password
+            const newpassword = document.getElementById('user-new-password').value;
+            const passwordIsValid = editedProfile.isPasswordValid(newpassword);
+            if(passwordIsValid){
+                passwordErrorMSgSpan.innerText = "";
+                editedProfile.setNewPassword(newpassword);
+            }else{
+                passwordErrorMSgSpan.innerText = passwordIsValid;
+                return null;
+            }
+        }else {
+            //register form password
+            const passwordIsValid = editedProfile.isPasswordValid(password);
+            if (passwordIsValid === true) {
+                passwordErrorMSgSpan.innerText = "";
+                editedProfile.setPassword(password);
+            } else {
+                passwordErrorMSgSpan.innerText = passwordIsValid;
+                return null;
+            }
+        }
         if(editedProfile.email.length<5){
             errorMsgSpan.innerText = "Invalid Email Address!";
             return null;
         }
-        if(editedProfile.role.length<1){
+        if(Profile.getUserRoles().indexOf(editedProfile.role)<0){
             errorMsgSpan.innerText = "Invalid Role!";
             return null;
         }
-        if(document.getElementById('user-password').value.length<6){
-            errorMsgSpan.innerText = "Password length is invalid!";
+        if(!document.getElementById("user-checkbox").checked){
+            errorMsgSpan.innerText = "Checkbox at the end of the form needs to be ticked to continue!";
             return null;
         }
         return editedProfile.getProfileData();
@@ -99,14 +116,18 @@ export default function RegisterLayout(props){
                 <textarea className="form-control" aria-describedby="emailHelp"
                        placeholder="no 8/1, Green bay avenue, park 3, Edinberg" defaultValue={profile.address} id={"user-address"}/>
             </div>
+            <p/>
             {!register?<div className="form-group mb-2">
                 <label>Change Password</label>
+                <span id={"password-error"}><br/></span>
                 <input type="password" className="form-control" placeholder="New Password" id={"user-new-password"}/>
             </div>:""}
+
             <div className="form-group mb-2">
                 <label>{prefix==="Enter "?prefix:"Confirm "}Password</label>
                 <span><br/>Password must have more than 6 characters, at least 1 number and 1 symbol</span>
-                <span id={"password-error"}><br/></span>
+                <br/>
+                <span style={{color:"#CD6155"}} id={"password-error"}></span>
                 <input type="password" className="form-control" placeholder="Password" id={"user-password"}/>
             </div>
             <div className="form-group mb-2">
@@ -114,7 +135,7 @@ export default function RegisterLayout(props){
                 {setRole_s()}
             </div>
             {register?<div className="form-check">
-                <input type="checkbox" className="form-check-input"/>
+                <input type="checkbox" className="form-check-input" id={"user-checkbox"}/>
                 <label className="form-check-label">I consent here that I have provided my true details, if found to be untrue I will take full responsibility</label>
             </div>: ""}
             <p/>

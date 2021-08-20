@@ -12,6 +12,10 @@ export default class SemiCircleChart{
         this.height = "100px";
         this.filler_steps = 3;
         this.filler_timing = 20;
+        this.backgroundColor ="white";
+    }
+    setExternalBackgroundColor(color){
+        this.backgroundColor = color;
     }
     setTriColor(normal,mid,end){
         this.chart_filling_color = normal;
@@ -88,7 +92,7 @@ export default class SemiCircleChart{
         semiCircleInner.style.position = "relative";
         semiCircleInner.style.top = "-180px";
         semiCircleInner.style.left= "20px";
-        semiCircleInner.style.backgroundColor = "white";
+        semiCircleInner.style.backgroundColor = this.backgroundColor;
         semiCircleInner.style.border = this.chart_border_thickness+" solid "+this.chart_border_color;
         //middle text (text, top)
         let middleText = this.createText(middle_text,20);
@@ -114,7 +118,7 @@ export default class SemiCircleChart{
         //cover the semicircle when at 180 deg = bottom, using white rectangle
         //z-index, w, h, t, l
         let rectanglecoverbottom = this.createRectangleCover(-1,212,102,28,-30);
-        rectanglecoverbottom.style.backgroundColor = "white";
+        rectanglecoverbottom.style.backgroundColor = this.backgroundColor;
         semiCircleInner.appendChild(rectanglecoverbottom);
         //rotate semiCircle upto angle, hence filling the tube
         for(let i=180;i<=(angle+180);i+=this.filler_steps){
