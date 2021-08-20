@@ -41,13 +41,16 @@ export default function UserNavigationFormat(props){
         <nav className="pcoded-navbar">
             <div className="navbar-wrapper">
                 <div className="navbar-brand header-logo">
-                    <a href="index.html" className="b-brand">
+                    <a href="#" className="b-brand">
                         <div className="b-bg">
                             <i className="feather icon-trending-up"></i>
                         </div>
                         <span className="b-title">{type}</span>
                     </a>
+                    {/*
                     <a className="mobile-menu" id="mobile-collapse" href="javascript:"><span></span></a>
+                    */}
+                    <a className="" id="mobile-collapse" href="javascript:"><span></span></a>
                 </div>
                 <div className="navbar-content scroll-div">
                     <ul className="nav pcoded-inner-navbar">

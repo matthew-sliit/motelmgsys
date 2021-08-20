@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
 import "../assets/css/login-style.css"
+import PathRouter from "../models/PathRouter";
 import Profile from "../models/Profile";
 import Cookie from "js-cookie";
 import getProxy from "../proxyConfig";
@@ -31,6 +32,7 @@ export default function Login(){
                     Cookie.set('role',server_response[1]);
                     Cookie.set('id',server_response[2]);
                     setErrorMsg("");
+                    window.location.href = PathRouter.getDashboardUrlForRole(server_response[1]);
                     //console.log("login success: role:"+server_response[1]);
                 }else if(server_response[0]==="error"){
                     setErrorMsg(server_response[1]);

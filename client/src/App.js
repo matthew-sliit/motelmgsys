@@ -8,6 +8,13 @@ import EmployeeRecruitment from "./Components/Administrator/EmployeeRecruitment"
 import EmployeeAccountMg from "./Components/Administrator/EmployeeAccountMg";
 import Dashboard from "./Components/Administrator/Dashboard";
 import AdminNavigations from "./Components/Administrator/AdminNavigations";
+//reservation manager components
+import RDashboard from "./Components/ReservationManager/RDashboard";
+//maintenance manager components
+import MDashboard from "./Components/MaintenanceManager/MDashboard";
+//bar manager components
+import BDashboard from "./Components/BarManager/BDashboard";
+import BarNavigations from "./Components/BarManager/BarNavigations";
 //extra
 import UserPageLayout from "./Components/UserPageLayout";
 import UserNavigationFormat from "./Components/Navigation/UserNavigationFormat";
@@ -24,6 +31,10 @@ function App() {
             <Route exact path={"/register"}>
                 <BackendHomeFormat content={<Register/>}/>
             </Route>
+            <Route exact path={"/profile"}>
+                <UserNavigationFormat navigations={profileNavigations} content={<Profile/>} type={role}/>
+            </Route>
+            {/* ============== ADMINISTRATOR ======================*/}
             <Route exact path={"/admin"}>
                 <UserNavigationFormat navigations={AdminNavigations()} content={<Dashboard/>} type={"Administrator"}/>
             </Route>
@@ -36,9 +47,19 @@ function App() {
             <Route exact path={"/admin-recruitments"}>
                 <UserNavigationFormat navigations={AdminNavigations()} content={<EmployeeRecruitment/>} type={"Administrator"}/>
             </Route>
-            <Route exact path={"/profile"}>
-                <UserNavigationFormat navigations={profileNavigations} content={<Profile/>} type={role}/>
+            {/* ============== RESERVATION MANAGER ==================*/}
+            <Route exact path={"/reserve"}>
+                <UserNavigationFormat navigations={BarNavigations()} content={<RDashboard/>} type={"Reservation Manager"}/>
             </Route>
+            {/* ============== MAINTENANCE MANAGER ==================*/}
+            <Route exact path={"/maintainer"}>
+                <UserNavigationFormat navigations={BarNavigations()} content={<MDashboard/>} type={"Maintenance Manager"}/>
+            </Route>
+            {/* =================== BAR MANAGER =====================*/}
+            <Route exact path={"/bar"}>
+                <UserNavigationFormat navigations={BarNavigations()} content={<BDashboard/>} type={"Bar Manager"}/>
+            </Route>
+
             <Route exact path={"/user"}>
                 <UserPageLayout/>
             </Route>
@@ -50,6 +71,12 @@ function App() {
                 <button className={"btn btn-outline-primary mt-1"} onClick={()=>window.location.href="/user"}>User Page Layout</button>
                 <br/>
                 <button className={"btn btn-outline-primary mt-1"} onClick={()=>window.location.href="/admin"}>Admin</button>
+                <br/>
+                <button className={"btn btn-outline-primary mt-1"} onClick={()=>window.location.href="/reserve"}>Reservation Manager</button>
+                <br/>
+                <button className={"btn btn-outline-primary mt-1"} onClick={()=>window.location.href="/maintainer"}>Maintenance Manager</button>
+                <br/>
+                <button className={"btn btn-outline-primary mt-1"} onClick={()=>window.location.href="/bar"}>Bar Manager</button>
             </Route>
         </Switch>
     </Router>

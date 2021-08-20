@@ -54,7 +54,7 @@ exports.Profile = class Profile{
         return {"_id":this._id,"fullname":this.fullname,"nic":this.nic,"email":this.email,"contact":this.contact,"address":this.address,"role":this.role};
     }
     static getUserRoles(){
-        return ['Bar Manager','Reception','Reservation Manager'];
+        return ['Bar Manager','Reception','Reservation Manager','Maintenance Manager','Electrician','Housekeeper'];
     }
     static defaultRole = "Unknown";
 }
