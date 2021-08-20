@@ -26,9 +26,6 @@ export default function Profile(){
     //render
     return (
         <div>
-            <div style={{position:"relative", left:"100px", top:"50px", textAlign:"center"}} className={"w-50"}>
-                <h3>Profile</h3>
-            </div>
             <RegisterLayout register={false} role={role} saveFunction={updateProfile} profileData={profile}/>
         </div>);
 }

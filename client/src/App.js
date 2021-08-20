@@ -6,11 +6,12 @@ import Profile from "./Components/Profile";
 //admin components
 import EmployeeRecruitment from "./Components/Administrator/EmployeeRecruitment";
 import EmployeeAccountMg from "./Components/Administrator/EmployeeAccountMg";
-import UserNavigationFormat from "./Components/Navigation/UserNavigationFormat";
 import Dashboard from "./Components/Administrator/Dashboard";
 import AdminNavigations from "./Components/Administrator/AdminNavigations";
 //extra
 import UserPageLayout from "./Components/UserPageLayout";
+import UserNavigationFormat from "./Components/Navigation/UserNavigationFormat";
+import BackendHomeFormat from "./Components/Home/BackendHomeFormat";
 import Cookie from "js-cookie";
 function App() {
     const role = Cookie.get('role');
@@ -18,10 +19,10 @@ function App() {
     return <Router>
         <Switch>
             <Route exact path={"/login"}>
-                <Login/>
+                <BackendHomeFormat content={<Login/>}/>
             </Route>
             <Route exact path={"/register"}>
-                <Register/>
+                <BackendHomeFormat content={<Register/>}/>
             </Route>
             <Route exact path={"/admin"}>
                 <UserNavigationFormat navigations={AdminNavigations()} content={<Dashboard/>} type={"Administrator"}/>

@@ -35,7 +35,7 @@ export default function UserNavigationFormat(props){
     function logout(){
         Cookie.remove('role');
         Cookie.remove('id');
-        window.location.href = "/";
+        window.location.href = "/login";
     }
     return <React.Fragment>
         <nav className="pcoded-navbar">

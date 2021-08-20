@@ -1,5 +1,5 @@
 import ReactDom from "react-dom";
-class SemiCircleChart{
+export default class SemiCircleChart{
     constructor(){
         //default values
         this.chart_border_color = "rgba(190,218,249,0.7)";
@@ -129,4 +129,3 @@ class SemiCircleChart{
         }
     }
 }
-exports.SemiCircleChart = SemiCircleChart;

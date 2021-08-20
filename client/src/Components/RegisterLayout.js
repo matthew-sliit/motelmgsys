@@ -14,7 +14,7 @@ export default function RegisterLayout(props){
         if(register){
             return <React.Fragment>
                 <input type={"text"} list={"user-roles"} className={"mx-2"} defaultValue={profile.role} id={"user-role"}/>
-                <datalist className={"mx-2"} id={"user-roles"}>{Profile.getUserRoles().map(role=>{return <option>{role}</option>})}</datalist>;
+                <datalist className={"mx-2"} id={"user-roles"}>{Profile.getUserRoles().map(role=>{return <option>{role}</option>})}</datalist>
             </React.Fragment>;
         }else{
             return <input type={"text"} value={role} disabled={"disabled"}/>
@@ -70,9 +70,10 @@ export default function RegisterLayout(props){
         return editedProfile.getProfileData();
     }
     return <React.Fragment>
-        <div style={{position:"relative", left:"100px", top:"50px"}} className={"w-50"}>
+        <div style={{position:"relative", left:"100px", top:"30px"}} className={"w-50"}>
+            <h3 style={{color:"inherit", textAlign:"center"}}>{register?"Registration Form":"Profile"}</h3>
             <span style={{color:"green"}}>{registerReference!=="0"?registerReference:""}</span>
-            <span style={{color:"red"}} id={"error-show"}></span>
+            <span style={{color:"#CD6155"}} id={"error-show"}></span>
             <div className="form-group mb-2">
                 <label>{prefix}Name with Initials</label>
                 <input type="text" className="form-control" aria-describedby="emailHelp"
@@ -104,6 +105,8 @@ export default function RegisterLayout(props){
             </div>:""}
             <div className="form-group mb-2">
                 <label>{prefix==="Enter "?prefix:"Confirm "}Password</label>
+                <span><br/>Password must have more than 6 characters, at least 1 number and 1 symbol</span>
+                <span id={"password-error"}><br/></span>
                 <input type="password" className="form-control" placeholder="Password" id={"user-password"}/>
             </div>
             <div className="form-group mb-2">
@@ -112,9 +115,11 @@ export default function RegisterLayout(props){
             </div>
             {register?<div className="form-check">
                 <input type="checkbox" className="form-check-input"/>
-                <label className="form-check-label">I have provided the true details</label>
-            </div>:""}
+                <label className="form-check-label">I consent here that I have provided my true details, if found to be untrue I will take full responsibility</label>
+            </div>: ""}
+            <p/>
             <div style={{float:"right"}}>
+                {register?<button className={"btn btn-primary mx-0"} onClick={()=>{window.location.href="/login"}}>Already have an account</button>:""}
                 <button className={"btn btn-orange mx-2"}>{register?"Clear form":"Cancel"}</button>
                 <button className={"btn btn-green"} onClick={()=>saveFunction(getProfile())}>Save</button>
             </div>

@@ -60,8 +60,8 @@ export default function Login(){
         }).catch(e=>console.log(e));
     }
     return (
-        <div style={{position:"relative", left:"100px", top:"200px", width:"30%"}}>
-            <h3>{resetPassword?"Reset Password":"Login"}</h3>
+        <div style={{position:"relative", left:"100px", top:"200px", width:"30%", color:"inherit"}}>
+            <h3 style={{color:"inherit"}}>{resetPassword?"Reset Password":"Login"}</h3>
             <span style={{color:"red"}}>{errorMsg}</span>
             <span style={{color:"#00802b", fontSize:"18px"}}>{newPassword!==""?"New Password is: ":""}</span>
             <span style={{color:"#00802b", fontSize:"18px"}}><b>{newPassword}</b></span>
@@ -82,7 +82,7 @@ export default function Login(){
                 {!resetPassword?<button className={"btn btn-link mx-1"} onClick={()=>setState(!resetPassword)}>Click to reset password</button>
                     :<button className={"btn btn-outline-success"} onClick={()=>setState(!resetPassword)}>Login</button>}
                 <button className={"btn btn-outline-primary mx-2"} onClick={()=>redirectToSignUpForm()}>Register</button>
-                {!resetPassword?<button className={"btn btn-success"} onClick={()=>logIn()}>Login</button>:
+                {!resetPassword?<button className={"btn btn-green"} onClick={()=>logIn()}>Login</button>:
                     <button className={"btn btn-warning"} onClick={()=>requestResetPassword()}>Reset Password</button>}
             </div>
         </div>
