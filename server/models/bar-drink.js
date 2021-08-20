@@ -3,6 +3,7 @@ exports.BarDrink = class BarDrink{
     constructor() {
         this.name="";
         this.percentage=0;
+        this.description="";
         this.image="";
     }
     addDrink(name, percentage, image){
@@ -11,6 +12,6 @@ exports.BarDrink = class BarDrink{
         this.image = image;
     }
     getDetails(){
-        return {"name":this.name,"percentage":this.percentage,"image":this.image};
+        return {"name":this.name,"percentage":this.percentage,"image":this.image,"description":this.description};
     }
 }
