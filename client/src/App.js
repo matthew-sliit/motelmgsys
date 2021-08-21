@@ -15,6 +15,7 @@ import MDashboard from "./Components/MaintenanceManager/MDashboard";
 //bar manager components
 import BDashboard from "./Components/BarManager/BDashboard";
 import BarNavigations from "./Components/BarManager/BarNavigations";
+
 //extra
 import UserPageLayout from "./Components/UserPageLayout";
 import UserNavigationFormat from "./Components/Navigation/UserNavigationFormat";
@@ -59,6 +60,7 @@ function App() {
             <Route exact path={"/bar"}>
                 <UserNavigationFormat navigations={BarNavigations()} content={<BDashboard/>} type={"Bar Manager"}/>
             </Route>
+
 
             <Route exact path={"/user"}>
                 <UserPageLayout/>

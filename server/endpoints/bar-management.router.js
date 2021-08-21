@@ -47,7 +47,7 @@ router.post("/", async ctx=>{
 })
 router.put("/:id", async ctx=>{
     const id = ctx.request.params.id;
-    const drinkDetails = ctx.request.params.drink;
+    const drinkDetails = ctx.request.body.drink;
     const mongoId = new mongo.ObjectId(id);
     ctx.response.set('content-type','application/json');
     await updateDocument(BarDrink.COLLECTION_NAME,"_id",mongoId,drinkDetails);
