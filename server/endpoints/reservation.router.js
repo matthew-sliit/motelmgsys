@@ -1,6 +1,7 @@
 const mongo = require('mongodb');
 const readDocument = require('../api/mongodb.api').readDocument;
 const Router = require('@koa/router');
+const {countOfDocuments} = require("../api/mongodb.api");
 const {Reservation} = require("../models/reservation");
 const {saveDocument} = require("../api/mongodb.api");
 const {updateDocument} = require("../api/mongodb.api");
@@ -13,6 +14,24 @@ router.post("/", async ctx=>{
     const reservationRaw = ctx.request.body.reservation;
     let reservation = new Reservation();
     reservation.addReservation(reservationRaw);
+    let numOfReservation = 0, roomsTaken = 0;
+    await readAllDocuments(Reservation.COLLECTION_NAME).then(
+        function (res){
+            res.map(r=>{numOfReservation+= (parseInt(r.roomCount,10)||0)});
+            numOfReservation++;
+        }
+    )
+    const requiredMax = numOfReservation + (parseInt(reservation.roomCount,10)||0);
+    //console.log("requiredMax: "+typeof requiredMax);
+    for(let i=numOfReservation;i<requiredMax;i++){
+        if((i+1)===requiredMax){
+            reservation.roomNo+=""+i;
+        }else{
+            reservation.roomNo+=""+i+",";
+        }
+    }
+    const rooms = reservation.roomNo;
+    //console.log("numOfReservations :"+reservation.roomNo);
     saveDocument(Reservation.COLLECTION_NAME,[reservation.getReservation()]);
     ctx.response.set('content-type','application/json');
     ctx.body = "success";

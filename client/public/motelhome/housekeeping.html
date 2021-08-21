@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Datta Able Free Bootstrap 4 Admin Template</title>
+    <!-- HTML5 Shim and Respond.js IE10 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 10]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="description" content="Datta Able Bootstrap admin template made using Bootstrap 4 and it has huge amount of ready made feature, UI components, pages which completely fulfills any dashboard needs." />
+    <meta name="keywords" content="admin templates, bootstrap admin templates, bootstrap 4, dashboard, dashboard templets, sass admin templets, html admin templates, responsive, bootstrap admin templates free download,premium bootstrap admin templates, datta able, datta able bootstrap admin template, free admin theme, free dashboard template"/>
+    <meta name="author" content="CodedThemes"/>
+
+    <!-- Favicon icon -->
+    <link rel="icon" href="assets/img/favicon.ico" type="image/x-icon">
+    <!-- fontawesome icon -->
+    <link rel="stylesheet" href="css/fontawesome-all.min.css">
+    <!-- animation css -->
+    <link rel="stylesheet" href="css/animate.min.css">
+    <!-- vendor css -->
+    <link rel="stylesheet" href="css/styles.css">
+
+</head>
+<body>
+<h3 style="color: #0c5460">Housekeeping</h3>
+<div class="row mt-3 mb-3">
+    <div class="col-md-2">
+        <button type="button" class="btn btn-success"><i class="fas fa-plus-circle"></i>Add Cleaning Task</button>
+    </div>
+    <div class="col-md-2">
+        <button type="button" class="btn btn-info" ><i class="far fa-file-alt"></i>Generate Report</button>
+    </div>
+</div>
+<div class="col-md-10">
+    <div class="card w-75">
+        <div class="card-body">
+        <div class="row">
+            <div class="col-md-2">
+                <input type="text" class="form-control" placeholder="Room No">
+            </div>
+            <div class="col-md-3">
+                <input type="text" class="form-control" placeholder="Assigned to" >
+            </div>
+            <div class="col-md-2">
+                <select class="form-control" id="Status">
+                    <option>Dirty</option>
+                    <option>Cleaning</option>
+                    <option>Clean</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <select class="form-control" id="Priority">
+                    <option>High</option>
+                    <option>Normal</option>
+                    <option>Low</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+            <button type="button" name="search" class="btn btn-primary" >Search</button>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-md-9">
+<table class="table table-striped">
+    <thead class="thead-dark">
+    <tr>
+        <th scope="col">Room No</th>
+        <th scope="col">Status</th>
+        <th scope="col">Task Date</th>
+        <th scope="col">Assigned to</th>
+        <th scope="col">Priority</th>
+        <th scope="col">Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <th scope="row">1</th>
+        <td><span class="badge badge-pill badge-danger">Dirty</span></td>
+        <td>Otto</td>
+        <td>@mdo</td>
+        <td>High</td>
+        <td colspan="2">
+            <button name="edit" class="btn btn-info px-3" ><center><i class="fa fa-edit"></i></center></button>
+            <button name="" class="btn btn-danger px-3" ><center><i class="fa fa-trash"></i></center></button>
+        </td>
+    </tr>
+    <tr>
+        <th scope="row">3</th>
+        <td><span class="badge badge-pill badge-primary">Cleaning</span></td>
+        <td>Otto</td>
+        <td>@mdo</td>
+        <td>Medium</td>
+        <td colspan="2">
+            <button name="edit" class="btn btn-info px-3" ><center><i class="fa fa-edit"></i></center></button>
+            <button name="" class="btn btn-danger px-3" ><center><i class="fa fa-trash"></i></center></button>
+        </td>
+    </tr>
+    <tr>
+        <th scope="row">3</th>
+        <td><span class="badge badge-pill badge-success">Clean</span></td>
+        <td>Otto</td>
+        <td>@mdo</td>
+        <td>Low</td>
+        <td colspan="2">
+            <button name="edit" class="btn btn-info px-3" ><center><i class="fa fa-edit"></i></center></button>
+            <button name="" class="btn btn-danger px-3" ><center><i class="fa fa-trash"></i></center></button>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</div>
+</body>
+</html>

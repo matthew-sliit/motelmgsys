@@ -50,7 +50,9 @@ router.put("/:id", async ctx=>{
     const drinkDetails = ctx.request.body.drink;
     const mongoId = new mongo.ObjectId(id);
     ctx.response.set('content-type','application/json');
-    await updateDocument(BarDrink.COLLECTION_NAME,"_id",mongoId,drinkDetails);
+    let drink = new BarDrink();
+    Object.assign(drink,drinkDetails);
+    await updateDocument(BarDrink.COLLECTION_NAME,"_id",mongoId,drink.getDetails());
     ctx.body = "Successfully Updated!";
 })
 router.delete("/:id", async ctx=>{

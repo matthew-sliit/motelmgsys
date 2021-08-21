@@ -15,11 +15,12 @@ import MDashboard from "./Components/MaintenanceManager/MDashboard";
 //bar manager components
 import BDashboard from "./Components/BarManager/BDashboard";
 import BarNavigations from "./Components/BarManager/BarNavigations";
-
+import AddDrink from "./Components/BarManager/AddDrink";
 //extra
 import UserPageLayout from "./Components/UserPageLayout";
 import UserNavigationFormat from "./Components/Navigation/UserNavigationFormat";
 import BackendHomeFormat from "./Components/Home/BackendHomeFormat";
+
 import Cookie from "js-cookie";
 function App() {
     const role = Cookie.get('role');
@@ -60,8 +61,9 @@ function App() {
             <Route exact path={"/bar"}>
                 <UserNavigationFormat navigations={BarNavigations()} content={<BDashboard/>} type={"Bar Manager"}/>
             </Route>
-
-
+            <Route exact path={"/bar/new"}>
+                <UserNavigationFormat navigations={BarNavigations()} content={<AddDrink/>} type={"Bar Manager"}/>
+            </Route>
             <Route exact path={"/user"}>
                 <UserPageLayout/>
             </Route>
@@ -79,6 +81,8 @@ function App() {
                 <button className={"btn btn-outline-primary mt-1"} onClick={()=>window.location.href="/maintainer"}>Maintenance Manager</button>
                 <br/>
                 <button className={"btn btn-outline-primary mt-1"} onClick={()=>window.location.href="/bar"}>Bar Manager</button>
+                <br/>
+                <button className={"btn btn-outline-primary mt-1"} onClick={()=>window.location.href="http://localhost:3000/motelhome/index.html"}>Home</button>
             </Route>
         </Switch>
     </Router>
