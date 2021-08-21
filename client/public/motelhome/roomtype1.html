@@ -142,16 +142,6 @@
                     <td><p>&#10060;<p></td>
 
                   </tr>
-                  <tr>
-                    <td>Television</td>
-                    <td><p>&#10060;<p></td>
-                  </tr>
-                  <tr>
-                    <td>Hair dryers</td>
-                    <td><p>&#10060;<p></td>
-                  </tr>
-
-
                 </table>
                 <hr />
                 <br />
@@ -160,11 +150,11 @@
                 <label style="font-size:20px"><b>Enter the reservation details below</b></label><br />
                 <label>Name</label>
                 <div class="form-group">
-                  <input type="text" class="form-control" name="Name" id="name"  aria-describedby="emailHelp" placeholder="name">
+                  <input type="text" class="form-control" name="Name" id="name"  aria-describedby="emailHelp" placeholder="name" required>
                 </div>
                 <label>Email</label>
                 <div class="form-group">
-                  <input type="email" class="form-control" name="email" id="email"  aria-describedby="emailHelp" placeholder="email" @ViewBag.setreadonly>
+                  <input type="email" class="form-control" name="email" id="email" required aria-describedby="emailHelp" placeholder="email" >
                 </div>
                 <label>Check-in-date</label>
                 <div class="form-group">
@@ -192,6 +182,8 @@
                   <br />  <input type="checkbox" class="form-check-input" id="exampleCheck1" required>
                   <label class="form-check-label" required for="exampleCheck1">I have read and accept the<b> terms and conditions</b></label>
                 </div><br />
+                  <p id="name-error" style="color: red">
+                  </p>
                 <div class="form-group">
                   <input type="submit" class="button" name="pay_type1"  onclick="addReservationonpayment()"  value="Online Payment" />
 
@@ -206,6 +198,12 @@
                   <script>
                       async function addReservationonarrival(){
                           const name = document.getElementById("name").value;
+                          if(name.length<1){
+                              document.getElementById("name-error").innerHTML="Name cannot be empty";
+                              return null;
+                          }else
+                              document.getElementById("name-error").innerHTML="";
+
                           const email = document.getElementById("email").value;
                           const checkInDate = document.getElementById("checkindate").value;
                           const checkOutDate = document.getElementById("checkoutdate").value;
@@ -237,7 +235,7 @@
                           const checkInDate = document.getElementById("checkindate").value;
                           const checkOutDate = document.getElementById("checkoutdate").value;
                           const roomCount = document.getElementById("quantity").value;
-                          const payment = "arrival";
+                          const payment = "online";
                           await fetch("http://localhost:5001/reservation",{
                               method:'post',
                               headers: {'Content-Type':'application/json'},

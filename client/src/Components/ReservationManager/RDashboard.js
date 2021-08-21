@@ -11,44 +11,44 @@ export default function RDashboard(){
     let [reservationList, setList] = useState([]);
 
 
+    const searchall = () => {
+        const nameLike = document.getElementById("email").value;
+        if(nameLike.length < 1){
+            setreservation(reservationList);
+        }
+    }
     const searchReservations = () =>{
         const nameLike = document.getElementById("email").value;
-        const recruitmentsListOriginal = [...reservation];
+        const recruitmentsListOriginal = [...reservationList];
         let pushed, suggestRecruitments = [];
-        let name= false;
+        pushed = false;
         //console.log("n: "+nameLike+" r:"+reference+" r:"+role);
         recruitmentsListOriginal.map(recruitment=>{
             //profile = new Profile();
-            pushed = false;
+            console.log(recruitment.email);
             //Object.assign(profile,recruitment);
-            if(nameLike.length>0 && recruitment.name.includes(nameLike)){
-                name=true;
+            if(nameLike.length>0 && nameLike!=="all" && recruitment.email.includes(nameLike)){
                 pushed = true;
                 suggestRecruitments.push(recruitment);
             }
         });
-        if(!name.length<=0){
-            setreservation(recruitmentsListOriginal);
+        console.log(nameLike);
+        if(pushed){
+            setreservation(suggestRecruitments);
+
         }else{
             //console.log("setting suggest!");
-            setreservation(suggestRecruitments);
+            setreservation(recruitmentsListOriginal);
+
         }
     }
 
     useEffect(async ()=>{
         await fetch(getProxy("/reservation"),{
             method:"get"
-        }).then(r=>r.json()).then(d=>{setreservation(d);console.log(JSON.stringify(d));}).catch(e=>console.log(e));
+        }).then(r=>r.json()).then(d=>{setreservation(d);setList(d);console.log(JSON.stringify(d));}).catch(e=>console.log(e));
     },[]);
 
-    useEffect(async ()=>{
-        //get records from server database
-        await fetch(getProxy("/reservation"),{
-            method:"get"
-        }).then(r=>r.json()).then(d=>{
-            setList(d);
-        });
-    },[]);
 
     return <div>
         <div id="colorlib-main">
@@ -68,11 +68,11 @@ export default function RDashboard(){
                             <div className="card-body">
                                 <div className="row">
                                     <div className="col-md-3">
-                                        <input type={"text"} className={"mx-1"} id={"email"}/>
+                                        <input type={"text"}  placeholder={"all"} onChange={()=>searchall()} className={"mx-1"} id={"email"}/>
                                     </div>
 
                                     <div className="col-md-2">
-                                        <button type="button" name="search" className="btn btn-primary"  onClick={()=>searchReservations()}>Search</button>
+                                        <button type="button" name="search"  className="btn btn-primary"  onClick={()=>searchReservations()}>Search</button>
                                     </div>
                                 </div>
                             </div>
@@ -83,8 +83,9 @@ export default function RDashboard(){
                         <table className="table table-striped">
                             <thead className="thead-dark">
                             <tr>
+                                <th scope="col">Room No.</th>
                                 <th scope="col">Name</th>
-                                <th scope="col">Email</th>
+                                <th scope="col">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Email</th>
                                 <th scope="col">Checkin Date</th>
                                 <th scope="col">Checkout Date</th>
                                 <th scope="col">Room Count</th>
@@ -97,6 +98,7 @@ export default function RDashboard(){
 
                             {reservation.map(reserve=>{
                                 return <tr>
+                                    <td>{reserve.roomNo}</td>
                                     <td>{reserve.name}</td>
                                     <td>{reserve.email}</td>
                                     <td>{reserve.checkInDate}</td>
