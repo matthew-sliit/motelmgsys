@@ -16,12 +16,14 @@ import MDashboard from "./Components/MaintenanceManager/MDashboard";
 import BDashboard from "./Components/BarManager/BDashboard";
 import BarNavigations from "./Components/BarManager/BarNavigations";
 import AddDrink from "./Components/BarManager/AddDrink";
+import EditReservations from "./Components/ReservationManager/EditReservations";
 //extra
 import UserPageLayout from "./Components/UserPageLayout";
 import UserNavigationFormat from "./Components/Navigation/UserNavigationFormat";
 import BackendHomeFormat from "./Components/Home/BackendHomeFormat";
 
 import Cookie from "js-cookie";
+import ReservationNavigations from "./Components/ReservationManager/ReservationNavigation";
 function App() {
     const role = Cookie.get('role');
     const profileNavigations = AdminNavigations();
@@ -51,7 +53,10 @@ function App() {
             </Route>
             {/* ============== RESERVATION MANAGER ==================*/}
             <Route exact path={"/reserve"}>
-                <UserNavigationFormat navigations={BarNavigations()} content={<RDashboard/>} type={"Reservation Manager"}/>
+                <UserNavigationFormat navigations={ReservationNavigations()} content={<RDashboard/>} type={"Reservation Manager"}/>
+            </Route>
+            <Route exact path={"/reserve/edit"}>
+                <UserNavigationFormat navigations={ReservationNavigations()} content={<EditReservations/>} type={"Reservation Manager"}/>
             </Route>
             {/* ============== MAINTENANCE MANAGER ==================*/}
             <Route exact path={"/maintainer"}>

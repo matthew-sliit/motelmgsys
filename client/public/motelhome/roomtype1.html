@@ -83,7 +83,7 @@
     <br />
     <h1 style="margin-left:35%;">Standard Rooms Reservation</h1>
     <center>
-      <img src="img/rooms/room10.jpg" width='700px' height='500px' class="img" />
+      <img src="img/rooms/room1.jpg" width='700px' height='500px' class="img" />
     </center>
   </div>
   <br />
@@ -193,12 +193,18 @@
                   <label class="form-check-label" required for="exampleCheck1">I have read and accept the<b> terms and conditions</b></label>
                 </div><br />
                 <div class="form-group">
-                  <input type="submit" class="button" name="pay_type1" onclick="payment.html" value="Online Payment" />
+                  <input type="submit" class="button" name="pay_type1"  onclick="addReservationonpayment()"  value="Online Payment" />
 
-                  <input type="submit" class="button" name="pay_type1" onclick="addReservation()" value="Arrival Payment" />
+                  <input type="submit" class="button" name="pay_type1" onclick="addReservationonarrival()" value="Arrival Payment" />
                 </div>
+                  <script type="text/javascript">
+                      document.getElementById("myButton").onclick = function () {
+                          location.href = "payment.html";
+                      };
+
+                  </script>
                   <script>
-                      async function addReservation(){
+                      async function addReservationonarrival(){
                           const name = document.getElementById("name").value;
                           const email = document.getElementById("email").value;
                           const checkInDate = document.getElementById("checkindate").value;
@@ -221,6 +227,33 @@
                           }).then(r=>r.text()).then(d=>{
                               if(d==="success"){
                                   window.location.href="http://localhost:3000/motelhome/success.html";
+                              }
+                          }).catch(e=>console.log(e));
+                      }
+
+                      async function addReservationonpayment(){
+                          const name = document.getElementById("name").value;
+                          const email = document.getElementById("email").value;
+                          const checkInDate = document.getElementById("checkindate").value;
+                          const checkOutDate = document.getElementById("checkoutdate").value;
+                          const roomCount = document.getElementById("quantity").value;
+                          const payment = "arrival";
+                          await fetch("http://localhost:5001/reservation",{
+                              method:'post',
+                              headers: {'Content-Type':'application/json'},
+                              body: JSON.stringify(
+                                  {"reservation": {
+                                          "name":name,
+                                          "email":email,
+                                          "checkInDate":checkInDate,
+                                          "checkOutDate":checkOutDate,
+                                          "roomCount":roomCount,
+                                          "payment":payment,
+                                          "type":"1"}}
+                              )
+                          }).then(r=>r.text()).then(d=>{
+                              if(d==="success"){
+                                  window.location.href="http://localhost:3000/motelhome/payment.html";
                               }
                           }).catch(e=>console.log(e));
                       }
