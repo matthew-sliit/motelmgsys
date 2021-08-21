@@ -20,7 +20,7 @@ export default function MDashboard() {
         <h3 style={{color: "#0c5460"}}>Maintenance Tasks</h3>
         <div className="row mt-3 mb-3">
             <div className="col-md-3">
-                <button type="button" className="btn btn-success"><i className="fas fa-plus-circle"></i>Add Maintenance
+                <button type="button" onClick={()=>{window.location.href="/maintainer/maintenance/add"}} className="btn btn-success"><i className="fas fa-plus-circle"></i>Add Maintenance
                     Task
                 </button>
             </div>
@@ -79,7 +79,7 @@ export default function MDashboard() {
                         <td>{clean.assignedTo}</td>
                         <td>{clean.cost}</td>
                         <td>
-                            <button name="edit" className="btn btn-info px-3">
+                            <button name="edit" onClick={()=>{window.location.href="/maintainer/maintenance/edit"}} className="btn btn-info px-3">
                                 <center><i className="fa fa-edit"></i></center>
                             </button>
                             <button name="" className="btn btn-danger px-3">
