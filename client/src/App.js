@@ -11,14 +11,7 @@ import AdminNavigations from "./Components/Administrator/AdminNavigations";
 //reservation manager components
 import RDashboard from "./Components/ReservationManager/RDashboard";
 //maintenance manager components
-import MMDashboard from "./Components/MaintenanceManager/MMDashboard";
-import HDashboard from "./Components/MaintenanceManager/HDashboard";
 import MDashboard from "./Components/MaintenanceManager/MDashboard";
-import AddMaintenance from "./Components/MaintenanceManager/AddMaintenance";
-import AddHousekeeping from "./Components/MaintenanceManager/AddHousekeeping";
-import EditHousekeeping from "./Components/MaintenanceManager/EditHousekeeping";
-import EditMaintenance from "./Components/MaintenanceManager/EditMaintenance";
-import MaintenanceNavigations from "./Components/MaintenanceManager/MaintenanceNavigation";
 //bar manager components
 import BDashboard from "./Components/BarManager/BDashboard";
 import BarNavigations from "./Components/BarManager/BarNavigations";
@@ -29,9 +22,6 @@ import UserNavigationFormat from "./Components/Navigation/UserNavigationFormat";
 import BackendHomeFormat from "./Components/Home/BackendHomeFormat";
 
 import Cookie from "js-cookie";
-
-import {Component} from "react";
-
 function App() {
     const role = Cookie.get('role');
     const profileNavigations = AdminNavigations();
@@ -65,25 +55,7 @@ function App() {
             </Route>
             {/* ============== MAINTENANCE MANAGER ==================*/}
             <Route exact path={"/maintainer"}>
-                <UserNavigationFormat navigations={MaintenanceNavigations()} content={<MMDashboard/>} type={"Maintenance Manager"}/>
-            </Route>
-            <Route exact path={"/maintainer/housekeeping"}>
-                <UserNavigationFormat navigations={MaintenanceNavigations()} content={<HDashboard/>} type={"Maintenance Manager"}/>
-            </Route>
-            <Route exact path={"/maintainer/housekeeping/add"}>
-                <UserNavigationFormat navigations={MaintenanceNavigations()} content={<AddHousekeeping/>} type={"Maintenance Manager"}/>
-            </Route>
-            <Route exact path={"/maintainer/maintenance"}>
-                <UserNavigationFormat navigations={MaintenanceNavigations()} content={<MDashboard/>} type={"Maintenance Manager"}/>
-            </Route>
-            <Route exact path={"/maintainer/maintenance/add"}>
-                <UserNavigationFormat navigations={MaintenanceNavigations()} content={<AddMaintenance/>} type={"Maintenance Manager"}/>
-            </Route>
-            <Route exact path={"/maintainer/maintenance/edit"}>
-                <UserNavigationFormat navigations={MaintenanceNavigations()} content={<EditMaintenance/>} type={"Maintenance Manager"}/>
-            </Route>
-            <Route exact path={"/maintainer/housekeeping/edit"}>
-                <UserNavigationFormat navigations={MaintenanceNavigations()} content={<EditHousekeeping/>} type={"Maintenance Manager"}/>
+                <UserNavigationFormat navigations={BarNavigations()} content={<MDashboard/>} type={"Maintenance Manager"}/>
             </Route>
             {/* =================== BAR MANAGER =====================*/}
             <Route exact path={"/bar"}>
