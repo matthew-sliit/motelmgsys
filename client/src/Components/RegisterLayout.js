@@ -1,7 +1,7 @@
 import React from "react";
 import Profile from "../models/Profile";
 export default function RegisterLayout(props){
-    const {register, role, profileData, saveFunction, registerReference} = props;
+    const {register, role,roles, profileData, saveFunction, registerReference} = props;
     let prefix = "",profile=new Profile();
     if(register){
         prefix="Enter ";
@@ -14,7 +14,7 @@ export default function RegisterLayout(props){
         if(register){
             return <React.Fragment>
                 <input type={"text"} list={"user-roles"} className={"mx-2"} defaultValue={profile.role} id={"user-role"}/>
-                <datalist className={"mx-2"} id={"user-roles"}>{Profile.getUserRoles().map(role=>{return <option>{role}</option>})}</datalist>
+                <datalist className={"mx-2"} id={"user-roles"}>{roles.map(role=>{return <option>{role}</option>})}</datalist>
             </React.Fragment>;
         }else{
             return <input type={"text"} value={role} disabled={"disabled"}/>
@@ -119,7 +119,7 @@ export default function RegisterLayout(props){
             <p/>
             {!register?<div className="form-group mb-2">
                 <label>Change Password</label>
-                <span id={"password-error"}></span>
+                <span style={{color:"#CD6155"}} id={"password-error"}></span>
                 <span><br/>Password must have more than 6 characters, at least 1 number and 1 symbol</span>
                 <input type="password" className="form-control" placeholder="New Password" id={"user-new-password"}/>
             </div>:""}
