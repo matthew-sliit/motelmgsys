@@ -45,7 +45,7 @@ export default function AddDrink(){
         </div>
         <div className="form-group mb-2">
             <label>Enter Description</label>
-            <input type="text" className="form-control" aria-describedby="emailHelp"
+            <textarea  className="form-control" aria-describedby="emailHelp"
                    placeholder="Drink Description" id={"description"}/>
         </div>
         <div className="form-group mb-2">

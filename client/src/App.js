@@ -16,6 +16,8 @@ import MDashboard from "./Components/MaintenanceManager/MDashboard";
 import BDashboard from "./Components/BarManager/BDashboard";
 import BarNavigations from "./Components/BarManager/BarNavigations";
 import AddDrink from "./Components/BarManager/AddDrink";
+import DrinkMenu from "./Components/BarManager/DrinkMenu";
+import EditDrink from "./Components/BarManager/EditDrink";
 //extra
 import UserPageLayout from "./Components/UserPageLayout";
 import UserNavigationFormat from "./Components/Navigation/UserNavigationFormat";
@@ -89,6 +91,12 @@ function App() {
             <Route exact path={"/bar/new"}>
                 <UserNavigationFormat navigations={BarNavigations()} content={<AddDrink/>} type={"Bar Manager"}/>
             </Route>
+            <Route exact path={"/bar/menu"}>
+                <UserNavigationFormat navigations={BarNavigations()} content={<DrinkMenu/>} type={"Bar Manager"}/>
+            </Route>
+            <Route exact path={"/bar/edit"}>
+            <UserNavigationFormat navigations={BarNavigations()} content={<EditDrink/>} type={"Bar Manager"}/>
+        </Route>
             <Route exact path={"/user"}>
                 <UserPageLayout/>
             </Route>
