@@ -89,7 +89,7 @@ export default function BDashboard(){
                         <table className="table table-striped">
                             <thead className="thead-dark">
                             <tr>
-                                <th scope="col">Drink ID</th>
+
                                 <th scope="col">Drink Name</th>
                                 <th scope="col">Alcohol Percentage</th>
 
@@ -101,7 +101,7 @@ export default function BDashboard(){
 
                             {drinks.map(drink=>{
                                 return <tr>
-                                    <th scope="row">1</th>
+
                                     <td>{drink.name}</td>
                                     <td>{drink.percentage}</td>
                                     <td >{drink.description}</td>

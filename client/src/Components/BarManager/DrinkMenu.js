@@ -28,9 +28,9 @@ export default function DrinkMenu(){
                 <li>2 tablespoons (1 ounce) Grand Marnier</li>
                 <li>Kosher salt or flaky sea salt, for the rim</li>
             </div>
-    </div>
 
-        <div className="row">
+
+
             <div className="col-md-4">
                 <img src={Hmargarita} style={{borderRadius: "8px", width: "250px", height: "400px"}} alt="Logo"/>
                 <h2 className="h4">Honey Thyme Margarita</h2>
@@ -43,8 +43,8 @@ export default function DrinkMenu(){
                 <li>½ oz honey thyme syrup</li>
                 <li>coarse sea salt, to rim serving glass</li>
             </div>
-        </div>
-        <div className="row">
+
+
             <div className="col-md-4">
                 <img src={margarita} style={{borderRadius: "8px", width: "250px", height: "400px"}} alt="Logo"/>
                 <h2 className="h4">Casual Margarita</h2>
@@ -55,8 +55,8 @@ export default function DrinkMenu(){
                 <li>2 oz. triple sec</li>
                 <li>1 1/2 oz. freshly squeezed lime juice and Ice</li>
             </div>
-        </div>
-        <div className="row">
+
+
             <div className="col-md-4">
                 <img src={smargarita} style={{borderRadius: "8px", width: "250px", height: "400px"}} alt="Logo"/>
                 <h2 className="h4">Skinny Peach margarita</h2>
@@ -68,8 +68,7 @@ export default function DrinkMenu(){
                 <li>1 tablespoon light agave nectar</li>
                 <li>2 cups crushed ice and salt</li>
             </div>
-        </div>
-        <div className="row">
+
             <div className="col-md-4">
                 <img src={strawMargarita} style={{borderRadius: "8px", width: "250px", height: "400px"}} alt="Logo"/>
                 <h2 className="h4">Strawberry Margarita</h2>
@@ -80,8 +79,7 @@ export default function DrinkMenu(){
                 <li>2/3 cup fresh lime juice</li>
                 <li>1/4 cup triple sec</li>
             </div>
-        </div>
-        <div className="row">
+
             <div className="col-md-4">
                 <img src={tMargarita} style={{borderRadius: "8px", width: "250px", height: "400px"}} alt="Logo"/>
                 <h2 className="h4">Tropical Margarita</h2>
@@ -93,8 +91,10 @@ export default function DrinkMenu(){
                 <li> 1 Tablespoon orange liqueur</li>
                 <li>1/4 cup shredded coconut finely chopped</li>
             </div>
+
         </div>
-    </div>
+        </div>
+
 
         </div>
 

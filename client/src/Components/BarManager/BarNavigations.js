@@ -5,7 +5,7 @@ export default function BarNavigations(){
     navigations.addNavigationWitIcon("NAVIGATIONS","Drinks Menu","/bar/menu","icon-home");
     navigations.addNavigationWitIcon("NAVIGATIONS","Add New Drink","/bar/new","icon-file-text");
     navigations.addNavigationWitIcon("NAVIGATIONS","Edit Drink","/bar/edit", "icon-server");
-    navigations.addNavigationWitIcon("NAVIGATIONS","Search","/bar","icon-file-text");
+    navigations.addNavigationWitIcon("NAVIGATIONS","Search Drinks","/bar","icon-file-text");
     //navigations.addSection("Account");
     //navigations.addNavigationWitIcon("Account","Profile","/","icon-sidebar");
     //navigations.addNavigationWitIcon("Account","Logout","/","icon-power");
