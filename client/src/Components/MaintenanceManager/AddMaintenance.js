@@ -30,6 +30,9 @@ export default function AddMaintenance(){
             method:'get'
         }).then(r=>r.json()).then(d=>setMaintenance(d)).catch(e=>console.log(e));
     }
+    const resetInputField = () => {
+        setMaintenance("");
+    };
     //run once
     useEffect(async ()=>{
         await getMaintenanceFromDb();
@@ -131,10 +134,10 @@ export default function AddMaintenance(){
 
                         <div className="container row mx-auto">
                             <div className="col-md-6">
-                                <button type="submit" name="save" onClick={()=>saveMaintenanceToDb()} className="btn btn-success btn-block">Save</button>
+                                <button type="submit" name="save" onClick={()=>saveMaintenanceToDb() } className="btn btn-success btn-block">Save</button>
                             </div>
                             <div className="col-md-6">
-                                <button type="submit" name="clear" className="btn btn-outline-danger btn-block">Clear
+                                <button type="submit" name="clear" onClick={()=>resetInputField()} className="btn btn-outline-danger btn-block">Clear
                                 </button>
                             </div>
                         </div>
