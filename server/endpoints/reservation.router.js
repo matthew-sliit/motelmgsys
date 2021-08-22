@@ -14,31 +14,58 @@ router.post("/", async ctx=>{
     const reservationRaw = ctx.request.body.reservation;
     let reservation = new Reservation();
     reservation.addReservation(reservationRaw);
-    let numOfReservation = 0, roomsTaken = 0;
+    let numOfReservation = 0;
     const dateNow = new Date();
+    let roomsNeeds = reservation.roomCount;
+    let lastReservedRoom = 0;
+    let reservationsOld  =[];
     //get all reservations
     await readAllDocuments(Reservation.COLLECTION_NAME).then(
         function (res){
-            res.map(r=>{
+            res.map((r,index)=>{
+                const checkedOutRooms = r.roomNo.split(",");
+                checkedOutRooms.map(room => {
+                    if(lastReservedRoom<parseInt(room,10||0)) {
+                        lastReservedRoom = parseInt(room,10||0);
+                    }
+                })
                 const checkOutDate = new Date(r.checkOutDate);
-                if(checkOutDate>=dateNow){
-                    //not already checked out then room is reserved
-                    numOfReservation+= (parseInt(r.roomCount,10)||0)
+                if(checkOutDate<dateNow) {
+                    //room now free
+                    reservationsOld.push(...checkedOutRooms);
+                }else{
+                    for(let i=0;i<checkedOutRooms.length;i++){
+                        const indexOfRoom = reservationsOld.indexOf(checkedOutRooms[i]);
+                        if(indexOfRoom>-1){
+                            reservationsOld.splice(indexOfRoom,1);
+                        }
+                    }
                 }
             });
-            numOfReservation++;
         }
     )
-    //require rooms addition to already reserved
-    const requiredMax = numOfReservation + (parseInt(reservation.roomCount,10)||0);
-    //console.log("requiredMax: "+typeof requiredMax);
-    for(let i=numOfReservation;i<requiredMax;i++){
-        if((i+1)===requiredMax){
-            reservation.roomNo+=""+i;
-        }else{
-            reservation.roomNo+=""+i+",";
+    //have rooms that are checked out
+    if(roomsNeeds>0 && reservationsOld.length>0){
+        for(let i=0;i<reservationsOld.length && roomsNeeds>0;i++){
+            if((i+1)>=roomsNeeds){
+                reservation.roomNo +=""+reservationsOld[i];
+            }else{
+                reservation.roomNo +=""+reservationsOld[i]+",";
+            }
+            roomsNeeds--;
         }
     }
+    //no checked out rooms
+    if(roomsNeeds>0){
+        for(let i=1;i<=roomsNeeds;i++){
+            if(i>=roomsNeeds){
+                reservation.roomNo +=""+(i+lastReservedRoom);
+            }else{
+                reservation.roomNo +=""+(i+lastReservedRoom)+",";
+            }
+        }
+    }
+    //console.log("requiredMax: "+typeof requiredMax);
     //console.log("numOfReservations :"+reservation.roomNo);
     saveDocument(Reservation.COLLECTION_NAME,[reservation.getReservation()]);
     ctx.response.set('content-type','application/json');
