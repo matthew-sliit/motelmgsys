@@ -15,12 +15,21 @@ router.post("/", async ctx=>{
     let reservation = new Reservation();
     reservation.addReservation(reservationRaw);
     let numOfReservation = 0, roomsTaken = 0;
+    const dateNow = new Date();
+    //get all reservations
     await readAllDocuments(Reservation.COLLECTION_NAME).then(
         function (res){
-            res.map(r=>{numOfReservation+= (parseInt(r.roomCount,10)||0)});
+            res.map(r=>{
+                const checkOutDate = new Date(r.checkOutDate);
+                if(checkOutDate>=dateNow){
+                    //not already checked out then room is reserved
+                    numOfReservation+= (parseInt(r.roomCount,10)||0)
+                }
+            });
             numOfReservation++;
         }
     )
+    //require rooms addition to already reserved
     const requiredMax = numOfReservation + (parseInt(reservation.roomCount,10)||0);
     //console.log("requiredMax: "+typeof requiredMax);
     for(let i=numOfReservation;i<requiredMax;i++){
@@ -30,7 +39,6 @@ router.post("/", async ctx=>{
             reservation.roomNo+=""+i+",";
         }
     }
-    const rooms = reservation.roomNo;
     //console.log("numOfReservations :"+reservation.roomNo);
     saveDocument(Reservation.COLLECTION_NAME,[reservation.getReservation()]);
     ctx.response.set('content-type','application/json');
