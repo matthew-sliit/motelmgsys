@@ -4,26 +4,62 @@ import "../../assets/images/favicon.ico";
 import "../../assets/fonts/fontawesome/css/fontawesome-all.min.css";
 import "../../assets/plugins/animation/css/animate.min.css";
 import "../../assets/css/style.css";
+import "bootstrap"
 import getProxy from "../../proxyConfig";
 export default function HDashboard() {
     let [housekeeping, setHousekeeping] = useState([]);
+    let [housekeepingList, setHousekeepingList] = useState([]);
+
+    const searchall = () => {
+        const roomNo = document.getElementById("roomNo").value;
+        const assignedLike = document.getElementById("assignedTo").value.toLowerCase();
+        const status = document.getElementById("status").value;
+        const priority = document.getElementById("priority").value;
+        if(roomNo.length < 1 && assignedLike.length < 1 && status=="any" && priority=="any"){
+            setHousekeeping(housekeepingList);
+        }
+        else if(assignedLike.length < 1){
+            setHousekeeping(housekeepingList);
+        }
+        else if(status=="any"){
+            setHousekeeping(housekeepingList);
+        }
+        else if(priority=="any"){
+            setHousekeeping(housekeepingList);
+        }
+    }
 
     const searchHousekeeping = () =>{
-        const nameLike = document.getElementById("email").value;
-        const recruitmentsListOriginal = [...housekeeping];
+        const roomNo = document.getElementById("roomNo").value;
+        const assignedLike = document.getElementById("assignedTo").value.toLowerCase();
+        const status = document.getElementById("status").value;
+        const priority = document.getElementById("priority").value;
+        const recruitmentsListOriginal = [...housekeepingList];
         let pushed, suggestRecruitments = [];
         pushed = false;
-        //console.log("n: "+nameLike+" r:"+reference+" r:"+role);
+        //console.log("n: "+roomNo+" r:"+reference+" r:"+role);
         recruitmentsListOriginal.map(recruitment=>{
             //profile = new Profile();
-            console.log(recruitment.email);
+            console.log(recruitment.roomNo);
             //Object.assign(profile,recruitment);
-            if(nameLike.length>0 && nameLike!=="all" && recruitment.email.includes(nameLike)){
+            if(roomNo.length>0 && roomNo!=="any" && recruitment.roomNo.includes(roomNo)){
+                pushed = true;
+                suggestRecruitments.push(recruitment);
+            }
+            else if(assignedLike.length>0 && assignedLike!=="any" && recruitment.assignedTo.toLowerCase().includes(assignedLike)){
+                pushed = true;
+                suggestRecruitments.push(recruitment);
+            }
+            else if(status.length>0 && status!=="any" && recruitment.status.includes(status)){
+                pushed = true;
+                suggestRecruitments.push(recruitment);
+            }
+            else if(priority.length>0 && priority!=="any" && recruitment.priority.includes(priority)){
                 pushed = true;
                 suggestRecruitments.push(recruitment);
             }
         });
-        console.log(nameLike);
+        console.log(roomNo);
         if(pushed){
             setHousekeeping(suggestRecruitments);
 
@@ -39,9 +75,11 @@ export default function HDashboard() {
             method: "get"
         }).then(r => r.json()).then(d => {
             setHousekeeping(d);
+            setHousekeepingList(d);
             console.log(JSON.stringify(d));
         }).catch(e => console.log(e));
     }, []);
+
     return <div>
         <div id="colorlib-main">
             <section className="ftco-section pt-4 mb-5 ftco-intro">
@@ -63,27 +101,34 @@ export default function HDashboard() {
                             <div className="card-body">
                                 <div className="row">
                                     <div className="col-md-2">
-                                        <input type="text" className="form-control" id={"roomNo"} placeholder="Room No"/>
+                                        <label>Room No</label>
+                                        <input type="text" className="form-control" onChange={()=>searchall()} id={"roomNo"} placeholder="Room No"/>
                                     </div>
                                     <div className="col-md-4">
-                                        <input type="text" className="form-control" id={"assignedTo"} placeholder="Assigned to"/>
+                                        <label>Housekeeper</label>
+                                        <input type="text" className="form-control" onChange={()=>searchall()} id={"assignedTo"} placeholder="Housekeeper"/>
                                     </div>
-                                    <div className="col-md-2">
-                                        <select className="form-control" id={"status"}>
+                                    <div className="col-md-2" >
+                                        <label>Status</label>
+                                        <select className="form-control" onChange={()=>searchall()} id={"status"}>
+                                            <option>any</option>
                                             <option>Dirty</option>
                                             <option>Cleaning</option>
                                             <option>Clean</option>
                                         </select>
                                     </div>
                                     <div className="col-md-2">
-                                        <select className="form-control" id={"priority"}>
+                                        <label>Priority</label>
+                                        <select className="form-control" onChange={()=>searchall()} id={"priority"}>
+                                            <option>any</option>
                                             <option>High</option>
                                             <option>Normal</option>
                                             <option>Low</option>
                                         </select>
                                     </div>
                                     <div className="col-md-2">
-                                        <button type="button" name="search" className="btn btn-primary">Search</button>
+                                        <div className={"mb-4"}></div>
+                                        <button type="button" onClick={()=> searchHousekeeping()} name="search" className="btn btn-primary">Search</button>
                                     </div>
                                 </div>
                             </div>
@@ -105,7 +150,7 @@ export default function HDashboard() {
                             {housekeeping.map(clean => {
                                 return <tr>
                                     <td>{clean.roomNo}</td>
-                                    <td>{clean.status}</td>
+                                    <td><h5><span className={clean.status==="Clean"?"badge badge-pill bg-success":(clean.status==="Cleaning"?"badge badge-pill bg-primary":"badge badge-pill bg-danger")}>{clean.status}</span></h5></td>
                                     <td>{clean.date}</td>
                                     <td>{clean.assignedTo}</td>
                                     <td>{clean.priority}</td>
@@ -118,7 +163,7 @@ export default function HDashboard() {
                                         </button>
                                     </td>
                                 </tr>
-                            })}
+                            },)}
 
                             </tbody>
                         </table>

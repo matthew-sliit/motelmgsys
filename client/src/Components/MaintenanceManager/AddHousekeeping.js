@@ -27,6 +27,11 @@ export default function AddHousekeeping(){
             method:'get'
         }).then(r=>r.json()).then(d=>setHousekeeping(d)).catch(e=>console.log(e));
     }
+
+    const resetInputField = () => {
+        setHousekeeping("");
+    };
+
     //run once
     useEffect(async ()=>{
         await getHousekeepingFromDb();
@@ -117,7 +122,7 @@ export default function AddHousekeeping(){
                                 <button type="submit" name="save" onClick={()=>saveHousekeepingToDb()} className="btn btn-success btn-block">Save</button>
                             </div>
                             <div className="col-md-6">
-                                <button type="submit" name="clear" className="btn btn-outline-danger btn-block">Clear
+                                <button type="submit" name="clear" onClick={()=>resetInputField()} className="btn btn-outline-danger btn-block">Clear
                                 </button>
                             </div>
                         </div>

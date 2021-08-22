@@ -14,15 +14,21 @@ export default function MMDashboard(){
         setComponentMounted(true);
     },[])
     //after component mount
-    useEffect(   ()=>{
-        if(afterComponentMounted) {
-            console.log(JSON.stringify(housekeeping));
+    useEffect(   ()=> {
+        if (afterComponentMounted) {
             let dirty = 0, cleaning = 0, clean = 0;
-            housekeeping.map(h => {
-                console.log(JSON.stringify(h));
-                (h.status === "Dirty" ? dirty++ : h.status === "Cleaning" ? cleaning++ : h.status === "Clean" ? clean++ : "")
+            housekeeping.map(h=>{
+                //console.log(JSON.stringify(h));
+                (h.status=="Dirty"?dirty++:h.status=="Cleaning"?cleaning++:h.status=="Clean"?clean++:"")
             })
+            let open = 0, completed = 0;
+            maintenance.map(h=>{
+                //console.log(JSON.stringify(h));
+                (h.status=="Open"?open++:h.status=="Completed"?completed++:"")
+            });
             const housekeepingCountMax = housekeeping.length;
+            const maintenanceCountMax = maintenance.length;
+            console.log(housekeepingCountMax);
             let chart = new SemiCircleChart();
             chart.setFillColor("green");
             chart.setFillerMillis(30);
@@ -33,12 +39,15 @@ export default function MMDashboard(){
             let chart1angle = getAngle(dirty, housekeepingCountMax);
             let chart2angle = getAngle(cleaning, housekeepingCountMax);
             let chart3angle = getAngle(clean, housekeepingCountMax);
+            let chart4angle = getAngle(open, maintenanceCountMax);
+            let chart5angle = getAngle(completed, maintenanceCountMax);
             //draw chart
-            chart.draw(chart1angle, "Dirty", "" + dirty, "ws-chart");
-            chart.draw(chart2angle, "Cleaning", "" + cleaning, "rooms-reserved");
-            chart.draw(chart3angle, "Cleaned", "" + clean, "housekeeping-task-remain");
-            chart.draw(chart2angle, "Maintenance todo", "10", "maintenance-task-remain");
-        }
+            chart.draw(chart1angle, "Dirty", "" + dirty, "dirty-chart");
+            chart.draw(chart2angle, "Cleaning", "" + cleaning, "cleaning-chart");
+            chart.draw(chart3angle, "Clean", "" + clean, "clean-chart");
+            chart.draw(chart4angle, "Open", "" + open, "open-chart");
+            chart.draw(chart5angle, "Completed", "" + completed, "completed-chart");
+      }
     },[afterComponentMounted]);
     async function getReservations(){
         await fetch(getProxy("/reservation"),{
@@ -53,23 +62,28 @@ export default function MMDashboard(){
     }
     if(!afterComponentMounted){return <div></div>}
     return <div>
-        <h3 style={{color: "#0c5460"}}>Maintenance Dashboard</h3>
+        <h3 className={"mb-3"} style={{color: "#0c5460"}}>Maintenance Dashboard</h3>
+        <h4>Housekeeping Status</h4>
         <div style={{display: "table-cell"}}>
-            <div id="ws-chart"></div>
+            <div id="dirty-chart"></div>
         </div>
         <div style={{display: "table-cell"}}>
-            <div id="rooms-reserved" style={{position: "relative", left: "20px"}}></div>
+            <div id="cleaning-chart" style={{position: "relative"}}></div>
         </div>
         <div style={{display: "table-cell"}}>
-            <div id="rooms-reserved" style={{position: "relative", left: "20px"}}></div>
+            <div id="clean-chart" style={{position: "relative"}}></div>
         </div>
-        <div style={{display: "table-cell"}}>
-            <div id="housekeeping-task-remain" style={{position: "relative", left: "40px"}}></div>
+        <div style={{marginTop:"-80px"}}>
+            <h4>Maintenance Status</h4>
+            <div style={{display: "table-cell"}}>
+                <div id="open-chart"></div>
+            </div>
+            <div style={{display: "table-cell"}}>
+                <div id="completed-chart" style={{position: "relative", left: "40px"}}></div>
+            </div>
         </div>
-        <div style={{display: "table-cell"}}>
-            <div id="maintenance-task-remain" style={{position: "relative", left: "60px"}}></div>
-        </div>
-        <h4 style={{color: "#0c5460"}}>Housekeeping Tasks</h4>
+        <div style={{marginTop:"-80px"}}>
+        <h4 style={{color: "#0c5460"}}>Reservation Details</h4>
         <table className={"table w-75"}>
             <thead className="thead-dark">
             <tr>
@@ -93,5 +107,6 @@ export default function MMDashboard(){
             })}
             </tbody>
         </table>
+        </div>
     </div>;
 }
