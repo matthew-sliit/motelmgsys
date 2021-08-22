@@ -7,36 +7,39 @@ export default function MMDashboard(){
     let [reservation, setreservation] = useState([]);
     let [housekeeping, setHousekeeping] = useState([]);
     let [maintenance, setMaintenance] = useState([]);
-
-
-    //component did mount
-    useEffect(  async ()=>{
+    let [afterComponentMounted, setComponentMounted] = useState(false);
+    //on component mount
+    useEffect(async ()=>{
         await getReservations();
-        let dirty = 0, cleaning = 0, clean = 0;
-        housekeeping.map(h=>{
-            console.log(JSON.stringify());
-            (h.status=="Dirty"?dirty++:h.status==="Cleaning"?cleaning++:h.status==="Clean"?clean++:"")
-        })
-        console.log(dirty);
-        const housekeepingCountMax = housekeeping.length;
-        console.log(housekeepingCountMax);
-        let chart = new SemiCircleChart();
-        chart.setFillColor("green");
-        chart.setFillerMillis(30);
-        chart.setBorderColor("#D6EAF8");
-        chart.setExternalBackgroundColor("#f4f7fa");
-        chart.setTriColor("#5DADE2","#F5B041","#EC7063");
-        //angles in between 0 to 180 for given value and max value
-        let chart1angle = getAngle(dirty,housekeepingCountMax);
-        let chart2angle = getAngle(cleaning,housekeepingCountMax);
-        let chart3angle = getAngle(clean,housekeepingCountMax);
-        //draw chart
-        chart.draw(chart1angle,"Dirty",""+dirty,"ws-chart");
-        chart.draw(chart2angle,"Rooms Reserved",""+cleaning,"rooms-reserved");
-        chart.draw(chart2angle,"Housekeeping todo",""+cleaning,"housekeeping-task-remain");
-        chart.draw(chart2angle,"Maintenance todo","10","maintenance-task-remain");
-
-    },[]);
+        setComponentMounted(true);
+    },[])
+    //after component mount
+    useEffect(   ()=>{
+        if(afterComponentMounted) {
+            console.log(JSON.stringify(housekeeping));
+            let dirty = 0, cleaning = 0, clean = 0;
+            housekeeping.map(h => {
+                console.log(JSON.stringify(h));
+                (h.status === "Dirty" ? dirty++ : h.status === "Cleaning" ? cleaning++ : h.status === "Clean" ? clean++ : "")
+            })
+            const housekeepingCountMax = housekeeping.length;
+            let chart = new SemiCircleChart();
+            chart.setFillColor("green");
+            chart.setFillerMillis(30);
+            chart.setBorderColor("#D6EAF8");
+            chart.setExternalBackgroundColor("#f4f7fa");
+            chart.setTriColor("#5DADE2", "#F5B041", "#EC7063");
+            //angles in between 0 to 180 for given value and max value
+            let chart1angle = getAngle(dirty, housekeepingCountMax);
+            let chart2angle = getAngle(cleaning, housekeepingCountMax);
+            let chart3angle = getAngle(clean, housekeepingCountMax);
+            //draw chart
+            chart.draw(chart1angle, "Dirty", "" + dirty, "ws-chart");
+            chart.draw(chart2angle, "Cleaning", "" + cleaning, "rooms-reserved");
+            chart.draw(chart3angle, "Cleaned", "" + clean, "housekeeping-task-remain");
+            chart.draw(chart2angle, "Maintenance todo", "10", "maintenance-task-remain");
+        }
+    },[afterComponentMounted]);
     async function getReservations(){
         await fetch(getProxy("/reservation"),{
             method:"get"
@@ -48,7 +51,7 @@ export default function MMDashboard(){
             method:"get"
         }).then(r=>r.json()).then(d=>{setMaintenance(d);}).catch(e=>console.log(e));
     }
-
+    if(!afterComponentMounted){return <div></div>}
     return <div>
         <h3 style={{color: "#0c5460"}}>Maintenance Dashboard</h3>
         <div style={{display: "table-cell"}}>
