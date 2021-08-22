@@ -2,10 +2,10 @@ import NavigationModel from "../../models/NavigationModel";
 export default function BarNavigations(){
     let navigations = new NavigationModel();
     navigations.addSection("NAVIGATIONS");
-    navigations.addNavigationWitIcon("NAVIGATIONS","Hello","/bar","icon-home");
+    navigations.addNavigationWitIcon("NAVIGATIONS","Drinks Menu","/bar/menu","icon-home");
     navigations.addNavigationWitIcon("NAVIGATIONS","Add New Drink","/bar/new","icon-file-text");
-    navigations.addNavigationWitIcon("NAVIGATIONS","ABC","/bar", "icon-server");
-    navigations.addNavigationWitIcon("NAVIGATIONS","DEF","/bar","icon-file-text");
+    navigations.addNavigationWitIcon("NAVIGATIONS","Edit Drink","/bar/edit", "icon-server");
+    navigations.addNavigationWitIcon("NAVIGATIONS","Search","/bar","icon-file-text");
     //navigations.addSection("Account");
     //navigations.addNavigationWitIcon("Account","Profile","/","icon-sidebar");
     //navigations.addNavigationWitIcon("Account","Logout","/","icon-power");

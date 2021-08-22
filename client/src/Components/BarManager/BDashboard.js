@@ -8,7 +8,45 @@ import getProxy from "../../proxyConfig";
 export default function BDashboard(){
 
     let [drinks, setDrink] = useState([]);
+    let [drinkList, setList] = useState([]);
 
+
+    const searchall = () => {
+        const nameLike = document.getElementById("name").value;
+        if(nameLike.length < 1){
+            setDrink(drinkList);
+        }
+    }
+    const searchDrinks = () =>{
+        const nameLike = document.getElementById("name").value;
+        const drinkListOriginal = [...drinkList];
+        let pushed, suggestDrinks = [];
+        pushed = false;
+        //console.log("n: "+nameLike+" r:"+reference+" r:"+role);
+        drinkListOriginal.map(drinks=>{
+            //profile = new Profile();
+            console.log(drinks.name);
+            //Object.assign(profile,recruitment);
+            if(nameLike.length>0 && nameLike!=="all" && drinks.name.includes(nameLike)){
+                pushed = true;
+                suggestDrinks.push(drinks);
+            }
+        });
+        console.log(nameLike);
+        if(pushed){
+            setDrink(suggestDrinks);
+
+        }else{
+            //console.log("setting suggest!");
+            setDrink(drinkListOriginal);
+
+        }
+    }
+    useEffect(async ()=>{
+        await fetch(getProxy("/bar"),{
+            method:"get"
+        }).then(r=>r.json()).then(d=>{setDrink(d);setList(d);console.log(JSON.stringify(d));}).catch(e=>console.log(e));
+    },[]);
 
     useEffect(async ()=>{
         await fetch(getProxy("/bar"),{
@@ -25,9 +63,7 @@ export default function BDashboard(){
 
                     <h3 style={{color: "#0c5460"}}>Modify the Drinks</h3>
                     <div className="row mt-3 mb-3">
-                        <div className="col-md-2">
-                            <button type="button" className="btn btn-success"><i className="fas fa-plus-circle"></i>Add a Drink</button>
-                        </div> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
                         <div className="col-md-2">
                             <button type="button" className="btn btn-info" ><i className="far fa-file-alt"></i>Generate Report</button>
                         </div>
@@ -36,15 +72,13 @@ export default function BDashboard(){
                         <div className="card w-75">
                             <div className="card-body">
                                 <div className="row">
-                                    <div className="col-md-2">
-                                        <input width="10px" type="text" className="form-control" placeholder="ID"/>
-                                    </div>
+
                                     <div className="col-md-3">
-                                        <input type="text" className="form-control" placeholder="Drink Name" />
+                                        <input type="text" className="form-control" type={"text"}  placeholder={"all"} onChange={()=>searchall()}  id={"name"}/>
                                     </div>
 
                                     <div className="col-md-2">
-                                        <button type="button" name="search" className="btn btn-primary" >Search</button>
+                                        <button type="button" name="search" className="btn btn-primary" onClick={()=>searchDrinks()}>Search</button>
                                     </div>
                                 </div>
                             </div>
@@ -58,7 +92,7 @@ export default function BDashboard(){
                                 <th scope="col">Drink ID</th>
                                 <th scope="col">Drink Name</th>
                                 <th scope="col">Alcohol Percentage</th>
-                                <th scope="col">Image</th>
+
                                 <th scope="col">Ingredients</th>
                                 <th scope="col">Actions</th>
                             </tr>
@@ -70,13 +104,8 @@ export default function BDashboard(){
                                     <th scope="row">1</th>
                                     <td>{drink.name}</td>
                                     <td>{drink.percentage}</td>
-                                    <td>@mdo</td>
-                                    <td>2 lime wedges, for rimming glasses and garnish<br/>
-                                        1/4 c. kosher salt or coarse sea salt, for rimming glassis<br/>
-                                        4 oz. tequila<br/>
-                                        2 oz. triple sec<br/>
-                                        1 1/2 oz. freshly squeezed lime juice and Ice
-                                    </td>
+                                    <td >{drink.description}</td>
+
                                     <td colSpan="2">
                                         <button name="edit" className="btn btn-info px-3">
                                             <center><i className="fa fa-edit"></i></center>

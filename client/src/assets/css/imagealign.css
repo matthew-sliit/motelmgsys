@@ -1,0 +1,16 @@
+* {
+    box-sizing: border-box;
+}
+
+.columnn {
+    float: left;
+    width: 33.33%;
+    padding: 5px;
+}
+
+/* Clearfix (clear floats) */
+.roww::after {
+    content: "";
+    clear: both;
+    display: table;
+}
