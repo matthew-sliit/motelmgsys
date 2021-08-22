@@ -54,7 +54,7 @@ export default function RegisterLayout(props){
             //profile change password
             const newpassword = document.getElementById('user-new-password').value;
             const passwordIsValid = editedProfile.isPasswordValid(newpassword);
-            if(passwordIsValid){
+            if(passwordIsValid===true){
                 passwordErrorMSgSpan.innerText = "";
                 editedProfile.setNewPassword(newpassword);
             }else{
@@ -64,7 +64,7 @@ export default function RegisterLayout(props){
         }else {
             //register form password
             const passwordIsValid = editedProfile.isPasswordValid(password);
-            if (passwordIsValid === true) {
+            if (passwordIsValid===true) {
                 passwordErrorMSgSpan.innerText = "";
                 editedProfile.setPassword(password);
             } else {
@@ -119,13 +119,14 @@ export default function RegisterLayout(props){
             <p/>
             {!register?<div className="form-group mb-2">
                 <label>Change Password</label>
-                <span id={"password-error"}><br/></span>
+                <span id={"password-error"}></span>
+                <span><br/>Password must have more than 6 characters, at least 1 number and 1 symbol</span>
                 <input type="password" className="form-control" placeholder="New Password" id={"user-new-password"}/>
             </div>:""}
 
             <div className="form-group mb-2">
                 <label>{prefix==="Enter "?prefix:"Confirm "}Password</label>
-                <span><br/>Password must have more than 6 characters, at least 1 number and 1 symbol</span>
+                {register?<span><br/>Password must have more than 6 characters, at least 1 number and 1 symbol</span>:""}
                 <br/>
                 <span style={{color:"#CD6155"}} id={"password-error"}></span>
                 <input type="password" className="form-control" placeholder="Password" id={"user-password"}/>
