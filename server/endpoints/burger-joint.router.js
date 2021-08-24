@@ -28,7 +28,7 @@ router.get("/:id",async ctx=>{
     )
 })
 router.post("/", async ctx=>{
-    const burgerDetails = ctx.request.body.drink;
+    const burgerDetails = ctx.request.body.burger;
     let burgerJoint = new BurgerJoint(), exists = false;
     Object.assign(burgerJoint,burgerDetails);
     ctx.response.set('content-type','application/json');
@@ -48,7 +48,7 @@ router.post("/", async ctx=>{
 
 router.put("/:id", async ctx=>{
     const id = ctx.request.params.id;
-    const burgerDetails = ctx.request.body.drink;
+    const burgerDetails = ctx.request.body.burger;
     const mongoId = new mongo.ObjectId(id);
     ctx.response.set('content-type','application/json');
     let burger = new BurgerJoint();

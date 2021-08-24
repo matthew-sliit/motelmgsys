@@ -12,6 +12,7 @@ const BarManagementEndpoint = require("./endpoints/bar-management.router").BarMa
 const ReservationEndpoint = require('./endpoints/reservation.router').ReservationEndpoint;
 const HousekeepingEndpoint = require('./endpoints/housekeeping.router').HousekeepingEndpoint;
 const MaintenanceEndpoint = require('./endpoints/maintenance.router').MaintenanceEndpoint;
+const BurgerJointEndPoint = require('./endpoints/burger-joint.router').BurgerJointEndPoint;
 //server usable
 server.use(cors('Access-Control-Allow-Origin'));
 server.use(bodyparser())
@@ -23,6 +24,7 @@ server.use(bodyparser())
     .use(ReservationEndpoint.routes()).use(ReservationEndpoint.allowedMethods())
     .use(HousekeepingEndpoint.routes()).use(HousekeepingEndpoint.allowedMethods())
     .use(MaintenanceEndpoint.routes()).use(MaintenanceEndpoint.allowedMethods())
+    .use(BurgerJointEndPoint.routes()).use(BurgerJointEndPoint.allowedMethods())
     .use(context=>{
     //where the request is to an invalid endpoint
     context.body="Access Denied!";
