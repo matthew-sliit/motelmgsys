@@ -31,6 +31,13 @@ import AddHousekeeping from "./Components/MaintenanceManager/AddHousekeeping";
 import AddMaintenance from "./Components/MaintenanceManager/AddMaintenance";
 import EditMaintenance from "./Components/MaintenanceManager/EditMaintenance";
 import EditHousekeeping from "./Components/MaintenanceManager/EditHousekeeping";
+import AddBurger from "./Components/BurgerJoint/AddBurger";
+import BJNavigations from "./Components/BurgerJoint/BJNavigation";
+import BJDashboard from "./Components/BurgerJoint/BJDashboard";
+import EditBurger from "./Components/BurgerJoint/EditBurger";
+import BurgerMenu from "./Components/BurgerJoint/BurgerMenu";
+
+
 function App() {
     const role = Cookie.get('role');
     const profileNavigations = AdminNavigations();
@@ -97,6 +104,23 @@ function App() {
             <Route exact path={"/bar/edit"}>
             <UserNavigationFormat navigations={BarNavigations()} content={<EditDrink/>} type={"Bar Manager"}/>
         </Route>
+
+            {/* =================== BURGER JOINT =====================*/}
+            <Route exact path={"/joint"}>
+                <UserNavigationFormat navigations={BJNavigations()} content={<BJDashboard/>} type={"Burger Joint"}/>
+            </Route>
+            <Route exact path={"/joint/new"}>
+                <UserNavigationFormat navigations={BJNavigations()} content={<AddBurger/>} type={"Burger Joint"}/>
+            </Route>
+            <Route exact path={"/joint/menu"}>
+                <UserNavigationFormat navigations={BJNavigations()} content={<BurgerMenu/>} type={"Burger Joint"}/>
+            </Route>
+            <Route exact path={"/joint/edit"}>
+                <UserNavigationFormat navigations={BJNavigations()} content={<EditBurger/>} type={"Burger Joint"}/>
+            </Route>
+
+
+
             <Route exact path={"/user"}>
                 <UserPageLayout/>
             </Route>
@@ -114,6 +138,8 @@ function App() {
                 <button className={"btn btn-outline-primary mt-1"} onClick={()=>window.location.href="/maintainer"}>Maintenance Manager</button>
                 <br/>
                 <button className={"btn btn-outline-primary mt-1"} onClick={()=>window.location.href="/bar"}>Bar Manager</button>
+                <br/>
+                <button className={"btn btn-outline-primary mt-1"} onClick={()=>window.location.href="/joint"}>Burger Joint</button>
                 <br/>
                 <button className={"btn btn-outline-primary mt-1"} onClick={()=>window.location.href="http://localhost:3000/motelhome/index.html"}>Home</button>
             </Route>
