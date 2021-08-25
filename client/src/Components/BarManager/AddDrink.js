@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from "react";
 import getProxy from "../../proxyConfig";
 import File2base64 from "../../assets/js/file2base64";
-
+import PopupSuccess from "../PopupSuccess";
 import 'bootstrap'
 export default function AddDrink(){
     //state
     let [drinks, setDrinks] = useState([]);
+    let [popup, togglePopup] = useState(null);
     //post
     const saveDrinkToDb = async ()=>{
         const name = document.getElementById("name").value;
@@ -14,11 +15,15 @@ export default function AddDrink(){
         const imageFile = document.getElementById("image").files[0];
         const imageBase64 = await File2base64.getFile2Base64(imageFile);
         console.log(JSON.stringify(imageBase64));
+        //will return success
         await fetch(getProxy("/bar"), {
             method: 'post',
             headers: {'Content-Type':'application/json'},
             body: JSON.stringify({"drink":{"name":name,"percentage":percentage,"description":description,"image":imageBase64}})
-        }).then(r=>r.text()).then(d=>console.log(d)).catch(e=>console.log(e));
+        })//.then(r=>r.text()).then(d=>console.log(d)).catch(e=>console.log(e));
+            .then(r=>r.text()).then(d=> {
+                togglePopup(<PopupSuccess body={<span>Successfully Added the Drink!</span>} heading={"Add Drink"} hidePopupFunction={togglePopup}/>)
+            }).catch(e=>console.log(e));
         //re render this page
         await getDrinksFromDb();
     }
@@ -35,6 +40,7 @@ export default function AddDrink(){
     },[])
     //render
     return <div style={{position:"relative"}}>
+        {popup}
         <h3 style={{color:"inherit"}}>Add new Drink</h3>
         <div className="form-group mb-2">
             <label>Enter Name</label>
