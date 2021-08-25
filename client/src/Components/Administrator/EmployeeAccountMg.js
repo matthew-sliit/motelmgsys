@@ -1,17 +1,14 @@
 import React, {useEffect, useState} from "react";
 import Profile from "../../models/Profile";
+import AccountPasswordResetPopup from "./AccountPasswordResetPopup";
 import getProxy from "../../proxyConfig";
-//forceUpdate hook
-function useForceUpdate(){
-    const [value, setValue] = useState(0); // integer state
-    return () => setValue(value => value + 1); // update the state to force render
-}
 
 export default function EmployeeAccountMg(){
     let [profiles, setProfiles] = useState([]);
     let [profileList, setList] = useState([]);
     let [newPassword, setNewPassword] = useState(null);
     let [errorMsg, setErrorMsg] = useState(null);
+    let [popup, togglePopup] = useState(false);
     //component did mount
     useEffect(async ()=>{
         //get records from server database
@@ -37,7 +34,7 @@ export default function EmployeeAccountMg(){
         });
     }
     const onClickResetUserPassword = async (index) =>{
-        //tell server to remove
+        //tell server to reset profile password
         const profile = profiles[index];
         await fetch(getProxy("/login/reset/"),{
             method:"post",
@@ -47,18 +44,23 @@ export default function EmployeeAccountMg(){
             if(d.length>8){
                 const server_response = d.split(":");
                 if(server_response[0]==="success"){
-                    setNewPassword("For "+profile.nic +" is " +server_response[1]);
+                    //setNewPassword("For "+profile.nic +" is " +server_response[1]);
+                    togglePopup(<AccountPasswordResetPopup profileData={profile} newPassword={server_response[1]} hidePopupFunction={hidePopup}/>);
                     setErrorMsg(null);
                 }else if(server_response[0]==="error"){
+                    togglePopup(false);
                     setErrorMsg(server_response[1]);
-                    setNewPassword(null);
+                    //setNewPassword(null);
                 }
                 console.log("newPassword: "+server_response[1]);
             }
         }).catch(e=>console.log(e));
     }
-    const searchRecruitments = () =>{
-        const nameLike = document.getElementById("user-fullname").value;
+    function hidePopup(){
+        togglePopup(false);
+    }
+    const searchProfiles = () =>{
+        const nameLike = document.getElementById("user-fullname").value.toLowerCase();
         const reference = document.getElementById("user-reference").value;
         const role = document.getElementById("user-role").value;
         const recruitmentsListOriginal = [...profileList];
@@ -69,12 +71,12 @@ export default function EmployeeAccountMg(){
             //profile = new Profile();
             pushed = false;
             //Object.assign(profile,recruitment);
-            if(nameLike.length>0 && recruitment.fullname.includes(nameLike)){
+            if(nameLike.length>0 && recruitment.fullname.toLowerCase().includes(nameLike)){
                 name=true;
                 pushed = true;
                 suggestRecruitments.push(recruitment);
             }
-            if(reference.length>0 && recruitment.nic===reference){
+            if(reference.length>0 && recruitment.nic.includes(reference)){
                 referenceno=true;
                 if(!pushed){
                     suggestRecruitments.push(recruitment);
@@ -115,33 +117,35 @@ export default function EmployeeAccountMg(){
         }
         buttons.push(<button className={"btn btn-warning mx-1"} onClick={()=>onClickResetUserPassword(index)}>Password Reset</button>);
         return <tr>
-            <td>{index+1}</td>
-            <td>{profile.fullname}</td>
-            <td>{profile.nic}</td>
-            <td>{profile.contact}</td>
-            <td>{profile.email}</td>
-            <td>{profile.address}</td>
-            <td>{profile.role}</td>
+            <td><div style={{width:"10px"}}>{index+1}</div></td>
+            <td><div style={{width:"130px", whiteSpace:"pre-wrap"}}>{profile.fullname}</div></td>
+            <td><div style={{width:"100px", whiteSpace:"pre-wrap"}}>{profile.nic}</div></td>
+            <td><div style={{width:"150px", whiteSpace:"pre-wrap"}}>{profile.contact}</div></td>
+            <td><div style={{width:"180px", whiteSpace:"pre-wrap"}}>{profile.email}</div></td>
+            <td><div style={{width:"200px", whiteSpace:"pre-wrap"}}>{profile.address}</div></td>
+            <td><div style={{width:"130px", whiteSpace:"pre-wrap"}}>{profile.role}</div></td>
             {index>=0?<td>
-                {buttons}
+                <div style={{width:"210px"}}>{buttons}</div>
             </td>:<td>q</td>}
 
         </tr>;
     }
+
     return <div style={{position:"relative"}}>
+        {popup!==false?popup:""}
         <h4 style={{fontfamily:"fontawesome", color:"#566573"}}>Employee Account Management</h4>
         <p/>
         <div style={{display:"table-cell", padding:"6px", border:"1px solid #7DCEA0"}}>
             <label>Name</label>
-            <input type={"text"} className={"mx-1"} id={"user-fullname"}/>
+            <input type={"text"} className={"mx-1"} id={"user-fullname"} placeholder={"John"} onChange={()=>searchProfiles()}/>
             <label>Nic</label>
-            <input type={"text"} className={"mx-1"} id={"user-reference"}/>
+            <input type={"text"} className={"mx-1"} id={"user-reference"} placeholder={"200025310120"} onChange={()=>searchProfiles()}/>
             <label className={"mx-1"}>Role</label>
-            <select id={"user-role"}>
+            <select id={"user-role"} onChange={()=>searchProfiles()}>
                 <option>any</option>
                 {Profile.getUserRoles().map(role => {return <option>{role}</option>})}
             </select>
-            <button className={"btn btn-green mx-1"} onClick={()=>searchRecruitments()}>Search</button>
+            <button className={"btn btn-green mx-1"} onClick={()=>searchProfiles()}>Search</button>
         </div>
         <div style={{float:"right", marginBottom:"3px"}}>
             <button className={"btn btn-blue"}>Generate Report</button>
@@ -150,16 +154,16 @@ export default function EmployeeAccountMg(){
         <span style={{color:"green"}}>{newPassword!==null?"New Password "+newPassword:""}</span>
         <span style={{color:"red"}}>{errorMsg!==null?errorMsg:""}</span>
         <p/>
-        <table style={{position:"relative"}} className={"table"}>
-            <thead><tr>
-                <th style={{width:"50px"}}>ID</th>
-                <th style={{width:"150px"}}>Name</th>
-                <th style={{width:"100px"}}>Nic</th>
-                <th style={{width:"200px"}}>Contact Number</th>
-                <th style={{width:"200px"}}>Email</th>
-                <th style={{width:"200px"}}>Address</th>
-                <th style={{width:"150px"}}>Role</th>
-                <th style={{width:"200px"}}>Operations</th>
+        <table style={{position:"relative", maxWidth:"100px"}} className={"table"}>
+            <thead><tr style={{textAlign:"center"}}>
+                <th scope="col">ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Nic</th>
+                <th scope="col">Contact Number</th>
+                <th scope="col">Email</th>
+                <th scope="col">Address</th>
+                <th scope="col">Role</th>
+                <th scope="col">Operations</th>
             </tr></thead>
             <tbody>
             {profileList.length<1?<tr key={0}><td colSpan={7} style={{textAlign:"center", fontSize:"20px"}}>No profiles, This is impossible, please contact administrator</td></tr>:""}
