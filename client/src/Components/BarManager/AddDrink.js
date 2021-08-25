@@ -28,6 +28,7 @@ export default function AddDrink(){
             method:'get'
         }).then(r=>r.json()).then(d=>setDrinks(d)).catch(e=>console.log(e));
     }
+
     //run once
     useEffect(async ()=>{
         await getDrinksFromDb();
@@ -61,9 +62,9 @@ export default function AddDrink(){
         <p/>
         <h5 style={{color:"inherit"}}>All Drinks</h5>
         <table className={"table w-75"} style={{position:"relative"}}>
-            <thead><tr>
+            <thead className="thead-dark"><tr>
                 <th style={{width:"100px"}}>Image</th>
-                <th style={{width:"100px"}}>name</th>
+                <th style={{width:"100px"}}>Name</th>
                 <th style={{width:"100px"}}>Percentage</th>
                 <th style={{width:"100px"}}>Description</th>
             </tr></thead>
