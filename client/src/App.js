@@ -65,6 +65,9 @@ function App() {
             <Route exact path={"/admin-recruitments"}>
                 <UserNavigationFormat navigations={AdminNavigations()} content={<EmployeeRecruitment/>} type={"Administrator"}/>
             </Route>
+            <Route exact path={"/admin/view-reserve"}>
+                <UserNavigationFormat navigations={AdminNavigations()} content={<RDashboard/>} type={"Administrator"}/>
+            </Route>
             {/* ============== RESERVATION MANAGER ==================*/}
             <Route exact path={"/reserve"}>
                 <UserNavigationFormat navigations={BarNavigations()} content={<RDashboard/>} type={"Reservation Manager"}/>
@@ -118,12 +121,11 @@ function App() {
             <Route exact path={"/joint/edit"}>
                 <UserNavigationFormat navigations={BJNavigations()} content={<EditBurger/>} type={"Burger Joint"}/>
             </Route>
-
-
-
-            <Route exact path={"/user"}>
-                <UserPageLayout/>
+            {/*
+            <Route exact path={"/"}>
+                <BackendHomeFormat content={<Login/>}/>
             </Route>
+            */}
             <Route exact path={"/"}>
                 <button className={"btn btn-outline-primary mt-3"} onClick={()=>window.location.href="/register"}>register</button>
                 <br/>

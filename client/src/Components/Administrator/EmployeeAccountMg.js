@@ -57,8 +57,8 @@ export default function EmployeeAccountMg(){
             }
         }).catch(e=>console.log(e));
     }
-    const searchRecruitments = () =>{
-        const nameLike = document.getElementById("user-fullname").value;
+    const searchProfiles = () =>{
+        const nameLike = document.getElementById("user-fullname").value.toLowerCase();
         const reference = document.getElementById("user-reference").value;
         const role = document.getElementById("user-role").value;
         const recruitmentsListOriginal = [...profileList];
@@ -69,12 +69,12 @@ export default function EmployeeAccountMg(){
             //profile = new Profile();
             pushed = false;
             //Object.assign(profile,recruitment);
-            if(nameLike.length>0 && recruitment.fullname.includes(nameLike)){
+            if(nameLike.length>0 && recruitment.fullname.toLowerCase().includes(nameLike)){
                 name=true;
                 pushed = true;
                 suggestRecruitments.push(recruitment);
             }
-            if(reference.length>0 && recruitment.nic===reference){
+            if(reference.length>0 && recruitment.nic.includes(reference)){
                 referenceno=true;
                 if(!pushed){
                     suggestRecruitments.push(recruitment);
@@ -115,15 +115,15 @@ export default function EmployeeAccountMg(){
         }
         buttons.push(<button className={"btn btn-warning mx-1"} onClick={()=>onClickResetUserPassword(index)}>Password Reset</button>);
         return <tr>
-            <td>{index+1}</td>
-            <td>{profile.fullname}</td>
-            <td>{profile.nic}</td>
-            <td>{profile.contact}</td>
-            <td>{profile.email}</td>
-            <td>{profile.address}</td>
-            <td>{profile.role}</td>
+            <td><div style={{width:"10px"}}>{index+1}</div></td>
+            <td><div style={{width:"130px", whiteSpace:"pre-wrap"}}>{profile.fullname}</div></td>
+            <td><div style={{width:"100px", whiteSpace:"pre-wrap"}}>{profile.nic}</div></td>
+            <td><div style={{width:"150px", whiteSpace:"pre-wrap"}}>{profile.contact}</div></td>
+            <td><div style={{width:"180px", whiteSpace:"pre-wrap"}}>{profile.email}</div></td>
+            <td><div style={{width:"200px", whiteSpace:"pre-wrap"}}>{profile.address}</div></td>
+            <td><div style={{width:"130px", whiteSpace:"pre-wrap"}}>{profile.role}</div></td>
             {index>=0?<td>
-                {buttons}
+                <div style={{width:"210px"}}>{buttons}</div>
             </td>:<td>q</td>}
 
         </tr>;
@@ -133,15 +133,15 @@ export default function EmployeeAccountMg(){
         <p/>
         <div style={{display:"table-cell", padding:"6px", border:"1px solid #7DCEA0"}}>
             <label>Name</label>
-            <input type={"text"} className={"mx-1"} id={"user-fullname"}/>
+            <input type={"text"} className={"mx-1"} id={"user-fullname"} placeholder={"John"} onChange={()=>searchProfiles()}/>
             <label>Nic</label>
-            <input type={"text"} className={"mx-1"} id={"user-reference"}/>
+            <input type={"text"} className={"mx-1"} id={"user-reference"} placeholder={"200025310120"} onChange={()=>searchProfiles()}/>
             <label className={"mx-1"}>Role</label>
-            <select id={"user-role"}>
+            <select id={"user-role"} onChange={()=>searchProfiles()}>
                 <option>any</option>
                 {Profile.getUserRoles().map(role => {return <option>{role}</option>})}
             </select>
-            <button className={"btn btn-green mx-1"} onClick={()=>searchRecruitments()}>Search</button>
+            <button className={"btn btn-green mx-1"} onClick={()=>searchProfiles()}>Search</button>
         </div>
         <div style={{float:"right", marginBottom:"3px"}}>
             <button className={"btn btn-blue"}>Generate Report</button>
@@ -150,16 +150,16 @@ export default function EmployeeAccountMg(){
         <span style={{color:"green"}}>{newPassword!==null?"New Password "+newPassword:""}</span>
         <span style={{color:"red"}}>{errorMsg!==null?errorMsg:""}</span>
         <p/>
-        <table style={{position:"relative"}} className={"table"}>
-            <thead><tr>
-                <th style={{width:"50px"}}>ID</th>
-                <th style={{width:"150px"}}>Name</th>
-                <th style={{width:"100px"}}>Nic</th>
-                <th style={{width:"200px"}}>Contact Number</th>
-                <th style={{width:"200px"}}>Email</th>
-                <th style={{width:"200px"}}>Address</th>
-                <th style={{width:"150px"}}>Role</th>
-                <th style={{width:"200px"}}>Operations</th>
+        <table style={{position:"relative", maxWidth:"100px"}} className={"table"}>
+            <thead><tr style={{textAlign:"center"}}>
+                <th scope="col">ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Nic</th>
+                <th scope="col">Contact Number</th>
+                <th scope="col">Email</th>
+                <th scope="col">Address</th>
+                <th scope="col">Role</th>
+                <th scope="col">Operations</th>
             </tr></thead>
             <tbody>
             {profileList.length<1?<tr key={0}><td colSpan={7} style={{textAlign:"center", fontSize:"20px"}}>No profiles, This is impossible, please contact administrator</td></tr>:""}
