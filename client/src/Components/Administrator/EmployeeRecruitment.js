@@ -88,17 +88,19 @@ export default function EmployeeRecruitment(){
             Object.assign(profile,profileRecord);
         }
         return <tr>
-            <td>{index+1}</td>
-            <td>{profile.fullname}</td>
-            <td>{profile.nic}</td>
-            <td>{profile._id}</td>
-            <td>{profile.contact}</td>
-            <td>{profile.email}</td>
-            <td>{profile.address}</td>
-            <td>{profile.role}</td>
+            <td><div style={{width:"10px"}}>{index+1}</div></td>
+            <td><div style={{width:"100px", whiteSpace:"pre-wrap"}}>{profile.fullname}</div></td>
+            <td><div style={{width:"90px", whiteSpace:"pre-wrap"}}>{profile.nic}</div></td>
+            <td><div style={{width:"180px", whiteSpace:"pre-wrap"}}>{profile._id}</div></td>
+            <td><div style={{width:"150px", whiteSpace:"pre-wrap"}}>{profile.contact}</div></td>
+            <td><div style={{width:"120px", whiteSpace:"pre-wrap"}}>{profile.email}</div></td>
+            <td><div style={{width:"200px", whiteSpace:"pre-wrap"}}>{profile.address}</div></td>
+            <td><div style={{width:"100px", whiteSpace:"pre-wrap"}}>{profile.role}</div></td>
             {index>=0?<td>
-                <button className={"btn btn-success"} onClick={()=>onClickAcceptRecruitment(index)}>Accept</button>
+                <div style={{width:"170px"}}>
+                <button className={"btn btn-green"} onClick={()=>onClickAcceptRecruitment(index)}>Accept</button>
                 <button className={"btn btn-danger mx-1"} onClick={()=>onClickRejectRecruitment(index)}>Reject</button>
+                </div>
             </td>:<td>q</td>}
 
         </tr>;
@@ -108,11 +110,11 @@ export default function EmployeeRecruitment(){
         <p/>
         <div style={{display:"table-cell", padding:"6px", border:"1px solid #7DCEA0"}}>
             <label>Name</label>
-            <input type={"text"} className={"mx-1"} id={"user-fullname"}/>
+            <input type={"text"} className={"mx-1"} id={"user-fullname"} placeholder={"John A.K."} onChange={()=>searchRecruitments()}/>
             <label>Reference</label>
-            <input type={"text"} className={"mx-1"} id={"user-reference"}/>
+            <input type={"text"} className={"mx-1"} id={"user-reference"} placeholder={"192830210293"} onChange={()=>searchRecruitments()}/>
             <label className={"mx-1"}>Role</label>
-            <select id={"user-role"}>
+            <select id={"user-role"} onChange={()=>searchRecruitments()}>
                 <option>any</option>
                 {Profile.getUserRoles().map(role => {return <option>{role}</option>})}
             </select>

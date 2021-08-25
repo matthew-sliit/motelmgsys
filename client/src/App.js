@@ -16,14 +16,28 @@ import MDashboard from "./Components/MaintenanceManager/MDashboard";
 import BDashboard from "./Components/BarManager/BDashboard";
 import BarNavigations from "./Components/BarManager/BarNavigations";
 import AddDrink from "./Components/BarManager/AddDrink";
-import EditReservations from "./Components/ReservationManager/EditReservations";
+import DrinkMenu from "./Components/BarManager/DrinkMenu";
+import EditDrink from "./Components/BarManager/EditDrink";
 //extra
 import UserPageLayout from "./Components/UserPageLayout";
 import UserNavigationFormat from "./Components/Navigation/UserNavigationFormat";
 import BackendHomeFormat from "./Components/Home/BackendHomeFormat";
 
 import Cookie from "js-cookie";
-import ReservationNavigations from "./Components/ReservationManager/ReservationNavigation";
+import MMDashboard from "./Components/MaintenanceManager/MMDashboard";
+import HDashboard from "./Components/MaintenanceManager/HDashboard";
+import MaintenanceNavigations from "./Components/MaintenanceManager/MaintenanceNavigation";
+import AddHousekeeping from "./Components/MaintenanceManager/AddHousekeeping";
+import AddMaintenance from "./Components/MaintenanceManager/AddMaintenance";
+import EditMaintenance from "./Components/MaintenanceManager/EditMaintenance";
+import EditHousekeeping from "./Components/MaintenanceManager/EditHousekeeping";
+import AddBurger from "./Components/BurgerJoint/AddBurger";
+import BJNavigations from "./Components/BurgerJoint/BJNavigation";
+import BJDashboard from "./Components/BurgerJoint/BJDashboard";
+import EditBurger from "./Components/BurgerJoint/EditBurger";
+import BurgerMenu from "./Components/BurgerJoint/BurgerMenu";
+
+
 function App() {
     const role = Cookie.get('role');
     const profileNavigations = AdminNavigations();
@@ -51,16 +65,34 @@ function App() {
             <Route exact path={"/admin-recruitments"}>
                 <UserNavigationFormat navigations={AdminNavigations()} content={<EmployeeRecruitment/>} type={"Administrator"}/>
             </Route>
+            <Route exact path={"/admin/view-reserve"}>
+                <UserNavigationFormat navigations={AdminNavigations()} content={<RDashboard/>} type={"Administrator"}/>
+            </Route>
             {/* ============== RESERVATION MANAGER ==================*/}
             <Route exact path={"/reserve"}>
-                <UserNavigationFormat navigations={ReservationNavigations()} content={<RDashboard/>} type={"Reservation Manager"}/>
-            </Route>
-            <Route exact path={"/reserve/edit"}>
-                <UserNavigationFormat navigations={ReservationNavigations()} content={<EditReservations/>} type={"Reservation Manager"}/>
+                <UserNavigationFormat navigations={BarNavigations()} content={<RDashboard/>} type={"Reservation Manager"}/>
             </Route>
             {/* ============== MAINTENANCE MANAGER ==================*/}
             <Route exact path={"/maintainer"}>
-                <UserNavigationFormat navigations={BarNavigations()} content={<MDashboard/>} type={"Maintenance Manager"}/>
+                <UserNavigationFormat navigations={MaintenanceNavigations()} content={<MMDashboard/>} type={"Maintenance Manager"}/>
+            </Route>
+            <Route exact path={"/maintainer/maintenance"}>
+                <UserNavigationFormat navigations={MaintenanceNavigations()} content={<MDashboard/>} type={"Maintenance Manager"}/>
+            </Route>
+            <Route exact path={"/maintainer/housekeeping"}>
+                <UserNavigationFormat navigations={MaintenanceNavigations()} content={<HDashboard/>} type={"Maintenance Manager"}/>
+            </Route>
+            <Route exact path={"/maintainer/maintenance/add"}>
+                <UserNavigationFormat navigations={MaintenanceNavigations()} content={<AddMaintenance/>} type={"Maintenance Manager"}/>
+            </Route>
+            <Route exact path={"/maintainer/housekeeping/add"}>
+                <UserNavigationFormat navigations={MaintenanceNavigations()} content={<AddHousekeeping/>} type={"Maintenance Manager"}/>
+            </Route>
+            <Route exact path={"/maintainer/maintenance/edit"}>
+                <UserNavigationFormat navigations={MaintenanceNavigations()} content={<EditMaintenance/>} type={"Maintenance Manager"}/>
+            </Route>
+            <Route exact path={"/maintainer/housekeeping/edit"}>
+                <UserNavigationFormat navigations={MaintenanceNavigations()} content={<EditHousekeeping/>} type={"Maintenance Manager"}/>
             </Route>
             {/* =================== BAR MANAGER =====================*/}
             <Route exact path={"/bar"}>
@@ -69,9 +101,31 @@ function App() {
             <Route exact path={"/bar/new"}>
                 <UserNavigationFormat navigations={BarNavigations()} content={<AddDrink/>} type={"Bar Manager"}/>
             </Route>
-            <Route exact path={"/user"}>
-                <UserPageLayout/>
+            <Route exact path={"/bar/menu"}>
+                <UserNavigationFormat navigations={BarNavigations()} content={<DrinkMenu/>} type={"Bar Manager"}/>
             </Route>
+            <Route exact path={"/bar/edit"}>
+            <UserNavigationFormat navigations={BarNavigations()} content={<EditDrink/>} type={"Bar Manager"}/>
+        </Route>
+
+            {/* =================== BURGER JOINT =====================*/}
+            <Route exact path={"/joint"}>
+                <UserNavigationFormat navigations={BJNavigations()} content={<BJDashboard/>} type={"Burger Joint"}/>
+            </Route>
+            <Route exact path={"/joint/new"}>
+                <UserNavigationFormat navigations={BJNavigations()} content={<AddBurger/>} type={"Burger Joint"}/>
+            </Route>
+            <Route exact path={"/joint/menu"}>
+                <UserNavigationFormat navigations={BJNavigations()} content={<BurgerMenu/>} type={"Burger Joint"}/>
+            </Route>
+            <Route exact path={"/joint/edit"}>
+                <UserNavigationFormat navigations={BJNavigations()} content={<EditBurger/>} type={"Burger Joint"}/>
+            </Route>
+            {/*
+            <Route exact path={"/"}>
+                <BackendHomeFormat content={<Login/>}/>
+            </Route>
+            */}
             <Route exact path={"/"}>
                 <button className={"btn btn-outline-primary mt-3"} onClick={()=>window.location.href="/register"}>register</button>
                 <br/>
@@ -86,6 +140,8 @@ function App() {
                 <button className={"btn btn-outline-primary mt-1"} onClick={()=>window.location.href="/maintainer"}>Maintenance Manager</button>
                 <br/>
                 <button className={"btn btn-outline-primary mt-1"} onClick={()=>window.location.href="/bar"}>Bar Manager</button>
+                <br/>
+                <button className={"btn btn-outline-primary mt-1"} onClick={()=>window.location.href="/joint"}>Burger Joint</button>
                 <br/>
                 <button className={"btn btn-outline-primary mt-1"} onClick={()=>window.location.href="http://localhost:3000/motelhome/index.html"}>Home</button>
             </Route>
