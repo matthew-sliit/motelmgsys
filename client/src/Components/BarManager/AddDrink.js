@@ -15,6 +15,14 @@ export default function AddDrink(){
         const imageFile = document.getElementById("image").files[0];
         const imageBase64 = await File2base64.getFile2Base64(imageFile);
         console.log(JSON.stringify(imageBase64));
+
+
+        if(name.length<1){
+            document.getElementById("name-error").innerHTML="Drink Name cannot be Empty";
+            return null;
+        }else
+            document.getElementById("name-error").innerHTML="";
+
         //will return success
         await fetch(getProxy("/bar"), {
             method: 'post',
@@ -34,6 +42,9 @@ export default function AddDrink(){
         }).then(r=>r.json()).then(d=>setDrinks(d)).catch(e=>console.log(e));
     }
 
+    const resetInputField = () => {
+        setDrinks("");
+    };
     //run once
     useEffect(async ()=>{
         await getDrinksFromDb();
@@ -43,7 +54,8 @@ export default function AddDrink(){
         {popup}
         <h3 style={{color:"inherit"}}>Add new Drink</h3>
         <div className="form-group mb-2">
-            <label>Enter Name</label>
+            <label>Enter Name</label>  &nbsp;&nbsp;&nbsp;&nbsp;
+            <span id="name-error" style={{color:"red"}}></span>
             <input type="text" className="form-control" aria-describedby="emailHelp"
                    placeholder="Tequila" id={"name"}/>
         </div>
@@ -63,7 +75,7 @@ export default function AddDrink(){
         </div>
         <button className={"btn btn-green"} onClick={()=>saveDrinkToDb()}>Save</button>
 
-        <button className={"btn btn-danger"} >Clear</button>
+        <button className={"btn btn-danger"} onClick={()=>resetInputField()} >Clear</button>
 
         <p/>
         <h5 style={{color:"inherit"}}>All Drinks</h5>
