@@ -28,6 +28,7 @@ export default function AddBurger(){
             method:'get'
         }).then(r=>r.json()).then(d=>setBurgers(d)).catch(e=>console.log(e));
     }
+
     //run once
     useEffect(async ()=>{
         await getBurgersFromDb();
@@ -58,12 +59,12 @@ export default function AddBurger(){
         </div>
         <button className={"btn btn-green"} onClick={()=>saveBurgerToDb()} >Save</button>
 
-        <button className={"btn btn-danger"} >Clear</button>
+        <button className={"btn btn-danger"}  >Clear</button>
 
         <p/>
         <h5 style={{color:"inherit"}}>All Burgers</h5>
-        <table className={"table w-75"} style={{position:"relative"}}>
-            <thead><tr>
+        <table className="table table-striped" >
+            <thead className="thead-dark"><tr>
                 <th style={{width:"100px"}}>Image</th>
                 <th style={{width:"100px"}}>Burger Type</th>
                 <th style={{width:"100px"}}>Price</th>
