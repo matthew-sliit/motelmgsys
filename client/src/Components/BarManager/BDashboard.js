@@ -74,8 +74,9 @@ export default function BDashboard(){
                                 <div className="row">
 
                                     <div className="col-md-3">
-                                        <input type="text" className="form-control" type={"text"}  placeholder={"all"} onChange={()=>searchall()}  id={"name"}/>
+                                        <input type="text" className="form-control" style={{width:"200px"}} type={"text"}  placeholder={"all"} onChange={()=>searchall()}  id={"name"}/>
                                     </div>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
                                     <div className="col-md-2">
                                         <button type="button" name="search" className="btn btn-primary" onClick={()=>searchDrinks()}>Search</button>
@@ -92,6 +93,7 @@ export default function BDashboard(){
 
                                 <th scope="col">Drink Name</th>
                                 <th scope="col">Alcohol Percentage</th>
+                                <th scope="col">Image</th>
 
                                 <th scope="col">Ingredients</th>
                                 <th scope="col">Actions</th>
@@ -104,7 +106,10 @@ export default function BDashboard(){
 
                                     <td>{drink.name}</td>
                                     <td>{drink.percentage}</td>
-                                    <td >{drink.description}</td>
+                                    <td><img src={drink.image} height={"100px"} width={"100px"} alt={"image"}/></td>
+                                    <td>
+                                        <div style={{width:"300px", whiteSpace:"pre-wrap"}}>{drink.description}</div>
+                                    </td>
 
                                     <td colSpan="2">
                                         <button name="edit" className="btn btn-info px-3">

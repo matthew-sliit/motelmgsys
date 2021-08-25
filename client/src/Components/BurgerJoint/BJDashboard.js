@@ -7,6 +7,52 @@ import "../../assets/css/style.css";
 import getProxy from "../../proxyConfig";
 export default function BJDashboard(){
 
+    let [burgers, setBurger] = useState([]);
+    let [burgerList, setList] = useState([]);
+
+
+    const searchall = () => {
+        const nameLike = document.getElementById("type").value;
+        if(nameLike.length < 1){
+            setBurger(burgerList);
+        }
+    }
+    const searchBurgers = () =>{
+        const nameLike = document.getElementById("type").value;
+        const burgerListOriginal = [...burgerList];
+        let pushed, suggestBurgers = [];
+        pushed = false;
+        //console.log("n: "+nameLike+" r:"+reference+" r:"+role);
+        burgerListOriginal.map(burgers=>{
+            //profile = new Profile();
+            console.log(burgers.type);
+            //Object.assign(profile,recruitment);
+            if(nameLike.length>0 && nameLike!=="all" && burgers.type.includes(nameLike)){
+                pushed = true;
+                suggestBurgers.push(burgers);
+            }
+        });
+        console.log(nameLike);
+        if(pushed){
+            setBurger(suggestBurgers);
+
+        }else{
+            //console.log("setting suggest!");
+            setBurger(burgerListOriginal);
+
+        }
+    }
+    useEffect(async ()=>{
+        await fetch(getProxy("/joint"),{
+            method:"get"
+        }).then(r=>r.json()).then(d=>{setBurger(d);setList(d);console.log(JSON.stringify(d));}).catch(e=>console.log(e));
+    },[]);
+
+    useEffect(async ()=>{
+        await fetch(getProxy("/joint"),{
+            method:"get"
+        }).then(r=>r.json()).then(d=>{setBurger(d);console.log(JSON.stringify(d));}).catch(e=>console.log(e));
+    },[]);
 
     return <div>
         <div id="colorlib-main">
@@ -28,11 +74,12 @@ export default function BJDashboard(){
                                 <div className="row">
 
                                     <div className="col-md-3">
-                                        <input type="text" className="form-control" type={"text"}  placeholder={"all"}  id={"name"}/>
+                                        <input type="text" className="form-control" style={{width:"200px"}} type={"text"}  placeholder={"all"} onChange={()=>searchall()}  id={"type"}/>
                                     </div>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-                                    <div className="col-md-2">
-                                        <button type="button" name="search" className="btn btn-primary" >Search</button>
+                                    <div className="col-md-6">
+                                        <button type="button" name="search" className="btn btn-primary" onClick={()=>searchBurgers()} >Search</button>
                                     </div>
                                 </div>
                             </div>
@@ -46,11 +93,38 @@ export default function BJDashboard(){
 
                                 <th scope="col">Burger Type</th>
                                 <th scope="col">Price</th>
-
+                                <th scope="col">Image</th>
                                 <th scope="col">Ingredients</th>
                                 <th scope="col">Actions</th>
                             </tr>
                             </thead>
+
+                            <tbody>
+
+                            {burgers.map(burger=>{
+                                return <tr>
+
+                                    <td>{burger.type}</td>
+                                    <td>{burger.price}</td>
+                                    <td><img src={burger.image} height={"100px"} width={"100px"} alt={"image"}/></td>
+
+                                    <td>
+                                        <div style={{width:"300px", whiteSpace:"pre-wrap"}}>{burger.ingredients}</div>
+                                    </td>
+
+                                    <td colSpan="2">
+                                        <button name="edit" className="btn btn-info px-3">
+                                            <center><i className="fa fa-edit"></i></center>
+                                        </button>
+                                        <button name="" className="btn btn-danger px-3">
+                                            <center><i className="fa fa-trash"></i></center>
+                                        </button>
+                                    </td>
+                                </tr>
+                            })}
+
+
+                            </tbody>
 
                         </table>
                     </div>
