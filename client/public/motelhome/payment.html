@@ -1,156 +1,80 @@
-
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <style>
-        body {
-            font-family: Arial;
-            font-size: 17px;
-            padding: 8px;
-        }
-
-        * {
-            box-sizing: border-box;
-        }
-
-        .row {
-            display: -ms-flexbox; /* IE10 */
-            display: flex;
-            -ms-flex-wrap: wrap; /* IE10 */
-            flex-wrap: wrap;
-            margin: 0 -16px;
-        }
-
-        .col-25 {
-            -ms-flex: 25%; /* IE10 */
-            flex: 25%;
-        }
-
-        .col-50 {
-            -ms-flex: 50%; /* IE10 */
-            flex: 50%;
-        }
-
-        .col-75 {
-            -ms-flex: 75%; /* IE10 */
-            flex: 75%;
-        }
-
-        .col-25,
-        .col-50,
-        .col-75 {
-            padding: 0 16px;
-        }
-
-        .container {
-            background-color: #f2f2f2;
-            padding: 5px 20px 15px 20px;
-            border: 1px solid lightgrey;
-            border-radius: 3px;
-        }
-
-        input[type=text] {
-            width: 100%;
-            margin-bottom: 20px;
-            padding: 12px;
-            border: 1px solid #ccc;
-            border-radius: 3px;
-        }
-
-        label {
-            margin-bottom: 10px;
-            display: block;
-        }
-
-        .icon-container {
-            margin-bottom: 20px;
-            padding: 7px 0;
-            font-size: 24px;
-        }
-
-        .button {
-            background-color: #FF0000; /* Green */
-            border: none;
-            color: white;
-            padding: 15px 32px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-        }
-
-        .btn:hover {
-            background-color: #45a049;
-        }
-
-        a {
-            color: #2196F3;
-        }
-
-        hr {
-            border: 1px solid lightgrey;
-        }
-
-        span.price {
-            float: right;
-            color: grey;
-        }
-
-        /* Responsive layout - when the screen is less than 800px wide, make the two columns stack on top of each other instead of next to each other (also change the direction - make the "cart" column go on top) */
-
-        .row {
-            flex-direction: column-reverse;
-        }
-
-        .col-25 {
-            margin-bottom: 20px;
-        }
-      
-    </style>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="custom.css">
 </head>
-<body>
-
-    <form action="success.html" method="get">
-        <div class="col-50">
-            <h3>Payment</h3>
-            <label for="cname">Name on Card</label>
-            <input type="text" id="cname" name="cardname" placeholder="John More Doe" required>
-            <label for="ccnum">Credit card number</label>
-            <input type="text" id="ccnum" name="cardnumber" placeholder="1111-2222-3333-4444" required>
-            <label for="expmonth">Exp Month</label>
-            <input type="text" id="expmonth" name="expmonth" placeholder="September" required>
-            <div class="row">
-                <div class="col-50">
-                    <label for="expyear">Exp Year</label>
-                    <input type="text" id="expyear" name="expyear" placeholder="2018" required>
+<style>
+    .card-header .icons .fa-cc-visa{
+        color: #FFB85F;
+    }
+    .card-header .icons .fa-cc-discover{
+        color: #027878;
+    }
+    .card-header .icons .fa-cc-amex{
+        color: #EB4960;
+    }
+    .card-body label{
+        font-size: 14px;
+    }
+</style>
+<body class="bg-danger pt-5">
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-md-10 col-12 pt-2">
+                            <h6 class="m-0"><strong>Payment Details</strong></h6>
+                        </div>
+                        <div class="col-md-7 col-12 icons">
+                            <i class="fa fa-cc-visa fa-2x" aria-hidden="true"></i>
+                            <i class="fa fa-cc-mastercard fa-2x" aria-hidden="true"></i>
+                            <i class="fa fa-cc-discover fa-2x" aria-hidden="true"></i>
+                            <i class="fa fa-cc-amex fa-2x" aria-hidden="true"></i>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-50">
-                    <label for="cvv">CVV</label>
-                    <input type="text" id="cvv" name="cvv" placeholder="352" required>
+                <div class="card-body">
+                    <form action="success.html" method="get">
+                        <div class="form-group">
+                            <label for="validationTooltipCardNumber"><strong>CARD NUMBER</strong></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control border-right-0" id="validationTooltipCardNumber" placeholder="Card Number" required>
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text rounded-right" id="validationTooltipCardNumbers"><i class="fa fa-credit-card"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8 col-12">
+                                <div class="form-group">
+                                    <label for="exampleInputExpirationDate"><strong>EXPIRATION DATE</strong></label>
+                                    <input type="text" class="form-control" id="exampleInputExpirationDate" placeholder="MM / YY" required>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-12">
+                                <div class="form-group">
+                                    <label for="exampleInputCvcCode"><strong>CVC CODE</strong></label>
+                                    <input type="password" class="form-control" id="exampleInputCvcCode" placeholder="CVC" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputCouponCode"><strong>COUPON CODE (Optional)</strong></label>
+                            <input type="text" class="form-control" id="exampleInputCouponCode" placeholder="Coupon Code">
+                        </div>
+                        <button class="btn btn-info w-100 pb-2 pt-2">Pay  </button>
+                    </form>
                 </div>
-             
-
-
             </div>
-            <input type="checkbox" class="form-check-input" id="exampleCheck1" required>
-            Confirm payment
-            <br /><br />
-
-            <input type="submit" class="button" name="pay_type1" id="mybutton"  value="Online Payment" />
         </div>
+    </div>
+</div>
 <div>
-    <script type="text/javascript">
-        document.getElementById("myButton").onclick = function () {
-            location.href = "success.html";
-        };
     </script>
 </div>
-
-
-
-    </form>
-
-
 </body>
 </html>
