@@ -4,5 +4,5 @@ export default function HousekeepingStatusWorker(e){
     housekeepingList.map(h=>{
         (h.status === "Dirty" ? dirty++ : h.status === "Cleaning" ? cleaning++ : h.status === "Clean" ? clean++ : "")
     })
-    self.postMessage({"dirty":dirty,"cleaning":cleaning,"clean":clean});
+    // self.postMessage({"dirty":dirty,"cleaning":cleaning,"clean":clean});
 }

@@ -171,7 +171,7 @@
                   <!--<input type="text" class="form-control" id="quantity" " placeholder="Quantity of rooms" oninput="calc()" /> -->
 
 
-                  <p>Price Per Room : Rs.<span id="room_price">1000 per night</span></p>
+                  <p>Price Per Room : Rs.<span id="room_price">2000 per night</span></p>
 
                 </div>
                 <hr />
@@ -231,6 +231,12 @@
 
                       async function addReservationonpayment(){
                           const name = document.getElementById("name").value;
+                          if(name.length<1){
+                              document.getElementById("name-error").innerHTML="Name cannot be empty";
+                              return null;
+                          }else
+                              document.getElementById("name-error").innerHTML="";
+
                           const email = document.getElementById("email").value;
                           const checkInDate = document.getElementById("checkindate").value;
                           const checkOutDate = document.getElementById("checkoutdate").value;

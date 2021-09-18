@@ -12,13 +12,18 @@ export default function RDashboard(){
 
 
     const searchall = () => {
-        const nameLike = document.getElementById("email").value;
-        if(nameLike.length < 1){
+        const email = document.getElementById("email").value;
+        const name = document.getElementById("name").value;
+        if(email.length < 1){
+            setreservation(reservationList);
+        }
+        else if(name.length < 1){
             setreservation(reservationList);
         }
     }
     const searchReservations = () =>{
-        const nameLike = document.getElementById("email").value;
+        const email = document.getElementById("email").value;
+        const name = document.getElementById("name").value;
         const recruitmentsListOriginal = [...reservationList];
         let pushed, suggestRecruitments = [];
         pushed = false;
@@ -27,12 +32,18 @@ export default function RDashboard(){
             //profile = new Profile();
             console.log(recruitment.email);
             //Object.assign(profile,recruitment);
-            if(nameLike.length>0 && nameLike!=="all" && recruitment.email.includes(nameLike)){
+            if(email.length>0 && email!=="all" && recruitment.email.includes(email)){
                 pushed = true;
                 suggestRecruitments.push(recruitment);
-            }
+            }else if
+               (name.length>0 && name!=="all" && recruitment.name.includes(name)){
+                    pushed = true;
+                    suggestRecruitments.push(recruitment);
+                }
+
+
         });
-        console.log(nameLike);
+        console.log(email);
         if(pushed){
             setreservation(suggestRecruitments);
 
@@ -68,10 +79,15 @@ export default function RDashboard(){
                             <div className="card-body">
                                 <div className="row">
                                     <div className="col-md-3">
-                                        <input type={"text"}  placeholder={"all"} onChange={()=>searchall()} className={"mx-1"} id={"email"}/>
+                                        <label>Email</label>
+                                        <input type={"text"}  placeholder={"email"} onChange={()=>searchall()} className={"form-control"} id={"email"}/>
                                     </div>
-
-                                    <div className="col-md-2">
+                                    <div className="col-md-4">
+                                        <label>Name</label>
+                                        <input type={"text"} className="form-control" onChange={()=>searchall()} id={"name"} placeholder="name"/>
+                                    </div>
+                                    <div className="col-md-3">
+                                        <div className={"mb-4"}></div>
                                         <button type="button" name="search"  className="btn btn-primary"  onClick={()=>searchReservations()}>Search</button>
                                     </div>
                                 </div>

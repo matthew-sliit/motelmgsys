@@ -36,45 +36,34 @@ export default function EditReservations(){
         <div className="form-group mb-2">
             <label>Enter Name</label>
             <input type="text" className="form-control" aria-describedby="emailHelp"
-                   placeholder="Tequila" id={"name"}/>
+                   placeholder="name" id={"name"}/>
         </div>
         <div className="form-group mb-2">
             <label>Enter Email</label>
             <input type="text" className="form-control" aria-describedby="emailHelp"
-                   placeholder="30%" id={"percentage"}/>
+                   placeholder="email" id={"percentage"}/>
         </div>
         <div className="form-group mb-2">
             <label>CheckInDate</label>
-            <input type="text" className="form-control" aria-describedby="emailHelp"
-                   placeholder="Drink Description" id={"description"}/>
+            <input type="date" className="form-control" name="check_in" id="checkindate" onInput="calcdays()" required/>
+
         </div>
         <div className="form-group mb-2">
             <label>CheckOutDate</label>
+            <input type="date" className="form-control" name="check_out" id="checkoutdate" onInput="calcdays()"
+                   required/>
+        </div>
+        <div className="form-group mb-2">
+            <label>No of Days</label>
             <input type="text" className="form-control" aria-describedby="emailHelp"
-                   placeholder="Drink Description" id={"description"}/>
+                   placeholder="" id={"percentage"} readOnly/>
+        </div>
+        <div className="form-group mb-2">
+            <label>Quantity of Rooms</label>
+            <input type="text" className="form-control" aria-describedby="emailHelp"
+                   placeholder="" id={"percentage"}/>
         </div>
         <button className={"btn btn-green"} onClick={()=>saveDrinkToDb()}>Update</button>
         <p/>
-        <h5 style={{color:"inherit"}}>All Drinks</h5>
-        <table className={"table w-75"} style={{position:"relative"}}>
-            <thead><tr>
-                <th style={{width:"100px"}}>Image</th>
-                <th style={{width:"100px"}}>name</th>
-                <th style={{width:"100px"}}>Percentage</th>
-                <th style={{width:"100px"}}>Description</th>
-            </tr></thead>
-            <tbody>
-            {reservation.map(reservation => {
-                return <tr>
-                    <td><img src={reservation.image} height={"100px"} width={"100px"} alt={"image"}/></td>
-                    <td>{reservation.name}</td>
-                    <td>{reservation.percentage}</td>
-                    <td>
-                        <div style={{width:"300px", whiteSpace:"pre-wrap"}}>{reservation.description}</div>
-                    </td>
-                </tr>
-            })}
-            </tbody>
-        </table>
     </div>
 }

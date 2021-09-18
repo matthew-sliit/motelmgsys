@@ -18,6 +18,7 @@ import BarNavigations from "./Components/BarManager/BarNavigations";
 import AddDrink from "./Components/BarManager/AddDrink";
 import DrinkMenu from "./Components/BarManager/DrinkMenu";
 import EditDrink from "./Components/BarManager/EditDrink";
+import EditReservations from "./Components/ReservationManager/EditReservations"
 //extra
 import UserPageLayout from "./Components/UserPageLayout";
 import UserNavigationFormat from "./Components/Navigation/UserNavigationFormat";
@@ -36,6 +37,7 @@ import BJNavigations from "./Components/BurgerJoint/BJNavigation";
 import BJDashboard from "./Components/BurgerJoint/BJDashboard";
 import EditBurger from "./Components/BurgerJoint/EditBurger";
 import BurgerMenu from "./Components/BurgerJoint/BurgerMenu";
+import ReservationNavigations from "./Components/ReservationManager/ReservationNavigation";
 
 
 function App() {
@@ -70,7 +72,10 @@ function App() {
             </Route>
             {/* ============== RESERVATION MANAGER ==================*/}
             <Route exact path={"/reserve"}>
-                <UserNavigationFormat navigations={BarNavigations()} content={<RDashboard/>} type={"Reservation Manager"}/>
+                <UserNavigationFormat navigations={ReservationNavigations()} content={<RDashboard/>} type={"Reservation Manager"}/>
+            </Route>
+            <Route exact path={"/reserve/edit"}>
+                <UserNavigationFormat navigations={ReservationNavigations()} content={<EditReservations/>} type={"Reservation Manager"}/>
             </Route>
             {/* ============== MAINTENANCE MANAGER ==================*/}
             <Route exact path={"/maintainer"}>
