@@ -1,11 +1,14 @@
 import React, {useEffect, useState} from "react";
 import getProxy from "../../proxyConfig";
 import File2base64 from "../../assets/js/file2base64";
-
 import 'bootstrap'
+import PopupSuccess from "../PopupSuccess";
+
 export default function AddBurger(){
 //state
     let [burgers, setBurgers] = useState([]);
+    let [popup, togglePopup] = useState(null);
+
     //post
     const saveBurgerToDb = async ()=>{
         const type = document.getElementById("type").value;
@@ -14,11 +17,25 @@ export default function AddBurger(){
         const imageFile = document.getElementById("image").files[0];
         const imageBase64 = await File2base64.getFile2Base64(imageFile);
         console.log(JSON.stringify(imageBase64));
+
+        if(type.length<1){
+            document.getElementById("name-error").innerHTML="Type cannot be Empty";
+            return null;
+        }else
+            document.getElementById("name-error").innerHTML="";
+
+
+
         await fetch(getProxy("/joint"), {
             method: 'post',
             headers: {'Content-Type':'application/json'},
             body: JSON.stringify({"burger":{"type":type,"price":price,"ingredients":ingredients,"image":imageBase64}})
-        }).then(r=>r.text()).then(d=>console.log(d)).catch(e=>console.log(e));
+
+
+    }).then(r=>r.text()).then(d=> {
+            togglePopup(<PopupSuccess body={<span>Successfully Added the Burger!</span>} heading={"Add Burger"} hidePopupFunction={togglePopup}/>)
+        }).catch(e=>console.log(e));
+
         //re render this page
         await getBurgersFromDb();
     }
@@ -28,6 +45,10 @@ export default function AddBurger(){
             method:'get'
         }).then(r=>r.json()).then(d=>setBurgers(d)).catch(e=>console.log(e));
     }
+    const resetInputField = () => {
+        setBurgers("");
+    };
+
 
     //run once
     useEffect(async ()=>{
@@ -37,9 +58,12 @@ export default function AddBurger(){
 
     //render
     return <div style={{position:"relative"}}>
+        {popup}
         <h3 style={{color:"inherit"}}>Add new Burger</h3>
         <div className="form-group mb-2">
-            <label>Enter the type of the Burger</label>
+
+            <label>Enter the type of the Burger</label> &nbsp;&nbsp;&nbsp;&nbsp;
+            <span id="name-error" style={{color:"red"}}></span>
             <input type="text" className="form-control" aria-describedby="emailHelp"
                    placeholder="CheeseBurger" id={"type"}/>
         </div>
@@ -59,7 +83,8 @@ export default function AddBurger(){
         </div>
         <button className={"btn btn-green"} onClick={()=>saveBurgerToDb()} >Save</button>
 
-        <button className={"btn btn-danger"}  >Clear</button>
+        <button type="submit" name="clear" onClick={()=>resetInputField()} className="btn btn-danger">Clear
+        </button>
 
         <p/>
         <h5 style={{color:"inherit"}}>All Burgers</h5>

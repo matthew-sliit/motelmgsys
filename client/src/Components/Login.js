@@ -6,7 +6,7 @@ import Cookie from "js-cookie";
 import getProxy from "../proxyConfig";
 export default function Login(){
     let [resetPassword, setState]= useState(false);
-    let [errorMsg, setErrorMsg] = useState("");
+    let [errorMsg, setErrorMsg] = useState(null);
     let [newPassword, setNewPassword] = useState("");
     function redirectToSignUpForm(){
         window.location.href="/register";
@@ -63,8 +63,8 @@ export default function Login(){
     }
     return (
         <div style={{position:"relative", left:"100px", top:"200px", width:"30%", color:"inherit"}}>
-            <h3 style={{color:"inherit"}}>{resetPassword?"Reset Password":"Login"}</h3>
-            <span style={{color:"red"}}>{errorMsg}</span>
+            <h3 style={{color:"inherit"}}>{resetPassword?"Employee Reset Password":"Employee Login"}</h3>
+            <span style={{color:"#ECF0F1", backgroundColor:"#DE3163"}}><b>{errorMsg!==null?errorMsg:""}</b></span>
             <span style={{color:"#00802b", fontSize:"18px"}}>{newPassword!==""?"New Password is: ":""}</span>
             <span style={{color:"#00802b", fontSize:"18px"}}><b>{newPassword}</b></span>
             <div className="form-group mb-2">
@@ -81,11 +81,11 @@ export default function Login(){
                        placeholder="Enter email" id={"user-email"} id={"user-email"}/>
             </div>:""}
             <div style={{float:"right", position:"relative"}}>
-                {!resetPassword?<button className={"btn btn-link mx-1"} onClick={()=>setState(!resetPassword)}>Click to reset password</button>
-                    :<button className={"btn btn-outline-success"} onClick={()=>setState(!resetPassword)}>Login</button>}
+                {!resetPassword?<button className={"btn btn-link mx-1"} style={{color:"#85C1E9"}} onClick={()=>setState(!resetPassword)}>Click to reset password</button>
+                    :<button className={"btn btn-green"} onClick={()=>setState(!resetPassword)}>Login</button>}
                 <button className={"btn btn-outline-primary mx-2"} onClick={()=>redirectToSignUpForm()}>Register</button>
                 {!resetPassword?<button className={"btn btn-green"} onClick={()=>logIn()}>Login</button>:
-                    <button className={"btn btn-warning"} onClick={()=>requestResetPassword()}>Reset Password</button>}
+                    <button className={"btn btn-orange"} onClick={()=>requestResetPassword()}>Reset Password</button>}
             </div>
         </div>
     );
