@@ -7,16 +7,9 @@ import "../../assets/css/style.css";
 import getProxy from "../../proxyConfig";
 export default function BDashboard(){
 
-    let [drinks, setDrink] = useState([]);
+    let [drinks, setSuggestedDrinks] = useState([]);
     let [drinkList, setList] = useState([]);
 
-
-    const searchall = () => {
-        const nameLike = document.getElementById("name").value;
-        if(nameLike.length < 1){
-            setDrink(drinkList);
-        }
-    }
     const searchDrinks = () =>{
         const nameLike = document.getElementById("name").value;
         const drinkListOriginal = [...drinkList];
@@ -24,9 +17,6 @@ export default function BDashboard(){
         pushed = false;
         //console.log("n: "+nameLike+" r:"+reference+" r:"+role);
         drinkListOriginal.map(drinks=>{
-            //profile = new Profile();
-            console.log(drinks.name);
-            //Object.assign(profile,recruitment);
             if(nameLike.length>0 && nameLike!=="all" && drinks.name.includes(nameLike)){
                 pushed = true;
                 suggestDrinks.push(drinks);
@@ -34,33 +24,36 @@ export default function BDashboard(){
         });
         console.log(nameLike);
         if(pushed){
-            setDrink(suggestDrinks);
-
+            setSuggestedDrinks(suggestDrinks);
         }else{
             //console.log("setting suggest!");
-            setDrink(drinkListOriginal);
+            setSuggestedDrinks(drinkListOriginal);
 
         }
     }
+    //on mount
     useEffect(async ()=>{
         await fetch(getProxy("/bar"),{
             method:"get"
-        }).then(r=>r.json()).then(d=>{setDrink(d);setList(d);console.log(JSON.stringify(d));}).catch(e=>console.log(e));
+        }).then(r=>r.json()).then(d=>{setSuggestedDrinks(d);setList(d);}).catch(e=>console.log(e));
     },[]);
 
-    useEffect(async ()=>{
-        await fetch(getProxy("/bar"),{
-            method:"get"
-        }).then(r=>r.json()).then(d=>{setDrink(d);console.log(JSON.stringify(d));}).catch(e=>console.log(e));
-    },[]);
-
+    async function removeDrink(index_of_drink) {
+        const drinkToRemove = drinks[index_of_drink];
+        //remove from db
+        await fetch(getProxy("/bar/"+drinkToRemove._id.toString()),{
+            method:"delete"
+        }).then(r=>r.json()).then(d=>{setList(d);console.log(JSON.stringify(d));}).catch(e=>console.log(e));
+        //remove from drinks list
+        const drinksAfterRemoved = drinkList.splice(index_of_drink,1);
+        setList(drinksAfterRemoved);
+        //redo search
+        searchDrinks();
+    }
     return <div>
         <div id="colorlib-main">
             <section className="ftco-section pt-4 mb-5 ftco-intro">
                 <div className="container-fluid px-3 px-md-0">
-
-
-
                     <h3 style={{color: "#0c5460"}}>Modify the Drinks</h3>
                     <div className="row mt-3 mb-3">
 
@@ -74,7 +67,7 @@ export default function BDashboard(){
                                 <div className="row">
 
                                     <div className="col-md-3">
-                                        <input type="text" className="form-control" style={{width:"200px"}} type={"text"}  placeholder={"all"} onChange={()=>searchall()}  id={"name"}/>
+                                        <input type="text" className="form-control" style={{width:"200px"}} type={"text"}  placeholder={"all"} onChange={()=>searchDrinks()}  id={"name"}/>
                                     </div>
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
@@ -101,7 +94,7 @@ export default function BDashboard(){
                             </thead>
                             <tbody>
 
-                            {drinks.map(drink=>{
+                            {drinks.map((drink,index)=>{
                                 return <tr>
 
                                     <td>{drink.name}</td>
@@ -112,10 +105,10 @@ export default function BDashboard(){
                                     </td>
 
                                     <td colSpan="2">
-                                        <button name="edit" className="btn btn-info px-3">
+                                        <button name="edit" className="btn btn-info px-3" onClick={()=>{window.location.href="/bar/edit/"+drinks[index]._id.toString()}}>
                                             <center><i className="fa fa-edit"></i></center>
                                         </button>
-                                        <button name="" className="btn btn-danger px-3">
+                                        <button name="" className="btn btn-danger px-3" onClick={()=>removeDrink(index)}>
                                             <center><i className="fa fa-trash"></i></center>
                                         </button>
                                     </td>
