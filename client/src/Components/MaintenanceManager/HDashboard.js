@@ -80,22 +80,38 @@ export default function HDashboard() {
         }).catch(e => console.log(e));
     }, []);
 
+    async function removeHousekeepingTask(index_of_housekeeping) {
+        const housekeepingToRemove = housekeeping[index_of_housekeeping];
+        //remove from db
+        await fetch(getProxy("/housekeeping/"+housekeepingToRemove._id.toString()),{
+            method:"delete"
+        }).then(r=>r.text()).then(d=> {
+            alert("Successfully Deleted Cleaning Task.");
+
+        }).catch(e=>console.log(e));
+        //remove from housekeeping list
+        const housekeepingAfterRemoved = housekeepingList.splice(index_of_housekeeping,1);
+        setHousekeepingList(housekeepingAfterRemoved);
+        //redo search
+        searchHousekeeping();
+    }
+
     return <div>
         <div id="colorlib-main">
             <section className="ftco-section pt-4 mb-5 ftco-intro">
-                <div className="container-fluid px-3 px-md-0">
-                    <h3 style={{color: "#0c5460"}}>Housekeeping Tasks</h3>
-                    <div className="row mt-3 mb-3">
-                        <div className="col-md-3">
-                            <button type="button" onClick={()=>{window.location.href="/maintainer/housekeeping/add"}} className="btn btn-success"><i className="fas fa-plus-circle"></i>Add Cleaning
-                                Task
-                            </button>
-                        </div>
-                        <div className="col-md-3">
-                            <button type="button" className="btn btn-info"><i className="far fa-file-alt"></i>Generate Report
-                            </button>
-                        </div>
+                <div className="container-fluid px-3 px-md-0"><div className="row mt-3 mb-3">
+                    <div className="col-md-3">
+                        <button type="button" onClick={()=>{window.location.href="/maintainer/housekeeping/add"}} className="btn btn-success"><i className="fas fa-plus-circle"></i>Add Cleaning
+                            Task
+                        </button>
                     </div>
+                    <div className="col-md-3">
+                        <button type="button" className="btn btn-info"><i className="far fa-file-alt"></i>Generate Report
+                        </button>
+                    </div>
+                </div>
+                    <h3 style={{color: "#0c5460"}}>Housekeeping Tasks</h3>
+
                     <div className="col-md-10">
                         <div className="card">
                             <div className="card-body">
@@ -147,7 +163,8 @@ export default function HDashboard() {
                             </tr>
                             </thead>
                             <tbody>
-                            {housekeeping.map(clean => {
+
+                            {housekeeping.map((clean,index) => {
                                 return <tr>
                                     <td>{clean.roomNo}</td>
                                     <td><h5><span className={clean.status==="Clean"?"badge badge-pill bg-success":(clean.status==="Cleaning"?"badge badge-pill bg-primary":"badge badge-pill bg-danger")}>{clean.status}</span></h5></td>
@@ -155,10 +172,10 @@ export default function HDashboard() {
                                     <td>{clean.assignedTo}</td>
                                     <td>{clean.priority}</td>
                                     <td>
-                                        <button name="edit" onClick={()=>{window.location.href="/maintainer/housekeeping/edit"}} className="btn btn-info px-3">
+                                        <button name="edit" onClick={()=>{window.location.href="/maintainer/housekeeping/edit/"+housekeeping[index]._id.toString()}} className="btn btn-info px-3">
                                             <center><i className="fa fa-edit"></i></center>
                                         </button>
-                                        <button name="" className="btn btn-danger px-3">
+                                        <button name="" className="btn btn-danger px-3" onClick={()=>removeHousekeepingTask(index)}>
                                             <center><i className="fa fa-trash"></i></center>
                                         </button>
                                     </td>

@@ -83,6 +83,18 @@ export default function MMDashboard(){
             </div>
         </div>
         <div style={{marginTop:"-80px"}}>
+        <div className="row mt-3 mb-3">
+            <div className="col-md-3">
+                <button type="button" onClick={()=>{window.location.href="/maintainer/housekeeping"}} className="btn btn-success"><i className="fas fa-shower"></i>
+                    Housekeeping Tasks
+                </button>
+            </div>
+            <div className="col-md-3">
+                <button type="button" className="btn btn-warning" onClick={()=>{window.location.href="/maintainer/maintenance"}}><i className="fas fa-wrench"></i>
+                    Maintenance Tasks
+                </button>
+            </div>
+        </div>
         <h4 className={"mb-3"} style={{color: "darkblue"}}>Room Reservation Details</h4>
         <table className={"table w-75"}>
             <thead className="thead-dark">
@@ -91,6 +103,7 @@ export default function MMDashboard(){
                 <th scope="col">Check-in Date</th>
                 <th scope="col">Check-out Date</th>
                 <th scope="col">Add Cleaning Task</th>
+                <th scope="col">Add Maintenance Task</th>
             </tr>
             </thead>
             <tbody>
@@ -99,10 +112,14 @@ export default function MMDashboard(){
                     <td>{reserve.roomNo}</td>
                     <td>{reserve.checkInDate}</td>
                     <td>{reserve.checkOutDate}</td>
-                <td>
-                    <button type="button" onClick={()=>{window.location.href="/maintainer/housekeeping/add"}} className="btn btn-success"><i className="fas fa-plus-circle"></i>Add Task
-                    </button>
-                </td>
+                    <td>
+                        <button type="button" onClick={()=>{window.location.href="/maintainer/housekeeping/add"}} className="btn btn-success"><i className="fas fa-plus-circle"></i>Add Task
+                        </button>
+                    </td>
+                    <td>
+                        <button type="button" onClick={()=>{window.location.href="/maintainer/maintenance/add"}} className="btn btn-warning"><i className="fas fa-plus-circle"></i>Add Task
+                        </button>
+                    </td>
                 </tr>
             })}
             </tbody>

@@ -72,6 +72,22 @@ export default function MDashboard() {
         }).catch(e => console.log(e));
     }, []);
 
+    async function removeMaintenanceTask(index_of_maintenance) {
+        const maintenanceToRemove = maintenance[index_of_maintenance];
+        //remove from db
+        await fetch(getProxy("/maintenance/"+maintenanceToRemove._id.toString()),{
+            method:"delete"
+        }).then(r=>r.text()).then(d=> {
+            alert("Successfully Deleted Maintenance Task.");
+
+        }).catch(e=>console.log(e));
+        //remove from housekeeping list
+        const maintenanceAfterRemoved = maintenanceList.splice(index_of_maintenance,1);
+        setMaintenanceList(maintenanceAfterRemoved);
+        //redo search
+        searchMaintenance();
+    }
+
     return <div>
         <h3 style={{color: "#0c5460"}}>Maintenance Tasks</h3>
         <div className="row mt-3 mb-3">
@@ -129,7 +145,8 @@ export default function MDashboard() {
                 </tr>
                 </thead>
                 <tbody>
-                {maintenance.map(clean => {
+
+                {maintenance.map((clean,index) => {
                     return <tr>
                         <td>{clean.roomNo}</td>
                         <td>{clean.description}</td>
@@ -139,10 +156,10 @@ export default function MDashboard() {
                         <td>{clean.assignedTo}</td>
                         <td>{clean.cost}</td>
                         <td>
-                            <button name="edit" onClick={()=>{window.location.href="/maintainer/maintenance/edit"}} className="btn btn-info px-3">
+                            <button name="edit" onClick={()=>{window.location.href="/maintainer/maintenance/edit/"+maintenance[index]._id.toString()}} className="btn btn-info px-3">
                                 <center><i className="fa fa-edit"></i></center>
                             </button>
-                            <button name="" className="btn btn-danger px-3">
+                            <button name="" className="btn btn-danger px-3" onClick={()=>removeMaintenanceTask(index)}>
                                 <center><i className="fa fa-trash"></i></center>
                             </button>
                         </td>
