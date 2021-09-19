@@ -112,7 +112,7 @@ export default function RDashboard(){
                             </thead>
                             <tbody>
 
-                            {reservation.map(reserve=>{
+                            {reservation.map((reserve,index)=>{
                                 return <tr>
                                     <td>{reserve.roomNo}</td>
                                     <td>{reserve.name}</td>
@@ -123,7 +123,7 @@ export default function RDashboard(){
                                     <td>{reserve.payment}</td>
                                     <td>{reserve.type}</td>
                                     <td colSpan="2">
-                                        <button name="edit" className="btn btn-info px-3">
+                                        <button name="edit" className="btn btn-info px-3" onClick={()=>{window.location.href="/reserve/edit/"+reservation[index]._id.toString()}}>
                                             <center><i className="fa fa-edit"></i></center>
                                         </button>
                                         <button name="" className="btn btn-danger px-3">
