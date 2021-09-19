@@ -88,10 +88,10 @@ function App() {
             <Route exact path={"/maintainer/housekeeping/add"}>
                 <UserNavigationFormat navigations={MaintenanceNavigations()} content={<AddHousekeeping/>} type={"Maintenance Manager"}/>
             </Route>
-            <Route exact path={"/maintainer/maintenance/edit"}>
+            <Route exact path={"/maintainer/maintenance/edit/:id"}>
                 <UserNavigationFormat navigations={MaintenanceNavigations()} content={<EditMaintenance/>} type={"Maintenance Manager"}/>
             </Route>
-            <Route exact path={"/maintainer/housekeeping/edit"}>
+            <Route exact path={"/maintainer/housekeeping/edit/:id"}>
                 <UserNavigationFormat navigations={MaintenanceNavigations()} content={<EditHousekeeping/>} type={"Maintenance Manager"}/>
             </Route>
             {/* =================== BAR MANAGER =====================*/}
