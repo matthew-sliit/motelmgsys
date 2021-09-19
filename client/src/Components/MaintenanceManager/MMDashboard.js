@@ -62,8 +62,8 @@ export default function MMDashboard(){
     }
     if(!afterComponentMounted){return <div></div>}
     return <div>
-        <h3 className={"mb-3"} style={{color: "#0c5460"}}>Maintenance Dashboard</h3>
-        <h4>Housekeeping Status</h4>
+        <h3 className={"mb-3"} style={{color: "#0c5460"}}><b>Maintenance Management Dashboard</b></h3>
+        <h4 style={{color:"darkblue"}} >Status of Housekeeping Tasks</h4>
         <div style={{display: "table-cell"}}>
             <div id="dirty-chart"></div>
         </div>
@@ -74,7 +74,7 @@ export default function MMDashboard(){
             <div id="clean-chart" style={{position: "relative"}}></div>
         </div>
         <div style={{marginTop:"-80px"}}>
-            <h4>Maintenance Status</h4>
+            <h4 className={"mb-3"} style={{color: "darkblue"}}>Status of Maintenance Tasks</h4>
             <div style={{display: "table-cell"}}>
                 <div id="open-chart"></div>
             </div>
@@ -83,7 +83,7 @@ export default function MMDashboard(){
             </div>
         </div>
         <div style={{marginTop:"-80px"}}>
-        <h4 style={{color: "#0c5460"}}>Reservation Details</h4>
+        <h4 className={"mb-3"} style={{color: "darkblue"}}>Room Reservation Details</h4>
         <table className={"table w-75"}>
             <thead className="thead-dark">
             <tr>

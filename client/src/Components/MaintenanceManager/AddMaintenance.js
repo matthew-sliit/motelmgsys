@@ -16,13 +16,22 @@ export default function AddMaintenance(){
         const assignedTo = document.getElementById("assignedTo").value;
         const cost = document.getElementById("cost").value;
 
+        if(date.length<1) {
+            document.getElementById("name-error").innerHTML = "Task date cannot be empty";
+            return null;
+        }else
+            document.getElementById("name-error").innerHTML="";
+
         await fetch(getProxy("/maintenance"), {
             method: 'post',
             headers: {'Content-Type':'application/json'},
             body: JSON.stringify({"maintenance":{"roomNo":roomNo,"description":description,"image":imageBase64,"date":date,"status":status,"assignedTo":assignedTo,"cost":cost}})
-        }).then(r=>r.text()).then(d=>console.log(d)).catch(e=>console.log(e));
+        })//.then(r=>r.text()).then(d=>console.log(d)).catch(e=>console.log(e));
+            .then(r=>r.text()).then(d=> {
+                alert("Successfully Added Maintenance Task.");
+            }).catch(e=>console.log(e));
         //re render this page
-        await getMaintenanceFromDb();
+        return window.location.href="/maintainer/maintenance";
     }
     //get
     const getMaintenanceFromDb = async () =>{
@@ -59,11 +68,11 @@ export default function AddMaintenance(){
                                 </div>
                                 <div className="col-md-7">
                                     <select className="form-control" id={"roomNo"}>
-                                        <option>R120</option>
-                                        <option>R121</option>
-                                        <option>R122</option>
-                                        <option>R123</option>
-                                        <option>R124</option>
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                        <option>5</option>
                                     </select>
                                 </div>
                             </div>
@@ -90,6 +99,7 @@ export default function AddMaintenance(){
                         </div>
                         <div className="form-group mb-3">
                             <div className="row">
+                                <span id="name-error" style={{color:"red"}}></span>
                                 <div className="col-md-3">
                                     <label htmlFor="TaskDate">Task Date</label>
                                 </div>
@@ -127,7 +137,7 @@ export default function AddMaintenance(){
                                     <label htmlFor="Priority">Cost</label>
                                 </div>
                                 <div className="col-md-7">
-                                    <input type="number" className="form-control" id={"cost"} />
+                                    <input type="text" className="form-control" id={"cost"} />
                                 </div>
                             </div>
                         </div>

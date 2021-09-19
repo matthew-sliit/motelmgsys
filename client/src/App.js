@@ -109,9 +109,12 @@ function App() {
             <Route exact path={"/bar/menu"}>
                 <UserNavigationFormat navigations={BarNavigations()} content={<DrinkMenu/>} type={"Bar Manager"}/>
             </Route>
+            <Route path={"/bar/edit/:id"}>
+            <UserNavigationFormat navigations={BarNavigations()} content={<EditDrink/>} type={"Bar Manager"}/>
+            </Route>
             <Route exact path={"/bar/edit"}>
             <UserNavigationFormat navigations={BarNavigations()} content={<EditDrink/>} type={"Bar Manager"}/>
-        </Route>
+            </Route>
 
             {/* =================== BURGER JOINT =====================*/}
             <Route exact path={"/joint"}>

@@ -23,7 +23,7 @@ router.get("/:id",async ctx=>{
     ctx.response.set('content-type','application/json');
     await readDocument(BarDrink.COLLECTION_NAME,"_id",mongoId).then(
         function (res){
-            ctx.body = res;
+            ctx.body = res[0];
         }
     )
 })
@@ -52,6 +52,13 @@ router.put("/:id", async ctx=>{
     ctx.response.set('content-type','application/json');
     let drink = new BarDrink();
     Object.assign(drink,drinkDetails);
+    if(drink.image==="ignore"){
+        await readDocument(BarDrink.COLLECTION_NAME,"_id",mongoId).then(
+            function (res){
+                drink.image = res[0].image;
+            }
+        )
+    }
     await updateDocument(BarDrink.COLLECTION_NAME,"_id",mongoId,drink.getDetails());
     ctx.body = "Successfully Updated!";
 })

@@ -1,10 +1,13 @@
 import React, {useEffect, useState} from "react";
 import getProxy from "../../proxyConfig";
 import File2base64 from "../../assets/js/file2base64";
+import PopupSuccess from "../PopupSuccess";
+
 import 'bootstrap'
 export default function AddHousekeeping(){
     //state
     let [housekeeping, setHousekeeping] = useState([]);
+    let [popup, togglePopup] = useState(null);
     //post
     const saveHousekeepingToDb = async ()=>{
         const roomNo = document.getElementById("roomNo").value;
@@ -13,13 +16,24 @@ export default function AddHousekeeping(){
         const assignedTo = document.getElementById("assignedTo").value;
         const priority = document.getElementById("priority").value;
 
+        if(date.length<1){
+            document.getElementById("name-error").innerHTML="Task date cannot be empty";
+            return null;
+        }else
+            document.getElementById("name-error").innerHTML="";
+
         await fetch(getProxy("/housekeeping"), {
             method: 'post',
             headers: {'Content-Type':'application/json'},
             body: JSON.stringify({"housekeeping":{"roomNo":roomNo,"date":date,"status":status,"assignedTo":assignedTo,"priority":priority}})
-        }).then(r=>r.text()).then(d=>console.log(d)).catch(e=>console.log(e));
+
+        })//.then(r=>r.text()).then(d=>console.log(d)).catch(e=>console.log(e));
+            .then(r=>r.text()).then(d=> {
+                alert("Successfully Added Cleaning Task.");
+
+            }).catch(e=>console.log(e));
         //re render this page
-        await getHousekeepingFromDb();
+        return window.location.href="/maintainer/housekeeping";
     }
     //get
     const getHousekeepingFromDb = async () =>{
@@ -58,23 +72,25 @@ export default function AddHousekeeping(){
                                 </div>
                                 <div className="col-md-7">
                                     <select className="form-control" id={"roomNo"}>
-                                        <option>R120</option>
-                                        <option>R121</option>
-                                        <option>R122</option>
-                                        <option>R123</option>
-                                        <option>R124</option>
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                        <option>5</option>
                                     </select>
                                 </div>
                             </div>
                         </div>
                         <div className="form-group mb-3">
                             <div className="row">
+                                <span id="name-error" style={{color:"red"}}></span>
                                 <div className="col-md-3">
                                     <label htmlFor="TaskDate">Task Date</label>
                                 </div>
                                 <div className="col-md-7">
-                                    <input type="date" className="form-control" id={"date"} placeholder="dd/mm/yyyy" />
+                                    <input type="date" className={"form-control"} id={"date"} placeholder="dd/mm/yyyy" required/>
                                 </div>
+
                             </div>
                         </div>
                         <div className="form-group mb-3">
