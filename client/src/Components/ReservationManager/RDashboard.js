@@ -61,6 +61,21 @@ export default function RDashboard(){
     },[]);
 
 
+    async function removeReservation(index_of_reservation) {
+        const reservationToRemove = reservation[index_of_reservation];
+        //remove from db
+        await fetch(getProxy("/reservation/"+reservationToRemove._id.toString()),{
+            method:"delete"
+        }).then(r=>r.text()).then(d=> {
+            alert("Successfully Deleted Reservation.");
+
+        }).catch(e=>console.log(e));
+        //remove from housekeeping list
+        const reservationAfterRemoved = reservationList.splice(index_of_reservation,1);
+        setList(reservationAfterRemoved);
+        //redo search
+        searchReservations();
+    }
     return <div>
         <div id="colorlib-main">
             <section className="ftco-section pt-4 mb-5 ftco-intro">
@@ -126,7 +141,7 @@ export default function RDashboard(){
                                         <button name="edit" className="btn btn-info px-3" onClick={()=>{window.location.href="/reserve/edit/"+reservation[index]._id.toString()}}>
                                             <center><i className="fa fa-edit"></i></center>
                                         </button>
-                                        <button name="" className="btn btn-danger px-3">
+                                        <button name="" className="btn btn-danger px-3" onClick={()=>removeReservation(index)}>
                                             <center><i className="fa fa-trash"></i></center>
                                         </button>
                                     </td>

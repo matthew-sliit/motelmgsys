@@ -74,7 +74,7 @@ function App() {
             <Route exact path={"/reserve"}>
                 <UserNavigationFormat navigations={ReservationNavigations()} content={<RDashboard/>} type={"Reservation Manager"}/>
             </Route>
-            <Route exact path={"/reserve/edit"}>
+            <Route exact path={"/reserve/edit/:id"}>
                 <UserNavigationFormat navigations={ReservationNavigations()} content={<EditReservations/>} type={"Reservation Manager"}/>
             </Route>
             {/* ============== MAINTENANCE MANAGER ==================*/}
