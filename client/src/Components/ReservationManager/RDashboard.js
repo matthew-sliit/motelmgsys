@@ -1,14 +1,17 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import "jquery";
 import "../../assets/images/favicon.ico";
 import "../../assets/fonts/fontawesome/css/fontawesome-all.min.css";
 import "../../assets/plugins/animation/css/animate.min.css";
 import "../../assets/css/style.css";
 import getProxy from "../../proxyConfig";
+import {PDFExport,savePDF} from "@progress/kendo-react-pdf";
 export default function RDashboard(){
 
     let [reservation, setreservation] = useState([]);
     let [reservationList, setList] = useState([]);
+    let pdfExportComponent = useRef(null);
+
 
 
     const searchall = () => {
@@ -71,11 +74,19 @@ export default function RDashboard(){
 
         }).catch(e=>console.log(e));
         //remove from housekeeping list
-        const reservationAfterRemoved = reservationList.splice(index_of_reservation,1);
-        setList(reservationAfterRemoved);
+        const reservationAfterRemoved = reservation.splice(index_of_reservation,1);
+        setreservation(reservationAfterRemoved);
+        location.reload();
         //redo search
         searchReservations();
     }
+
+    async function generateReport(){
+        const referredComponent = pdfExportComponent.current;
+        console.log(referredComponent['div']);
+        savePDF(pdfExportComponent.current, { paperSize:  "A4",fileName: 'Reservation Report', margin:20, scale:0.8, title:"Reservation Report"});
+    }
+
     return <div>
         <div id="colorlib-main">
             <section className="ftco-section pt-4 mb-5 ftco-intro">
@@ -86,7 +97,11 @@ export default function RDashboard(){
                     <h3 style={{color: "#0c5460"}}>Welcome to Reservations</h3>
                     <div className="row mt-3 mb-3">
                         <div className="col-md-2">
-                            <button type="button" className="btn btn-info" ><i className="far fa-file-alt"></i>Generate Report</button>
+                            <button type="button" className="btn btn-info" onClick={() => {
+                                if (pdfExportComponent.current) {
+                                    pdfExportComponent.current.save();
+                                }
+                            }}> <i className="far fa-file-alt"></i>Generate Report</button>
                         </div>
                     </div>
                     <div className="col-md-10">
@@ -111,37 +126,39 @@ export default function RDashboard(){
                     </div>
 
                     <div className="col-md-9">
+                        <div ref={pdfExportComponent}>
+                            <h4>Reservation report</h4>
                         <table className="table table-striped">
                             <thead className="thead-dark">
                             <tr>
-                                <th scope="col">Room No.</th>
-                                <th scope="col">Name</th>
-                                <th scope="col">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Email</th>
-                                <th scope="col">Checkin Date</th>
-                                <th scope="col">Checkout Date</th>
-                                <th scope="col">Room Count</th>
-                                <th scope="col">Payment</th>
-                                <th scope="col">Type</th>
-                                <th scope="col">Action</th>
+                                <th scope="col" style={{width:"50px"}}>Room No.</th>
+                                <th scope="col" style={{width:"100px"}}>Name</th>
+                                <th scope="col" style={{width:"100px"}}>Email</th>
+                                <th scope="col" style={{width:"100px"}}>Checkin Date</th>
+                                <th scope="col" style={{width:"100px"}}>Checkout Date</th>
+                                <th scope="col" style={{width:"100px"}}>Room Count</th>
+                                <th scope="col" style={{width:"100px"}}>Payment</th>
+                                <th scope="col" style={{width:"100px"}}>Type</th>
+                                <th scope="col" style={{width:"100px"}}>Action</th>
                             </tr>
                             </thead>
                             <tbody>
 
                             {reservation.map((reserve,index)=>{
                                 return <tr>
-                                    <td>{reserve.roomNo}</td>
-                                    <td>{reserve.name}</td>
-                                    <td>{reserve.email}</td>
-                                    <td>{reserve.checkInDate}</td>
-                                    <td>{reserve.checkOutDate}</td>
-                                    <td>{reserve.roomCount}</td>
-                                    <td>{reserve.payment}</td>
-                                    <td>{reserve.type}</td>
+                                    <td >{reserve.roomNo}</td>
+                                    <td >{reserve.name}</td>
+                                    <td >{reserve.email}</td>
+                                    <td >{reserve.checkInDate}</td>
+                                    <td >{reserve.checkOutDate}</td>
+                                    <td >{reserve.roomCount}</td>
+                                    <td >{reserve.payment}</td>
+                                    <td >{reserve.type}</td>
                                     <td colSpan="2">
-                                        <button name="edit" className="btn btn-info px-3" onClick={()=>{window.location.href="/reserve/edit/"+reservation[index]._id.toString()}}>
+                                        <button name="edit" className="btn btn-info " onClick={()=>{window.location.href="/reserve/edit/"+reservation[index]._id.toString()}}>
                                             <center><i className="fa fa-edit"></i></center>
                                         </button>
-                                        <button name="" className="btn btn-danger px-3" onClick={()=>removeReservation(index)}>
+                                        <button name="" className="btn btn-danger " onClick={()=>removeReservation(index)}>
                                             <center><i className="fa fa-trash"></i></center>
                                         </button>
                                     </td>
@@ -152,11 +169,59 @@ export default function RDashboard(){
                             </tbody>
                         </table>
                     </div>
+                    </div>
+                    <div
+                        style={{
+                            position: "absolute",
+                            left: "-1000px",
+                            top: 0,
+                        }}
+                    >
+                        <PDFExport paperSize="A4" margin="0.3cm" scale={0.8} fileName="HousekeepingTasksReport" ref={pdfExportComponent}>
+                            <div>
+                                <center>
+                                    <h5>Reservation Report</h5>
+                                </center>
+                                Date: {new Date().toDateString()}
 
+                                <table className="table table-bordered">
+                                    <thead className="thead-dark">
+                                    <tr>
+                                        <th scope="col" style={{width:"50px"}}>Room <br/>No.</th>
+                                        <th scope="col" style={{width:"90px"}}>Name</th>
+                                        <th scope="col" style={{width:"200px"}}>Email</th>
+                                        <th scope="col" style={{width:"80px"}}>Checkin<br/> Date</th>
+                                        <th scope="col" style={{width:"80px"}}>Checkout<br/> Date</th>
+                                        <th scope="col" style={{width:"60px"}}>Room<br/> Count</th>
+                                        <th scope="col" style={{width:"75px"}}>Payment</th>
+                                        <th scope="col" style={{width:"50px"}}>Type</th>
+
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    {reservation.map((reserve,index)=>{
+                                        return <tr>
+                                            <td >{reserve.roomNo}</td>
+                                            <td >{reserve.name}</td>
+                                            <td >{reserve.email}</td>
+                                            <td >{reserve.checkInDate}</td>
+                                            <td >{reserve.checkOutDate}</td>
+                                            <td >{reserve.roomCount}</td>
+                                            <td >{reserve.payment}</td>
+                                            <td >{reserve.type}</td>
+
+                                        </tr>
+                                    })}
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </PDFExport>
+                    </div>
                 </div>
 
             </section>
         </div>
     </div>
-
 }
