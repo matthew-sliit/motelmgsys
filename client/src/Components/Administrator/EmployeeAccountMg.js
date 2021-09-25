@@ -1,7 +1,8 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import Profile from "../../models/Profile";
 import AccountPasswordResetPopup from "./AccountPasswordResetPopup";
 import getProxy from "../../proxyConfig";
+import {savePDF} from "@progress/kendo-react-pdf";
 
 export default function EmployeeAccountMg(){
     let [profiles, setProfiles] = useState([]);
@@ -9,6 +10,7 @@ export default function EmployeeAccountMg(){
     let [newPassword, setNewPassword] = useState(null);
     let [errorMsg, setErrorMsg] = useState(null);
     let [popup, togglePopup] = useState(false);
+    let pdfExportComponent = useRef(null);
     //component did mount
     useEffect(async ()=>{
         //get records from server database
@@ -108,7 +110,7 @@ export default function EmployeeAccountMg(){
         }
         if(profileRecord.status!==undefined){
             if(profileRecord.status==="ban"){
-                buttons.push(<button className={"btn btn-primary"} onClick={()=>onClickSetUserBanStatus(index,'unban')}>UnBan</button>);
+                buttons.push(<button className={"btn btn-blue"} style={{width:"68px", textAlign:"center", padding:"10px"}} onClick={()=>onClickSetUserBanStatus(index,'unban')}>UnBan</button>);
             }else{
                 buttons.push(<button className={"btn btn-danger"} onClick={()=>onClickSetUserBanStatus(index,'ban')}>Ban</button>);
             }
@@ -118,22 +120,26 @@ export default function EmployeeAccountMg(){
         buttons.push(<button className={"btn btn-warning mx-1"} onClick={()=>onClickResetUserPassword(index)}>Password Reset</button>);
         return <tr>
             <td><div style={{width:"10px"}}>{index+1}</div></td>
-            <td><div style={{width:"130px", whiteSpace:"pre-wrap"}}>{profile.fullname}</div></td>
+            <td><div style={{width:"180px", whiteSpace:"pre-wrap"}}>{profile.fullname}</div></td>
             <td><div style={{width:"100px", whiteSpace:"pre-wrap"}}>{profile.nic}</div></td>
-            <td><div style={{width:"150px", whiteSpace:"pre-wrap"}}>{profile.contact}</div></td>
+            <td><div style={{width:"150px", whiteSpace:"pre-wrap", textAlign:"center"}}>{profile.contact}</div></td>
             <td><div style={{width:"180px", whiteSpace:"pre-wrap"}}>{profile.email}</div></td>
             <td><div style={{width:"200px", whiteSpace:"pre-wrap"}}>{profile.address}</div></td>
-            <td><div style={{width:"130px", whiteSpace:"pre-wrap"}}>{profile.role}</div></td>
+            <td><div style={{width:"130px", whiteSpace:"pre-wrap", textAlign:"center"}}>{profile.role}</div></td>
             {index>=0?<td>
                 <div style={{width:"210px"}}>{buttons}</div>
             </td>:<td>q</td>}
 
         </tr>;
     }
-
+    async function generateReport(){
+        const referredComponent = pdfExportComponent.current;
+        console.log(referredComponent['div']);
+        savePDF(pdfExportComponent.current, { paperSize:  "A4",fileName: 'Employee Report', scale:0.6, title:"Employee Report"});
+    }
     return <div style={{position:"relative"}}>
         {popup!==false?popup:""}
-        <h4 style={{fontfamily:"fontawesome", color:"#566573"}}>Employee Account Management</h4>
+        <h4 style={{fontfamily:"fontawesome", color:"#566573"}}>User Account Control</h4>
         <p/>
         <div style={{display:"table-cell", padding:"6px", border:"1px solid #7DCEA0"}}>
             <label>Name</label>
@@ -145,30 +151,33 @@ export default function EmployeeAccountMg(){
                 <option>any</option>
                 {Profile.getUserRoles().map(role => {return <option>{role}</option>})}
             </select>
-            <button className={"btn btn-green mx-1"} onClick={()=>searchProfiles()}>Search</button>
+            <button className={"btn btn-green mx-1"} onClick={()=>searchProfiles()} style={{display:"none"}}>Search</button>
         </div>
-        <div style={{float:"right", marginBottom:"3px"}}>
-            <button className={"btn btn-blue"}>Generate Report</button>
+        <div style={{display:"table-cell", paddingLeft:"10px"}}>
+            <button className={"btn btn-blue"} onClick={()=>generateReport()}>Generate Report</button>
         </div>
         <p/>
         <span style={{color:"green"}}>{newPassword!==null?"New Password "+newPassword:""}</span>
         <span style={{color:"red"}}>{errorMsg!==null?errorMsg:""}</span>
         <p/>
-        <table style={{position:"relative", maxWidth:"100px"}} className={"table"}>
+        <div ref={pdfExportComponent}>
+            <h4 style={{fontfamily:"fontawesome", color:"#566573", width:"inherit", textAlign:"center"}}>Employee Accounts</h4>
+            <table style={{position:"relative", maxWidth:"100px"}} className={"table"}>
             <thead><tr style={{textAlign:"center"}}>
-                <th scope="col">ID</th>
-                <th scope="col">Name</th>
-                <th scope="col">Nic</th>
-                <th scope="col">Contact Number</th>
-                <th scope="col">Email</th>
-                <th scope="col">Address</th>
-                <th scope="col">Role</th>
-                <th scope="col">Operations</th>
+                <th scope="col" style={{width:"50px"}}>ID</th>
+                <th scope="col" style={{width:"120px"}}>Name</th>
+                <th scope="col" style={{width:"100px"}}>Nic</th>
+                <th scope="col" style={{width:"180px"}}>Contact Number</th>
+                <th scope="col" style={{width:"200px"}}>Email</th>
+                <th scope="col" style={{width:"200px"}}>Address</th>
+                <th scope="col" style={{width:"150px", marginLeft:"100px"}}>Role</th>
+                <th scope="col" style={{width:"200px", left:"100px"}}>Operations</th>
             </tr></thead>
             <tbody>
-            {profileList.length<1?<tr key={0}><td colSpan={7} style={{textAlign:"center", fontSize:"20px"}}>No profiles, This is impossible, please contact administrator</td></tr>:""}
+            {profileList.length<1?<tr key={0}><td colSpan={7} style={{textAlign:"center", fontSize:"20px"}}>No profiles, This is impossible, please contact network administrator</td></tr>:""}
             {profiles.map((profile, index)=>{return formatRecordToRow(profile,index)})}
             </tbody>
         </table>
+        </div>
     </div>;
 }
