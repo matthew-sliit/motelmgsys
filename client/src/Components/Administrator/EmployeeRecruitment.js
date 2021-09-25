@@ -123,7 +123,7 @@ export default function EmployeeRecruitment(){
                 <option>any</option>
                 {Profile.getUserRoles().map(role => {return <option>{role}</option>})}
             </select>
-            <button className={"btn btn-green mx-1"} onClick={()=>searchRecruitments()}>Search</button>
+            <button className={"btn btn-green mx-1"} onClick={()=>searchRecruitments()} style={{display:"none"}}>Search</button>
         </div>
         <div style={{display:"table-cell", paddingLeft:"10px"}}>
             <button className={"btn btn-blue"} onClick={()=>generateReport()}>Generate Report</button>
