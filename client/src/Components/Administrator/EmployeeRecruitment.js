@@ -1,11 +1,15 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {createElement, useEffect, useRef, useState} from "react";
 import Profile from "../../models/Profile";
 import getProxy from "../../proxyConfig";
-import {savePDF} from "@progress/kendo-react-pdf";
+import ReportGenerationV1 from "../../assets/js/report-generation-v1";
 export default function EmployeeRecruitment(){
     let [recruitments, setRecruitments] = useState([]);
     let [recruitmentList, setList] = useState([]);
     let pdfExportComponent = useRef(null);
+    const [isClient, setIsClient] = useState(false)
+    useEffect(() => {
+        setIsClient(true)
+    }, [])
     //component did mount
     useEffect(async ()=>{
         //get records from server database
@@ -83,7 +87,7 @@ export default function EmployeeRecruitment(){
             setRecruitments(suggestRecruitments);
         }
     }
-    function formatRecordToRow(profileRecord, index){
+    function formatRecordToRow(profileRecord, index, withBtn){
         //index starts from 0
         const profile = new Profile();
         if(index>-1){
@@ -98,17 +102,33 @@ export default function EmployeeRecruitment(){
             <td><div style={{width:"120px", whiteSpace:"pre-wrap"}}>{profile.email}</div></td>
             <td><div style={{width:"200px", whiteSpace:"pre-wrap"}}>{profile.address}</div></td>
             <td><div style={{width:"100px", whiteSpace:"pre-wrap"}}>{profile.role}</div></td>
-            {index>=0?<td>
+            {index>=0&&withBtn?<td>
                 <div style={{width:"170px"}}>
                 <button className={"btn btn-green"} onClick={()=>onClickAcceptRecruitment(index)}>Accept</button>
                 <button className={"btn btn-danger mx-1"} onClick={()=>onClickRejectRecruitment(index)}>Reject</button>
                 </div>
-            </td>:<td>q</td>}
+            </td>:<td>{""}</td>}
 
         </tr>;
     }
+
     async function generateReport(){
-        savePDF(pdfExportComponent.current, { paperSize:  "A4",fileName: 'Employee Recruitment Report', scale:0.5, title:"Employee Recruitment Report"});
+        //savePDF(pdfExportComponent.current, { paperSize:  "A4",fileName: 'Employee Recruitment Report', scale:0.5, title:"Employee Recruitment Report", margin: 6});
+        let tableHeaders = [['ID','Name','Nic','Contact No','Email','Address','Role']]
+        let tableBody = [];
+        let tableRow = [];
+        recruitments.map((recruitment, index)=>{
+            tableRow = [];
+            tableRow.push(index+1);
+            tableRow.push(recruitment.fullname);
+            tableRow.push(recruitment.nic);
+            tableRow.push(recruitment.contact);
+            tableRow.push(recruitment.email);
+            tableRow.push(recruitment.address);
+            tableRow.push(recruitment.role);
+            tableBody.push(tableRow);
+        })
+        ReportGenerationV1({header:"Employee Recruitment Report",tableHeaders:tableHeaders,tableBody:tableBody,fileName:"employee recruitments report"})
     }
     return <div style={{position:"relative"}}>
         <h4 style={{fontfamily:"fontawesome", color:"#566573", position:"relative", top:"-50px"}}>Approval of Recruitments</h4>
@@ -130,8 +150,8 @@ export default function EmployeeRecruitment(){
         </div>
         <p/>
         <p/>
-        <div ref={pdfExportComponent}>
-            <h4 style={{fontfamily:"fontawesome", color:"#566573", textAlign:"center", width:"inherit"}}>Employee Recruitments</h4>
+        <div ref={pdfExportComponent} id={"abc"}>
+            <h4 style={{fontfamily:"fontawesome", color:"#566573", textAlign:"center", width:"inherit", position:"relative"}}>Employee Recruitments</h4>
             <table style={{position:"relative"}} className={"table"}>
             <thead><tr>
                 <th style={{width:"50px"}}>ID</th>
@@ -146,7 +166,7 @@ export default function EmployeeRecruitment(){
             </tr></thead>
             <tbody>
             {recruitmentList.length<1?<tr key={0}><td colSpan={7} style={{textAlign:"center", fontSize:"20px"}}>No new recruitments</td></tr>:""}
-            {recruitments.map((recruitment, index)=>{return formatRecordToRow(recruitment,index)})}
+            {recruitments.map((recruitment, index)=>{return formatRecordToRow(recruitment,index,true)})}
             </tbody>
         </table>
         </div>
