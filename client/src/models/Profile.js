@@ -15,7 +15,7 @@ export default class Profile{
         this.#passwordNew = crypto.createHash('sha256').update(password).digest('hex');
     }
     isPasswordValid(password){
-        if(password.length<6){
+        if(password.length<=6){
             return "Password should have more than 6 characters";
         }else if(!/\d/.test(password)){
             return "Password should have at least 1 number";

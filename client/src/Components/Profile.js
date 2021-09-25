@@ -11,17 +11,22 @@ export default function Profile(){
     //const [usernic] = useState(Cookie.get('nic'));
     //component did mount
     useEffect(async ()=>{
-        await fetch(getProxy("/profile/")+userid,{
-            method:"get"
-        }).then(r=>r.json()).then(d=>setProfile(d)).catch(e=>console.log(e));
+        await getProfileFromServer();
     },[]);
     //update function
     const updateProfile = async (profile) =>{
+        if(profile===null){return null;}
         await fetch(getProxy("/profile/")+userid,{
             method:"put",
             headers: {'Content-Type':'application/json'},
             body:JSON.stringify({"profile":profile})
-        }).then(r=>r.json()).then(d=>console.log(d)).catch(e=>console.log(e));
+        }).then(r=>r.text()).then(d=>console.log(d)).catch(e=>console.log(e));
+        await getProfileFromServer();
+    }
+    const getProfileFromServer = async () =>{
+        await fetch(getProxy("/profile/")+userid,{
+            method:"get"
+        }).then(r=>r.json()).then(d=>setProfile(d)).catch(e=>console.log(e));
     }
     //render
     return (

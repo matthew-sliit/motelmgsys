@@ -3,6 +3,7 @@ const mongo = require('mongodb');
 const readDocument = require('../api/mongodb.api').readDocument;
 const {generatePassword} = require('../models/password-generator');
 const Router = require('@koa/router');
+const {updateDocument} = require("../api/mongodb.api");
 //endpoint first url
 const router = new Router({prefix:'/login'});
 
@@ -22,8 +23,19 @@ router.post("/",async ctx=>{
                 userVerified = profile.passwordVerified(password);
                 //console.log("user found: verified?"+userVerified);
                 if (userVerified) {
-                    //success - pass user id
-                    ctx.body = "success:" + profile.role + ":" + profile._id.toString();
+                    if(typeof profile.status !== "undefined"){
+                        if(profile.status === "ban"){
+                            ctx.body = "error:Account has been banned!";
+                        }else{
+                            //unbanned user
+                            //success - pass user id
+                            ctx.body = "success:" + profile.role + ":" + profile._id.toString();
+                        }
+                    }else{
+                        //user verified and has no previous bans
+                        //success - pass user id
+                        ctx.body = "success:" + profile.role + ":" + profile._id.toString();
+                    }
                 } else {
                     //error - warn user
                     ctx.body = "error:Invalid credentials!";
@@ -51,6 +63,8 @@ router.post("/reset",async ctx=>{
                 if(profile.email===email){
                     //success - generate password
                     const newPassword = generatePassword();
+                    profile.setPasswordDoubleHash(newPassword);
+                    updateDocument(Profile.PROFILE_COLLECTION_NAME,"nic",nic,profile.getProfileData());
                     ctx.body = "success:"+newPassword;
                 }else{
                     //error - warn user
