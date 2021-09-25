@@ -2,9 +2,33 @@ import React, {useEffect, useState} from "react";
 import getProxy from "../../proxyConfig";
 import File2base64 from "../../assets/js/file2base64";
 export default function EditMaintenance(){
-    //state
-    let [maintenance, setMaintenance] = useState([]);
-    //post
+    let [maintenanceId, setMaintenanceId] = useState(null);
+    //on mount
+    useEffect(()=>{
+        let path = window.location.pathname.split("/");
+        if(path.length>4){
+            //has maintenance id
+            setMaintenanceId(path[4]);
+            setMaintenanceForEdit(path[4]);
+        }
+        console.log(path);
+    },[])
+    //get maintenance using id
+    async function setMaintenanceForEdit(index){
+        await fetch(getProxy("/maintenance/"+index),{
+            method:"get"
+        }).then(r=>r.json()).then(d=>{
+            const clean = d;
+            document.getElementById('roomNo').value = clean.roomNo;
+            document.getElementById('description').value = clean.description;
+            document.getElementById('date').value = clean.date;
+           // document.getElementById("image").files[0] = clean.image;
+            document.getElementById('status').value = clean.status;
+            document.getElementById('assignedTo').value = clean.assignedTo;
+            document.getElementById('cost').value = clean.cost;
+        }).catch(e=>console.log(e));
+    }
+    //save maintenance
     const saveMaintenanceToDb = async ()=>{
         const roomNo = document.getElementById("roomNo").value;
         const description = document.getElementById("description").value;
@@ -16,24 +40,24 @@ export default function EditMaintenance(){
         const assignedTo = document.getElementById("assignedTo").value;
         const cost = document.getElementById("cost").value;
 
-        await fetch(getProxy("/maintenance"), {
-            method: 'post',
+        if(date.length<1) {
+            document.getElementById("name-error").innerHTML = "Task date cannot be empty";
+            return null;
+        }else
+            document.getElementById("name-error").innerHTML="";
+
+        //will return success
+        await fetch(getProxy("/maintenance/"+maintenanceId), {
+            method: 'put',
             headers: {'Content-Type':'application/json'},
             body: JSON.stringify({"maintenance":{"roomNo":roomNo,"description":description,"image":imageBase64,"date":date,"status":status,"assignedTo":assignedTo,"cost":cost}})
-        }).then(r=>r.text()).then(d=>console.log(d)).catch(e=>console.log(e));
+        }) .then(r=>r.text()).then(d=> {
+            alert("Successfully Updated Maintenance Task.");
+
+        }).catch(e=>console.log(e));
         //re render this page
-        await getMaintenanceFromDb();
+        return window.location.href="/maintainer/maintenance";
     }
-    //get
-    const getMaintenanceFromDb = async () =>{
-        await fetch(getProxy("/maintenance"),{
-            method:'get'
-        }).then(r=>r.json()).then(d=>setMaintenance(d)).catch(e=>console.log(e));
-    }
-    //run once
-    useEffect(async ()=>{
-        await getMaintenanceFromDb();
-    },[])
     //render
     return <div style={{position:"relative"}}>
         <button type="button" onClick={()=>{window.location.href="/maintainer/maintenance"}} className="btn btn-primary">
@@ -55,13 +79,7 @@ export default function EditMaintenance(){
                                         <label htmlFor="RoomNo">Room No</label>
                                     </div>
                                     <div className="col-md-7">
-                                        <select className="form-control" id={"roomNo"}>
-                                            <option>R120</option>
-                                            <option>R121</option>
-                                            <option>R122</option>
-                                            <option>R123</option>
-                                            <option>R124</option>
-                                        </select>
+                                        <input type="text" className="form-control" id={"roomNo"} placeholder="Room No" readOnly/>
                                     </div>
                                 </div>
                             </div>
@@ -87,6 +105,7 @@ export default function EditMaintenance(){
                             </div>
                             <div className="form-group mb-3">
                                 <div className="row">
+                                    <span id="name-error" style={{color:"red"}}></span>
                                     <div className="col-md-3">
                                         <label htmlFor="TaskDate">Task Date</label>
                                     </div>
@@ -134,7 +153,7 @@ export default function EditMaintenance(){
                                     <button type="submit" name="save" onClick={()=>saveMaintenanceToDb()} className="btn btn-primary btn-block">Update</button>
                                 </div>
                                 <div className="col-md-6">
-                                    <button type="submit" name="clear" className="btn btn-outline-danger btn-block">Clear
+                                    <button type="submit" name="clear" onClick={()=>{window.location.href="/maintainer/maintenance"}} className="btn btn-outline-danger btn-block">Cancel
                                     </button>
                                 </div>
                             </div>

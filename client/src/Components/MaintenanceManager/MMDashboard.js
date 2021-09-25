@@ -62,8 +62,8 @@ export default function MMDashboard(){
     }
     if(!afterComponentMounted){return <div></div>}
     return <div>
-        <h3 className={"mb-3"} style={{color: "#0c5460"}}>Maintenance Dashboard</h3>
-        <h4>Housekeeping Status</h4>
+        <h3 className={"mb-3"} style={{color: "#0c5460"}}><b>Maintenance Management Dashboard</b></h3>
+        <h4 style={{color:"darkblue"}} >Status of Housekeeping Tasks</h4>
         <div style={{display: "table-cell"}}>
             <div id="dirty-chart"></div>
         </div>
@@ -74,7 +74,7 @@ export default function MMDashboard(){
             <div id="clean-chart" style={{position: "relative"}}></div>
         </div>
         <div style={{marginTop:"-80px"}}>
-            <h4>Maintenance Status</h4>
+            <h4 className={"mb-3"} style={{color: "darkblue"}}>Status of Maintenance Tasks</h4>
             <div style={{display: "table-cell"}}>
                 <div id="open-chart"></div>
             </div>
@@ -83,7 +83,19 @@ export default function MMDashboard(){
             </div>
         </div>
         <div style={{marginTop:"-80px"}}>
-        <h4 style={{color: "#0c5460"}}>Reservation Details</h4>
+        <div className="row mt-3 mb-3">
+            <div className="col-md-3">
+                <button type="button" onClick={()=>{window.location.href="/maintainer/housekeeping"}} className="btn btn-success"><i className="fas fa-shower"></i>
+                    Housekeeping Tasks
+                </button>
+            </div>
+            <div className="col-md-3">
+                <button type="button" className="btn btn-warning" onClick={()=>{window.location.href="/maintainer/maintenance"}}><i className="fas fa-wrench"></i>
+                    Maintenance Tasks
+                </button>
+            </div>
+        </div>
+        <h4 className={"mb-3"} style={{color: "darkblue"}}>Room Reservation Details</h4>
         <table className={"table w-75"}>
             <thead className="thead-dark">
             <tr>
@@ -91,6 +103,7 @@ export default function MMDashboard(){
                 <th scope="col">Check-in Date</th>
                 <th scope="col">Check-out Date</th>
                 <th scope="col">Add Cleaning Task</th>
+                <th scope="col">Add Maintenance Task</th>
             </tr>
             </thead>
             <tbody>
@@ -99,10 +112,14 @@ export default function MMDashboard(){
                     <td>{reserve.roomNo}</td>
                     <td>{reserve.checkInDate}</td>
                     <td>{reserve.checkOutDate}</td>
-                <td>
-                    <button type="button" onClick={()=>{window.location.href="/maintainer/housekeeping/add"}} className="btn btn-success"><i className="fas fa-plus-circle"></i>Add Task
-                    </button>
-                </td>
+                    <td>
+                        <button type="button" onClick={()=>{window.location.href="/maintainer/housekeeping/add"}} className="btn btn-success"><i className="fas fa-plus-circle"></i>Add Task
+                        </button>
+                    </td>
+                    <td>
+                        <button type="button" onClick={()=>{window.location.href="/maintainer/maintenance/add"}} className="btn btn-warning"><i className="fas fa-plus-circle"></i>Add Task
+                        </button>
+                    </td>
                 </tr>
             })}
             </tbody>
