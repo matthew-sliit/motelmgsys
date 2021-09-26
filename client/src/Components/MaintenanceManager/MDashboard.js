@@ -1,13 +1,17 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import "jquery";
 import "../../assets/images/favicon.ico";
 import "../../assets/fonts/fontawesome/css/fontawesome-all.min.css";
 import "../../assets/plugins/animation/css/animate.min.css";
 import "../../assets/css/style.css";
+import logo from '../../assets/images/logo.png';
 import getProxy from "../../proxyConfig";
+import {PDFExport, savePDF} from "@progress/kendo-react-pdf";
+
 export default function MDashboard() {
     let [maintenance, setMaintenance] = useState([]);
     let [maintenanceList, setMaintenanceList] = useState([]);
+    let pdfExportComponent = useRef(null);
 
     const searchall = () => {
         const roomNo = document.getElementById("roomNo").value;
@@ -97,7 +101,11 @@ export default function MDashboard() {
                 </button>
             </div>
             <div className="col-md-3">
-                <button type="button" className="btn btn-info"><i className="far fa-file-alt"></i>Generate Report
+                <button type="button" className="btn btn-info" onClick={() => {
+                    if (pdfExportComponent.current) {
+                        pdfExportComponent.current.save();
+                    }
+                }}><i className="far fa-file-alt"></i>Generate Report
                 </button>
             </div>
         </div>
@@ -129,7 +137,6 @@ export default function MDashboard() {
                 </div>
             </div>
         </div>
-
         <div className="col-md-10">
             <table className="table table-striped">
                 <thead className="thead-dark">
@@ -168,6 +175,54 @@ export default function MDashboard() {
 
                 </tbody>
             </table>
+        </div>
+        <div
+            style={{
+                position: "absolute",
+                left: "-1000px",
+                top: 0,
+            }}
+        >
+            <PDFExport paperSize="A4" margin="0.8cm" fileName="MaintenanceTasksReport" ref={pdfExportComponent}>
+                <div>
+                    <div className={"text-right"}>
+                        <img src={logo} style={{width:"120px"}}/>
+                    </div>
+                    <center>
+                        <h5>Maintenance Tasks Report</h5>
+                    </center>
+                    <br/><br/>
+                    <p style={{fontSize:"12px",color:"black"}}>Date: {new Date().toLocaleDateString(['ban', 'id'])}<br/><br/>
+                        Signature of supervisor: _____________________
+                    </p>
+                    <table className="table table-bordered">
+                    <thead className="thead-dark">
+                    <tr style={{fontSize:"12px"}}>
+                        <th style={{width:"50px"}}  scope="col">Room <br/>No</th>
+                        <th style={{width:"130px"}}  scope="col">Description</th>
+                        <th style={{width:"70px"}}  scope="col">Task Date</th>
+                        <th style={{width:"70px"}}  scope="col">Status</th>
+                        <th style={{width:"100px"}}  scope="col">AssignedTo</th>
+                        <th style={{width:"50px"}}  scope="col">Cost</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    {maintenance.map((clean,index) => {
+                        return <tr style={{fontSize:"11px"}}>
+                            <td>{clean.roomNo}</td>
+                            <td>{clean.description}</td>
+                            <td>{clean.date}</td>
+                            <td>{clean.status}</td>
+                            <td>{clean.assignedTo}</td>
+                            <td>{clean.cost}</td>
+                        </tr>
+                    })}
+
+                    </tbody>
+                </table>
+                </div>
+            </PDFExport>
         </div>
     </div>
 }

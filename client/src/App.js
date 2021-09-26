@@ -1,4 +1,8 @@
 import {BrowserRouter as Router, Switch, Route, Link} from 'react-router-dom';
+import './assets/css/index.css';
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap/dist/js/bootstrap';
+import logo from '../src/assets/images/logo.png';
 //components
 import Register from "./Components/Register"
 import Login from "./Components/Login";
@@ -36,6 +40,7 @@ import BJNavigations from "./Components/BurgerJoint/BJNavigation";
 import BJDashboard from "./Components/BurgerJoint/BJDashboard";
 import EditBurger from "./Components/BurgerJoint/EditBurger";
 import BurgerMenu from "./Components/BurgerJoint/BurgerMenu";
+import React from "react";
 
 
 function App() {
@@ -130,23 +135,152 @@ function App() {
             </Route>
             */}
             <Route exact path={"/"}>
-                <button className={"btn btn-outline-primary mt-3"} onClick={()=>window.location.href="/register"}>register</button>
-                <br/>
-                <button className={"btn btn-outline-primary mt-1"} onClick={()=>window.location.href="/login"}>Login</button>
-                <br/>
-                <button className={"btn btn-outline-primary mt-1"} onClick={()=>window.location.href="/user"}>User Page Layout</button>
-                <br/>
-                <button className={"btn btn-outline-primary mt-1"} onClick={()=>window.location.href="/admin"}>Admin</button>
-                <br/>
-                <button className={"btn btn-outline-primary mt-1"} onClick={()=>window.location.href="/reserve"}>Reservation Manager</button>
-                <br/>
-                <button className={"btn btn-outline-primary mt-1"} onClick={()=>window.location.href="/maintainer"}>Maintenance Manager</button>
-                <br/>
-                <button className={"btn btn-outline-primary mt-1"} onClick={()=>window.location.href="/bar"}>Bar Manager</button>
-                <br/>
-                <button className={"btn btn-outline-primary mt-1"} onClick={()=>window.location.href="/joint"}>Burger Joint</button>
-                <br/>
-                <button className={"btn btn-outline-primary mt-1"} onClick={()=>window.location.href="http://localhost:3000/motelhome/index.html"}>Home</button>
+                <div className="container">
+                    <br/><br/>
+                    <center>
+                        <img src={logo} style={{width:"200px"}}/>
+                        <h2 className="text-primary"><b>Motel Management System</b></h2>
+                    </center>
+                   <br/><br/><br/><br/>
+                    <div className="row">
+                        <div className="col-md-3">
+                            <div className="card card-social" style={{backgroundColor:"#e7feff"}} onClick={()=>window.location.href="/register"}>
+                                <div className="card-block border-bottom">
+                                        <div className="row align-items-center justify-content-center">
+                                            <center>
+                                                <i className="fa fa-user-plus text-primary f-36"></i>
+                                            </center>
+                                            <br/><br/>
+                                            <center><h3>Register</h3></center>
+                                            <br/>
+                                        </div>
+                                    </div>
+                            </div>
+                        </div>
+                        <div className="col-md-3">
+                            <div className="card card-social" style={{backgroundColor:"#e7feff"}} onClick={()=>window.location.href="/login"}>
+                                <div className="card-block border-bottom">
+                                        <div className="row align-items-center justify-content-center">
+                                            <center>
+                                                <i className="fa fa-sign-in-alt text-primary f-36"></i>
+                                            </center>
+                                            <br/><br/>
+                                            <center><h3>Login</h3></center>
+                                            <br/>
+                                        </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div className="col-md-3">
+                            <div className="card card-social" style={{backgroundColor:"#e7feff"}}
+                                 onClick={()=>window.location.href="http://localhost:3000/motelhome/index.html"}>
+                                <div className="card-block border-bottom">
+                                    <div className="row align-items-center justify-content-center">
+                                        <center>
+                                            <i className="fa fa-home text-primary f-36"></i>
+                                        </center>
+                                        <br/><br/>
+                                        <center><h3>Home</h3></center>
+                                        <br/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="col-md-3">
+                            <div className="card card-social" style={{backgroundColor:"#e7feff"}} onClick={()=>window.location.href="/admin"}>
+                                <div className="card-block border-bottom">
+                                    <div className="row align-items-center justify-content-center">
+                                        <center>
+                                            <i className="fa fa-user-cog text-primary f-36"></i>
+                                        </center>
+                                        <br/><br/>
+                                        <center><h3>Admin</h3></center>
+                                        <br/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col-md-3">
+                            <div className="card card-social" style={{backgroundColor:"#e7feff"}} onClick={()=>window.location.href="/reserve"}>
+                                <div className="card-block border-bottom">
+                                    <div className="row align-items-center justify-content-center">
+                                        <div className="col-auto">
+                                            <i className="fa fa-desktop text-primary f-36"></i>
+                                        </div>
+                                        <br/><br/>
+                                            <center><h3>Reservation Management</h3></center>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div className="col-md-3">
+                            <div className="card card-social" style={{backgroundColor:"#e7feff"}} onClick={()=>window.location.href="/maintainer"}>
+                                <div className="card-block border-bottom">
+                                    <div className="row align-items-center justify-content-center">
+                                        <div className="col-auto">
+                                            <i className="fa fa-toolbox text-primary f-36"></i>
+                                        </div>
+                                        <br/><br/>
+                                            <center><h3>Maintenance Management</h3></center>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div className="col-md-3">
+                            <div className="card card-social" style={{backgroundColor:"#e7feff"}}
+                                 onClick={()=>window.location.href="/bar"}>
+                                <div className="card-block border-bottom">
+                                    <div className="row align-items-center justify-content-center">
+                                        <div className="col-auto">
+                                            <i className="fa fa-wine-glass text-primary f-36"></i>
+                                        </div>
+                                        <br/><br/>
+                                            <center><h3>Bar<br/> Management</h3></center>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div className="col-md-3">
+                            <div className="card card-social" style={{backgroundColor:"#e7feff"}}
+                                 onClick={()=>window.location.href="/joint"}>
+                                <div className="card-block border-bottom">
+                                    <div className="row align-items-center justify-content-center">
+                                        <center>
+                                            <i className="fa fa-utensils text-primary f-36"></i>
+                                        </center>
+                                        <br/><br/>
+                                            <center><h3>Burger <br/>Joint</h3></center>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/*<button className={"btn btn-outline-primary mt-3"} onClick={()=>window.location.href="/register"}>register</button>*/}
+                {/*<br/>*/}
+                {/*<button className={"btn btn-outline-primary mt-1"} onClick={()=>window.location.href="/login"}>Login</button>*/}
+                {/*<br/>*/}
+                {/*<button className={"btn btn-outline-primary mt-1"} onClick={()=>window.location.href="/user"}>User Page Layout</button>*/}
+                {/*<br/>*/}
+                {/*<button className={"btn btn-outline-primary mt-1"} onClick={()=>window.location.href="/admin"}>Admin</button>*/}
+                {/*<br/>*/}
+                {/*<button className={"btn btn-outline-primary mt-1"} onClick={()=>window.location.href="/reserve"}>Reservation Manager</button>*/}
+                {/*<br/>*/}
+                {/*<button className={"btn btn-outline-primary mt-1"} onClick={()=>window.location.href="/maintainer"}>Maintenance Manager</button>*/}
+                {/*<br/>*/}
+                {/*<button className={"btn btn-outline-primary mt-1"} onClick={()=>window.location.href="/bar"}>Bar Manager</button>*/}
+                {/*<br/>*/}
+                {/*<button className={"btn btn-outline-primary mt-1"} onClick={()=>window.location.href="/joint"}>Burger Joint</button>*/}
+                {/*<br/>*/}
+                {/*<button className={"btn btn-outline-primary mt-1"} onClick={()=>window.location.href="http://localhost:3000/motelhome/index.html"}>Home</button>*/}
             </Route>
         </Switch>
     </Router>
