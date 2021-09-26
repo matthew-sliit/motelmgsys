@@ -3,6 +3,7 @@ import Profile from "../../models/Profile";
 import AccountPasswordResetPopup from "./AccountPasswordResetPopup";
 import getProxy from "../../proxyConfig";
 import {savePDF} from "@progress/kendo-react-pdf";
+import ReportGenerationV1 from "../../assets/js/report-generation-v1";
 
 export default function EmployeeAccountMg(){
     let [profiles, setProfiles] = useState([]);
@@ -133,9 +134,22 @@ export default function EmployeeAccountMg(){
         </tr>;
     }
     async function generateReport(){
-        const referredComponent = pdfExportComponent.current;
-        console.log(referredComponent['div']);
-        savePDF(pdfExportComponent.current, { paperSize:  "A4",fileName: 'Employee Report', scale:0.6, title:"Employee Report"});
+        //savePDF(pdfExportComponent.current, { paperSize:  "A4",fileName: 'Employee Report', scale:0.6, title:"Employee Report"});
+        let tableHeaders = [['ID','Name','Nic','Contact No','Email','Address','Role']]
+        let tableBody = [];
+        let tableRow = [];
+        profiles.map((profile, index)=>{
+            tableRow = [];
+            tableRow.push(index+1);
+            tableRow.push(profile.fullname);
+            tableRow.push(profile.nic);
+            tableRow.push(profile.contact);
+            tableRow.push(profile.email);
+            tableRow.push(profile.address);
+            tableRow.push(profile.role);
+            tableBody.push(tableRow);
+        })
+        ReportGenerationV1({header:"Employee Profiles Report",tableHeaders:tableHeaders,tableBody:tableBody,fileName:"employee profiles report"})
     }
     return <div style={{position:"relative"}}>
         {popup!==false?popup:""}

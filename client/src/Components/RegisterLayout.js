@@ -1,24 +1,60 @@
 import React from "react";
 import Profile from "../models/Profile";
 export default function RegisterLayout(props){
-    const {register, role,roles, profileData, saveFunction, registerReference} = props;
+    const {register, role,roles, profileData, saveFunction,popup} = props;
     let prefix = "",profile=new Profile();
     if(register){
         prefix="Enter ";
     }else{
         Object.assign(profile,profileData);
     }
+
     //console.log(JSON.stringify(profileData));
     //setUserProfile Role or all Roles in registration
     function setRole_s(){
         if(register){
             return <React.Fragment>
-                <input type={"text"} list={"user-roles"} className={"mx-2"} defaultValue={profile.role} id={"user-role"}/>
+                <input type={"text"} list={"user-roles"} className={"mx-2"} id={"user-role"}/>
                 <datalist className={"mx-2"} id={"user-roles"}>{roles.map(role=>{return <option>{role}</option>})}</datalist>
             </React.Fragment>;
         }else{
             return <input type={"text"} value={role} disabled={"disabled"}/>
         }
+    }
+    const clearFormFunction = () =>{
+        document.getElementById("user-fullname").value = "";
+        document.getElementById("user-nic").value="";
+        document.getElementById("user-email").value="";
+        document.getElementById("user-contact").value="";
+        document.getElementById("user-role").value="";
+        document.getElementById("user-address").value="";
+        document.getElementById('user-password').value="";
+    }
+    function checkPassword(){
+        let editedProfile = new Profile();
+        let passwordErrorMSgSpan = document.getElementById("password-error");
+        const password = document.getElementById('user-password').value;
+        if(!register){
+            //profile change password
+            const newpassword = document.getElementById('user-new-password').value;
+            const passwordIsValid = editedProfile.isPasswordValid(newpassword);
+            if(newpassword.length>0) {
+                if (passwordIsValid === true) {
+                    passwordErrorMSgSpan.innerText = "";
+                } else {
+                    passwordErrorMSgSpan.innerText = passwordIsValid;
+                }
+            }
+        }else {
+            //register form password
+            const passwordIsValid = editedProfile.isPasswordValid(password);
+            if (passwordIsValid===true) {
+                passwordErrorMSgSpan.innerText = "";
+            } else {
+                passwordErrorMSgSpan.innerText = passwordIsValid;
+            }
+        }
+        return null;
     }
     function getProfile(){
         let editedProfile = new Profile();
@@ -42,11 +78,15 @@ export default function RegisterLayout(props){
             errorMsgSpan.innerText = "Name cannot be empty!";
             return null;
         }
-        if(editedProfile.nic.length<10){
+        //   790029871V - 10
+        //197900209871  - 12
+        if(editedProfile.nic.length!==10 && editedProfile.nic.length!==12){
             errorMsgSpan.innerText = "Invalid National Identity Card Number!";
             return null;
         }
-        if(editedProfile.contact.length<10){
+        //can have extensions, 0119876824-34
+        if(editedProfile.contact.length<10 || /[a-zA-Z]/.test(editedProfile.contact)){
+            //less than 10 or contains letters
             errorMsgSpan.innerText = "Invalid Contact Number!";
             return null;
         }
@@ -54,13 +94,22 @@ export default function RegisterLayout(props){
             //profile change password
             const newpassword = document.getElementById('user-new-password').value;
             const passwordIsValid = editedProfile.isPasswordValid(newpassword);
-            if(passwordIsValid===true){
-                passwordErrorMSgSpan.innerText = "";
-                editedProfile.setNewPassword(newpassword);
-            }else{
-                passwordErrorMSgSpan.innerText = passwordIsValid;
-                return null;
+            if(newpassword.length>0) {
+                if (passwordIsValid === true) {
+                    passwordErrorMSgSpan.innerText = "";
+                    editedProfile.setNewPassword(newpassword);
+                } else {
+                    passwordErrorMSgSpan.innerText = passwordIsValid;
+                    return null;
+                }
             }
+            if(password.length<1){
+                errorMsgSpan.innerText = "Enter your current password to save the changes!";
+                return null;
+            }else{
+                errorMsgSpan.innerText = "";
+            }
+            editedProfile.setPassword(password);
         }else {
             //register form password
             const passwordIsValid = editedProfile.isPasswordValid(password);
@@ -72,25 +121,27 @@ export default function RegisterLayout(props){
                 return null;
             }
         }
-        if(editedProfile.email.length<5){
+        if(editedProfile.email.length<4){
             errorMsgSpan.innerText = "Invalid Email Address!";
             return null;
         }
-        if(Profile.getUserRoles().indexOf(editedProfile.role)<0){
-            errorMsgSpan.innerText = "Invalid Role!";
-            return null;
-        }
-        if(!document.getElementById("user-checkbox").checked){
-            errorMsgSpan.innerText = "Checkbox at the end of the form needs to be ticked to continue!";
-            return null;
+        if(register) {
+            if (roles.indexOf(editedProfile.role) < 0 || editedProfile.role.length < 3) {
+                errorMsgSpan.innerText = "Invalid Role!";
+                return null;
+            }
+            if(!document.getElementById("user-checkbox").checked){
+                errorMsgSpan.innerText = "Checkbox at the end of the form needs to be ticked to continue!";
+                return null;
+            }
         }
         return editedProfile.getProfileData();
     }
     return <React.Fragment>
         <div style={{position:"relative", left:"100px", top:"30px"}} className={"w-50"}>
+            {popup}
             <h3 style={{color:"inherit", textAlign:"center"}}>{register?"Registration Form":"Profile"}</h3>
-            <span style={{color:"green"}}>{registerReference!=="0"?registerReference:""}</span>
-            <span style={{color:"#CD6155"}} id={"error-show"}></span>
+            <span style={{color:"#ECF0F1", backgroundColor:"#DE3163"}} id={"error-show"}></span>
             <div className="form-group mb-2">
                 <label>{prefix}Name with Initials</label>
                 <input type="text" className="form-control" aria-describedby="emailHelp"
@@ -119,17 +170,17 @@ export default function RegisterLayout(props){
             <p/>
             {!register?<div className="form-group mb-2">
                 <label>Change Password</label>
-                <span style={{color:"#CD6155"}} id={"password-error"}></span>
+                <span style={{color:"#ECF0F1", backgroundColor:"#DE3163"}} id={"password-error"}></span>
                 <span><br/>Password must have more than 6 characters, at least 1 number and 1 symbol</span>
-                <input type="password" className="form-control" placeholder="New Password" id={"user-new-password"}/>
+                <input type="password" className="form-control" placeholder="New Password" id={"user-new-password"} onChange={()=>checkPassword()}/>
             </div>:""}
 
             <div className="form-group mb-2">
                 <label>{prefix==="Enter "?prefix:"Confirm "}Password</label>
                 {register?<span><br/>Password must have more than 6 characters, at least 1 number and 1 symbol</span>:""}
                 <br/>
-                <span style={{color:"#CD6155"}} id={"password-error"}></span>
-                <input type="password" className="form-control" placeholder="Password" id={"user-password"}/>
+                <span style={{color:"#ECF0F1", backgroundColor:"#DE3163"}} id={"password-error"}></span>
+                <input type="password" className="form-control" placeholder="Password" id={"user-password"} onChange={()=>checkPassword()}/>
             </div>
             <div className="form-group mb-2">
                 <label>{prefix==="Enter "?"Select ":""}Role&nbsp;</label>
@@ -142,8 +193,8 @@ export default function RegisterLayout(props){
             <p/>
             <div style={{float:"right"}}>
                 {register?<button className={"btn btn-primary mx-0"} onClick={()=>{window.location.href="/login"}}>Already have an account</button>:""}
-                <button className={"btn btn-orange mx-2"}>{register?"Clear form":"Cancel"}</button>
-                <button className={"btn btn-green"} onClick={()=>saveFunction(getProfile())}>Save</button>
+                <button className={"btn btn-orange mx-2"} onClick={()=>{register?clearFormFunction():""}}>{register?"Clear form":"Cancel"}</button>
+                <button className={"btn btn-green"} onClick={()=>{saveFunction(getProfile());}}>Save</button>
             </div>
         </div>
     </React.Fragment>

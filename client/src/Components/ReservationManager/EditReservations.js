@@ -3,78 +3,110 @@ import getProxy from "../../proxyConfig";
 import File2base64 from "../../assets/js/file2base64";
 export default function EditReservations(){
     //state
-    let [reservation, setreservation] = useState([]);
-    //post
-    const saveDrinkToDb = async ()=>{
-        const name = document.getElementById("name").value;
-        const percentage = document.getElementById("percentage").value;
-        const description = document.getElementById("description").value;
-        const imageFile = document.getElementById("image").files[0];
-        const imageBase64 = await File2base64.getFile2Base64(imageFile);
-        console.log(JSON.stringify(imageBase64));
-        await fetch(getProxy("/bar"), {
-            method: 'post',
-            headers: {'Content-Type':'application/json'},
-            body: JSON.stringify({"drink":{"name":name,"percentage":percentage,"description":description,"image":imageBase64}})
-        }).then(r=>r.text()).then(d=>console.log(d)).catch(e=>console.log(e));
-        //re render this page
-        await getReservationsFromDb();
-    }
-    //get
-    const getReservationsFromDb = async () =>{
-        await fetch(getProxy("/bar"),{
-            method:'get'
-        }).then(r=>r.json()).then(d=>setreservation(d)).catch(e=>console.log(e));
-    }
-    //run once
-    useEffect(async ()=>{
-        await getReservationsFromDb();
+    let [reserveId, setReserveId] = useState(null);
+//on mount
+    useEffect(()=>{
+        let path = window.location.pathname.split("/");
+        if(path.length>3){
+            //has drink id
+            setReserveId(path[3]);
+            setReservationForEdit(path[3]);
+        }
+        console.log(path);
     },[])
+//get drink using id
+    async function setReservationForEdit(index){
+        await fetch(getProxy("/reservation/"+index),{
+            method:"get"
+        }).then(r=>r.json()).then(d=>{
+            const reservation = d;
+            document.getElementById("roomNo").value = reservation.roomNo;
+            document.getElementById("name").value = reservation.name;
+            document.getElementById("email").value = reservation.email;
+            document.getElementById("checkindate").value = reservation.checkInDate;
+            document.getElementById("checkoutdate").value = reservation.checkOutDate;
+            document.getElementById("quantity").value = reservation.roomCount;
+            document.getElementById("payment").value = reservation.payment;
+            document.getElementById("type").value = reservation.type;
+
+
+            //document.getElementById('image').value = "";
+        }).catch(e=>console.log(e));
+    }
+
+
+//save drink
+    const saveReservationToDb = async ()=>{
+        const roomNo = document.getElementById("roomNo").value;
+        const name = document.getElementById("name").value;
+        const email = document.getElementById("email").value;
+        const checkindate = document.getElementById("checkindate").value;
+        const checkoutdate = document.getElementById("checkoutdate").value;
+        const quantity = document.getElementById("quantity").value;
+        const payment = document.getElementById("payment").value;
+        const type = document.getElementById("payment").type;
+
+        //will return success
+        await fetch(getProxy("/reservation/"+reserveId), {
+            method: 'put',
+            headers: {'Content-Type':'application/json'},
+            body: JSON.stringify({"reservation":{"name":name,"roomNo":roomNo,"email":email,"checkInDate":checkindate,"checkOutDate":checkoutdate,"roomCount":quantity,"payment":payment,"type":type}})
+        }).then(r=>r.text()).then(d=> {
+            alert("Successfully Updated Reservation.");
+
+        }).catch(e=>console.log(e));
+        //re render this page
+        return window.location.href="/reserve";
+    }
     //render
     return <div style={{position:"relative"}}>
         <h3 style={{color:"inherit"}}>Edit Reservations</h3>
         <div className="form-group mb-2">
-            <label>Enter Name</label>
+            <label>Room No</label>
             <input type="text" className="form-control" aria-describedby="emailHelp"
-                   placeholder="Tequila" id={"name"}/>
+                   placeholder="roomNo" id={"roomNo"}/>
         </div>
         <div className="form-group mb-2">
-            <label>Enter Email</label>
+            <label>Name</label>
             <input type="text" className="form-control" aria-describedby="emailHelp"
-                   placeholder="30%" id={"percentage"}/>
+                   placeholder="name" id={"name"}/>
+        </div>
+        <div className="form-group mb-2">
+            <label> Email</label>
+            <input type="text" className="form-control" aria-describedby="emailHelp"
+                   placeholder="name" id={"email"}/>
         </div>
         <div className="form-group mb-2">
             <label>CheckInDate</label>
-            <input type="text" className="form-control" aria-describedby="emailHelp"
-                   placeholder="Drink Description" id={"description"}/>
+            <input type="date" className="form-control" name="check_in" id={"checkindate"} onInput="calcdays()" required/>
+
         </div>
         <div className="form-group mb-2">
             <label>CheckOutDate</label>
-            <input type="text" className="form-control" aria-describedby="emailHelp"
-                   placeholder="Drink Description" id={"description"}/>
+            <input type="date" className="form-control" name="check_out" id={"checkoutdate"} onInput="calcdays()"
+                   required/>
         </div>
-        <button className={"btn btn-green"} onClick={()=>saveDrinkToDb()}>Update</button>
+        <div className="form-group mb-2">
+            <label> Payement Type</label>
+            <input type="text" className="form-control" aria-describedby="emailHelp"
+                   placeholder="payment" id={"payment"}/>
+        </div>
+        {/*<div className="form-group mb-2">*/}
+        {/*    <label>No of Days</label>*/}
+        {/*    <input type="text" className="form-control" aria-describedby="emailHelp"*/}
+        {/*           placeholder="" id={"percentage"} readOnly/>*/}
+        {/*</div>*/}
+        <div className="form-group mb-2">
+            <label>Room type</label>
+            <input type="text" className="form-control" aria-describedby="emailHelp"
+                   placeholder="type" id={"type"}/>
+        </div>
+        <div className="form-group mb-2">
+            <label>Quantity of Rooms</label>
+            <input type="text" className="form-control" aria-describedby="emailHelp"
+                   placeholder="" id={"quantity"}/>
+        </div>
+        <button className={"btn btn-green"} onClick={()=>saveReservationToDb()}>Update</button>
         <p/>
-        <h5 style={{color:"inherit"}}>All Drinks</h5>
-        <table className={"table w-75"} style={{position:"relative"}}>
-            <thead><tr>
-                <th style={{width:"100px"}}>Image</th>
-                <th style={{width:"100px"}}>name</th>
-                <th style={{width:"100px"}}>Percentage</th>
-                <th style={{width:"100px"}}>Description</th>
-            </tr></thead>
-            <tbody>
-            {reservation.map(reservation => {
-                return <tr>
-                    <td><img src={reservation.image} height={"100px"} width={"100px"} alt={"image"}/></td>
-                    <td>{reservation.name}</td>
-                    <td>{reservation.percentage}</td>
-                    <td>
-                        <div style={{width:"300px", whiteSpace:"pre-wrap"}}>{reservation.description}</div>
-                    </td>
-                </tr>
-            })}
-            </tbody>
-        </table>
     </div>
 }

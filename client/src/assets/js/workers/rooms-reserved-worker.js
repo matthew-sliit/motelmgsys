@@ -12,5 +12,5 @@ export default function RoomsReservedWorker(r){
             rooms+=roomsRaw.length;
         }
     })
-    postMessage({"roomsReserved":rooms});
+    // self.postMessage({"roomsReserved":rooms});
 }

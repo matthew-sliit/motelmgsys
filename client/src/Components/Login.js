@@ -78,7 +78,7 @@ export default function Login(){
             {resetPassword?<div className="form-group mb-2">
                 <label>Enter Email address</label>
                 <input type="email" className="form-control" aria-describedby="emailHelp"
-                       placeholder="Enter email" id={"user-email"} id={"user-email"}/>
+                       placeholder="Enter email" id={"user-email"}/>
             </div>:""}
             <div style={{float:"right", position:"relative"}}>
                 {!resetPassword?<button className={"btn btn-link mx-1"} style={{color:"#85C1E9"}} onClick={()=>setState(!resetPassword)}>Click to reset password</button>
