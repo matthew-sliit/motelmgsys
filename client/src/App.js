@@ -14,6 +14,8 @@ import Dashboard from "./Components/Administrator/Dashboard";
 import AdminNavigations from "./Components/Administrator/AdminNavigations";
 //reservation manager components
 import RDashboard from "./Components/ReservationManager/RDashboard";
+import EditReservations from "./Components/ReservationManager/EditReservations"
+import ReservationNavigations from "./Components/ReservationManager/ReservationNavigation";
 //maintenance manager components
 import MDashboard from "./Components/MaintenanceManager/MDashboard";
 //bar manager components
@@ -22,6 +24,7 @@ import BarNavigations from "./Components/BarManager/BarNavigations";
 import AddDrink from "./Components/BarManager/AddDrink";
 import DrinkMenu from "./Components/BarManager/DrinkMenu";
 import EditDrink from "./Components/BarManager/EditDrink";
+
 //extra
 import UserPageLayout from "./Components/UserPageLayout";
 import UserNavigationFormat from "./Components/Navigation/UserNavigationFormat";
@@ -75,7 +78,10 @@ function App() {
             </Route>
             {/* ============== RESERVATION MANAGER ==================*/}
             <Route exact path={"/reserve"}>
-                <UserNavigationFormat navigations={BarNavigations()} content={<RDashboard/>} type={"Reservation Manager"}/>
+                <UserNavigationFormat navigations={ReservationNavigations()} content={<RDashboard/>} type={"Reservation Manager"}/>
+            </Route>
+            <Route exact path={"/reserve/edit/:id"}>
+                <UserNavigationFormat navigations={ReservationNavigations()} content={<EditReservations/>} type={"Reservation Manager"}/>
             </Route>
             {/* ============== MAINTENANCE MANAGER ==================*/}
             <Route exact path={"/maintainer"}>
