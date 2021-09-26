@@ -51,7 +51,7 @@ export default function EditDrink() {
                 }
             })
         }).then(r => r.text()).then(d => {
-            location.reload();
+            //location.reload();
         }).catch(e => console.log(e));
         //re render this page?
     }
@@ -69,9 +69,12 @@ export default function EditDrink() {
         </div>
         <div className="form-group mb-2">
             <label>Enter Description</label>
-            <input type="text" className="form-control" aria-describedby="emailHelp"
-                   placeholder="Drink Description" id={"description"}/>
+            <textarea  className="form-control" aria-describedby="emailHelp"
+                       placeholder="Drink Description" id={"description"}/>
         </div>
+
+
+
         <div className="form-group mb-2">
             <label>Enter New Image</label>
             <input type="file" className="form-control" aria-describedby="emailHelp" id={"image"}/>

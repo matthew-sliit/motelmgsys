@@ -9,6 +9,7 @@ export default class PathRouter{
             return PathRouter.getMMDashboardUrl();
         }else if(role==="Bar Manager"){
             return PathRouter.getBMDashboardUrl();
+
         }else{
             return "#";//go nowhere
         }

@@ -11,12 +11,7 @@ export default function BJDashboard(){
     let [burgerList, setList] = useState([]);
 
 
-    const searchall = () => {
-        const nameLike = document.getElementById("type").value;
-        if(nameLike.length < 1){
-            setBurger(burgerList);
-        }
-    }
+
     const searchBurgers = () =>{
         const nameLike = document.getElementById("type").value;
         const burgerListOriginal = [...burgerList];
@@ -48,12 +43,18 @@ export default function BJDashboard(){
         }).then(r=>r.json()).then(d=>{setBurger(d);setList(d);console.log(JSON.stringify(d));}).catch(e=>console.log(e));
     },[]);
 
-    useEffect(async ()=>{
-        await fetch(getProxy("/joint"),{
-            method:"get"
-        }).then(r=>r.json()).then(d=>{setBurger(d);console.log(JSON.stringify(d));}).catch(e=>console.log(e));
-    },[]);
-
+    async function removeBurger(index_of_burger) {
+        const burgerToRemove = burgers[index_of_burger];
+        //remove from db
+        await fetch(getProxy("/joint/"+burgerToRemove._id.toString()),{
+            method:"delete"
+        }).then(r=>r.json()).then(d=>{setList(d);console.log(JSON.stringify(d));}).catch(e=>console.log(e));
+        //remove from burgers list
+        const burgersAfterRemoved = burgerList.splice(index_of_burger,1);
+        setList(burgersAfterRemoved);
+        //redo search
+        searchBurgers();
+    }
     return <div>
         <div id="colorlib-main">
             <section className="ftco-section pt-4 mb-5 ftco-intro">
@@ -74,7 +75,7 @@ export default function BJDashboard(){
                                 <div className="row">
 
                                     <div className="col-md-3">
-                                        <input type="text" className="form-control" style={{width:"200px"}} type={"text"}  placeholder={"all"} onChange={()=>searchall()}  id={"type"}/>
+                                        <input type="text" className="form-control" style={{width:"200px"}} type={"text"}  placeholder={"all"} onChange={()=>searchBurgers()}  id={"type"}/>
                                     </div>
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
@@ -101,7 +102,7 @@ export default function BJDashboard(){
 
                             <tbody>
 
-                            {burgers.map(burger=>{
+                            {burgers.map((burger,index)=>{
                                 return <tr>
 
                                     <td>{burger.type}</td>
@@ -113,10 +114,10 @@ export default function BJDashboard(){
                                     </td>
 
                                     <td colSpan="2">
-                                        <button name="edit" className="btn btn-info px-3">
+                                        <button name="edit" className="btn btn-info px-3" onClick={()=>{window.location.href="/joint/edit/"+burgers[index]._id.toString()}}>
                                             <center><i className="fa fa-edit"></i></center>
                                         </button>
-                                        <button name="" className="btn btn-danger px-3">
+                                        <button name="" className="btn btn-danger px-3" onClick={()=>removeBurger(index)}>
                                             <center><i className="fa fa-trash"></i></center>
                                         </button>
                                     </td>

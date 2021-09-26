@@ -53,6 +53,13 @@ router.put("/:id", async ctx=>{
     ctx.response.set('content-type','application/json');
     let burger = new BurgerJoint();
     Object.assign(burger,burgerDetails);
+    if(burger.image==="ignore"){
+        await readDocument(BurgerJoint.COLLECTION_NAME,"_id",mongoId).then(
+            function (res){
+                burger.image = res[0].image;
+            }
+        )
+    }
     await updateDocument(BurgerJoint.COLLECTION_NAME,"_id",mongoId,burger.getDetails());
     ctx.body = "Successfully Updated!";
 })
