@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>Hotel</title>
+        <title>Motel</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -33,7 +33,7 @@
             <div class="preloader-inner position-relative">
                 <div class="preloader-circle"></div>
                 <div class="preloader-img pere-text">
-                    <strong>Hotel</b>
+                    <strong>Motel</b>
                 </div>
             </div>
         </div>
@@ -171,7 +171,7 @@
                   <!--<input type="text" class="form-control" id="quantity" " placeholder="Quantity of rooms" oninput="calc()" /> -->
 
 
-                  <p>Price Per Room : Rs.<span id="room_price">1000 per night</span></p>
+                  <p>Price Per Room : Rs.<span id="room_price">2000 per night</span></p>
 
                 </div>
                 <hr />
@@ -185,9 +185,9 @@
                   <p id="name-error" style="color: red">
                   </p>
                 <div class="form-group">
-                  <input type="submit" class="button" name="pay_type1"  onclick="addReservationonpayment()"  value="Online Payment" />
+                  <input type="submit" class="btn btn-primary" name="pay_type1"  onclick="addReservationonpayment()"  value="Online Payment" />
 
-                  <input type="submit" class="button" name="pay_type1" onclick="addReservationonarrival()" value="Arrival Payment" />
+                  <input type="submit" class="btn btn-secondary" name="pay_type1" onclick="addReservationonarrival()" value="Arrival Payment" />
                 </div>
                   <script type="text/javascript">
                       document.getElementById("myButton").onclick = function () {
@@ -231,6 +231,12 @@
 
                       async function addReservationonpayment(){
                           const name = document.getElementById("name").value;
+                          if(name.length<1){
+                              document.getElementById("name-error").innerHTML="Name cannot be empty";
+                              return null;
+                          }else
+                              document.getElementById("name-error").innerHTML="";
+
                           const email = document.getElementById("email").value;
                           const checkInDate = document.getElementById("checkindate").value;
                           const checkOutDate = document.getElementById("checkoutdate").value;

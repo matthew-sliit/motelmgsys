@@ -23,14 +23,15 @@ router.post("/", async ctx=>{
         function (result){
             if(result.length>0){
                 alreadySaved = true;
-                ctx.body = "Your Registration Reference ID: "+result[0]._id.toString();
+                //prevent spamming?
+                ctx.body = "You have already registered with Reference ID: "+result[0]._id.toString();
             }
         }
     )
     if(!alreadySaved) {
         await saveDocumentGetId(Profile.RECRUIT_COLLECTION_NAME, profile.getProfileData()).then(
             function (result_id) {
-                ctx.body = "Your Registration Reference ID: " + result_id.insertedIds[0];
+                ctx.body = "Your Registration Reference ID is: " + result_id.insertedIds[0];
             }
         );
     }

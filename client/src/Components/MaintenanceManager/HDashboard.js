@@ -1,14 +1,19 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import "jquery";
 import "../../assets/images/favicon.ico";
 import "../../assets/fonts/fontawesome/css/fontawesome-all.min.css";
 import "../../assets/plugins/animation/css/animate.min.css";
 import "../../assets/css/style.css";
+import logo1 from '../../assets/images/logo.png';
 import "bootstrap"
 import getProxy from "../../proxyConfig";
+import {PDFExport, savePDF} from "@progress/kendo-react-pdf";
+import logo from "../../assets/images/logo.png";
+
 export default function HDashboard() {
     let [housekeeping, setHousekeeping] = useState([]);
     let [housekeepingList, setHousekeepingList] = useState([]);
+    let pdfExportComponent = useRef(null);
 
     const searchall = () => {
         const roomNo = document.getElementById("roomNo").value;
@@ -96,7 +101,8 @@ export default function HDashboard() {
         searchHousekeeping();
     }
 
-    return <div>
+    return (<div>
+        <h3 style={{color: "#0c5460"}}>Housekeeping Tasks</h3>
         <div id="colorlib-main">
             <section className="ftco-section pt-4 mb-5 ftco-intro">
                 <div className="container-fluid px-3 px-md-0"><div className="row mt-3 mb-3">
@@ -106,12 +112,14 @@ export default function HDashboard() {
                         </button>
                     </div>
                     <div className="col-md-3">
-                        <button type="button" className="btn btn-info"><i className="far fa-file-alt"></i>Generate Report
+                        <button type="button" className="btn btn-info" onClick={() => {
+                            if (pdfExportComponent.current) {
+                                pdfExportComponent.current.save();
+                            }
+                        }}><i className="far fa-file-alt"></i>Generate Report
                         </button>
                     </div>
                 </div>
-                    <h3 style={{color: "#0c5460"}}>Housekeeping Tasks</h3>
-
                     <div className="col-md-10">
                         <div className="card">
                             <div className="card-body">
@@ -150,11 +158,12 @@ export default function HDashboard() {
                             </div>
                         </div>
                     </div>
+
                     <div className="col-md-10">
                         <table className="table table-striped">
                             <thead className="thead-dark">
                             <tr>
-                                <th scope="col">Room No</th>
+                                <th scope="col" style={{width:"80px"}}>Room No</th>
                                 <th scope="col">Status</th>
                                 <th scope="col">Task Date</th>
                                 <th scope="col">Assigned to</th>
@@ -188,5 +197,51 @@ export default function HDashboard() {
                 </div>
             </section>
         </div>
-    </div>
+        <div
+            style={{
+                position: "absolute",
+                left: "-1000px",
+                top: 0,
+            }}
+        >
+            <PDFExport paperSize="A4" margin="1cm" fileName="HousekeepingTasksReport" ref={pdfExportComponent}>
+                <div>
+                    <div className={"text-right"}>
+                        <img src={logo1} style={{width:"120px"}}/>
+                    </div>
+                    <center>
+                        <h5>Housekeeping Tasks Report</h5>
+                    </center>
+                    <br/><br/>
+                    <p style={{fontSize:"12px",color:"black"}}>Date: {new Date().toLocaleDateString(['ban', 'id'])}<br/><br/>
+                    Signature of supervisor: _____________________
+                    </p>
+                    <table className="table table-bordered">
+                        <thead className="thead-dark">
+                        <tr style={{fontSize:"12px"}}>
+                            <th scope="col">Room No</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Task Date</th>
+                            <th scope="col">Assigned to</th>
+                            <th scope="col">Priority</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        {housekeeping.map((clean,index) => {
+                            return <tr style={{fontSize:"11px"}}>
+                                <td>{clean.roomNo}</td>
+                                <td>{clean.status}</td>
+                                <td>{clean.date}</td>
+                                <td>{clean.assignedTo}</td>
+                                <td>{clean.priority}</td>
+                            </tr>
+                        },)}
+
+                        </tbody>
+                    </table>
+                </div>
+            </PDFExport>
+        </div>
+    </div>)
 }

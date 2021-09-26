@@ -1,9 +1,15 @@
-import React, {useEffect, useState} from "react";
+import React, {createElement, useEffect, useRef, useState} from "react";
 import Profile from "../../models/Profile";
 import getProxy from "../../proxyConfig";
+import ReportGenerationV1 from "../../assets/js/report-generation-v1";
 export default function EmployeeRecruitment(){
     let [recruitments, setRecruitments] = useState([]);
     let [recruitmentList, setList] = useState([]);
+    let pdfExportComponent = useRef(null);
+    const [isClient, setIsClient] = useState(false)
+    useEffect(() => {
+        setIsClient(true)
+    }, [])
     //component did mount
     useEffect(async ()=>{
         //get records from server database
@@ -81,7 +87,7 @@ export default function EmployeeRecruitment(){
             setRecruitments(suggestRecruitments);
         }
     }
-    function formatRecordToRow(profileRecord, index){
+    function formatRecordToRow(profileRecord, index, withBtn){
         //index starts from 0
         const profile = new Profile();
         if(index>-1){
@@ -96,17 +102,36 @@ export default function EmployeeRecruitment(){
             <td><div style={{width:"120px", whiteSpace:"pre-wrap"}}>{profile.email}</div></td>
             <td><div style={{width:"200px", whiteSpace:"pre-wrap"}}>{profile.address}</div></td>
             <td><div style={{width:"100px", whiteSpace:"pre-wrap"}}>{profile.role}</div></td>
-            {index>=0?<td>
+            {index>=0&&withBtn?<td>
                 <div style={{width:"170px"}}>
                 <button className={"btn btn-green"} onClick={()=>onClickAcceptRecruitment(index)}>Accept</button>
                 <button className={"btn btn-danger mx-1"} onClick={()=>onClickRejectRecruitment(index)}>Reject</button>
                 </div>
-            </td>:<td>q</td>}
+            </td>:<td>{""}</td>}
 
         </tr>;
     }
+
+    async function generateReport(){
+        //savePDF(pdfExportComponent.current, { paperSize:  "A4",fileName: 'Employee Recruitment Report', scale:0.5, title:"Employee Recruitment Report", margin: 6});
+        let tableHeaders = [['ID','Name','Nic','Contact No','Email','Address','Role']]
+        let tableBody = [];
+        let tableRow = [];
+        recruitments.map((recruitment, index)=>{
+            tableRow = [];
+            tableRow.push(index+1);
+            tableRow.push(recruitment.fullname);
+            tableRow.push(recruitment.nic);
+            tableRow.push(recruitment.contact);
+            tableRow.push(recruitment.email);
+            tableRow.push(recruitment.address);
+            tableRow.push(recruitment.role);
+            tableBody.push(tableRow);
+        })
+        ReportGenerationV1({header:"Employee Recruitment Report",tableHeaders:tableHeaders,tableBody:tableBody,fileName:"employee recruitments report"})
+    }
     return <div style={{position:"relative"}}>
-        <h4 style={{fontfamily:"fontawesome", color:"#566573"}}>Employee Recruitments</h4>
+        <h4 style={{fontfamily:"fontawesome", color:"#566573", position:"relative", top:"-50px"}}>Approval of Recruitments</h4>
         <p/>
         <div style={{display:"table-cell", padding:"6px", border:"1px solid #7DCEA0"}}>
             <label>Name</label>
@@ -118,29 +143,32 @@ export default function EmployeeRecruitment(){
                 <option>any</option>
                 {Profile.getUserRoles().map(role => {return <option>{role}</option>})}
             </select>
-            <button className={"btn btn-green mx-1"} onClick={()=>searchRecruitments()}>Search</button>
+            <button className={"btn btn-green mx-1"} onClick={()=>searchRecruitments()} style={{display:"none"}}>Search</button>
         </div>
-        <div style={{float:"right", marginBottom:"3px"}}>
-            <button className={"btn btn-blue"}>Generate Report</button>
+        <div style={{display:"table-cell", paddingLeft:"10px"}}>
+            <button className={"btn btn-blue"} onClick={()=>generateReport()}>Generate Report</button>
         </div>
         <p/>
         <p/>
-        <table style={{position:"relative"}} className={"table"}>
+        <div ref={pdfExportComponent} id={"abc"}>
+            <h4 style={{fontfamily:"fontawesome", color:"#566573", textAlign:"center", width:"inherit", position:"relative"}}>Employee Recruitments</h4>
+            <table style={{position:"relative"}} className={"table"}>
             <thead><tr>
                 <th style={{width:"50px"}}>ID</th>
-                <th style={{width:"200px"}}>Name</th>
+                <th style={{width:"120px"}}>Name</th>
                 <th style={{width:"100px"}}>Nic</th>
-                <th style={{width:"100px"}}>Reference</th>
+                <th style={{width:"200px", marginRight:"10px"}}>Reference</th>
                 <th style={{width:"200px"}}>Contact Number</th>
                 <th style={{width:"200px"}}>Email</th>
-                <th style={{width:"250px"}}>Address</th>
+                <th style={{width:"180px"}}>Address</th>
                 <th style={{width:"150px"}}>Role</th>
                 <th style={{width:"200px"}}>Operations</th>
             </tr></thead>
             <tbody>
             {recruitmentList.length<1?<tr key={0}><td colSpan={7} style={{textAlign:"center", fontSize:"20px"}}>No new recruitments</td></tr>:""}
-            {recruitments.map((recruitment, index)=>{return formatRecordToRow(recruitment,index)})}
+            {recruitments.map((recruitment, index)=>{return formatRecordToRow(recruitment,index,true)})}
             </tbody>
         </table>
+        </div>
     </div>;
 }
