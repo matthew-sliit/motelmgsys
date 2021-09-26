@@ -132,7 +132,7 @@ function App() {
             <Route exact path={"/joint/menu"}>
                 <UserNavigationFormat navigations={BJNavigations()} content={<BurgerMenu/>} type={"Burger Joint"}/>
             </Route>
-            <Route exact path={"/joint/edit"}>
+            <Route exact path={"/joint/edit/:id"}>
                 <UserNavigationFormat navigations={BJNavigations()} content={<EditBurger/>} type={"Burger Joint"}/>
             </Route>
             {/*
@@ -141,11 +141,12 @@ function App() {
             </Route>
             */}
             <Route exact path={"/"}>
-                <div className="container">
+                <div style={{backgroundColor:"#8cc1ed"}}>
+                <div className="container" >
                     <br/><br/>
                     <center>
                         <img src={logo} style={{width:"200px"}}/>
-                        <h2 className="text-primary"><b>Motel Management System</b></h2>
+                        <h2 style={{color:"#032a4a"}}><b>Motel Management System</b></h2>
                     </center>
                    <br/><br/><br/><br/>
                     <div className="row">
@@ -269,7 +270,7 @@ function App() {
                         </div>
                     </div>
                 </div>
-
+                </div>
                 {/*<button className={"btn btn-outline-primary mt-3"} onClick={()=>window.location.href="/register"}>register</button>*/}
                 {/*<br/>*/}
                 {/*<button className={"btn btn-outline-primary mt-1"} onClick={()=>window.location.href="/login"}>Login</button>*/}

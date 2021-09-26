@@ -6,6 +6,7 @@ import "../../assets/plugins/animation/css/animate.min.css";
 import "../../assets/css/style.css";
 import getProxy from "../../proxyConfig";
 import {PDFExport,savePDF} from "@progress/kendo-react-pdf";
+import logo3 from '../../assets/images/logo.png';
 export default function RDashboard(){
 
     let [reservation, setreservation] = useState([]);
@@ -76,7 +77,7 @@ export default function RDashboard(){
         //remove from housekeeping list
         const reservationAfterRemoved = reservation.splice(index_of_reservation,1);
         setreservation(reservationAfterRemoved);
-        location.reload();
+        //location.reload();
         //redo search
         searchReservations();
     }
@@ -179,11 +180,16 @@ export default function RDashboard(){
                     >
                         <PDFExport paperSize="A4" margin="0.3cm" scale={0.8} fileName="HousekeepingTasksReport" ref={pdfExportComponent}>
                             <div>
+
+                                <div className={"text-right"}>
+                                    <img src={logo3} style={{width:"120px"}}/>
+                                </div>
                                 <center>
                                     <h5>Reservation Report</h5>
                                 </center>
-                                Date: {new Date().toDateString()}
-
+                                <br/>
+                                <p style={{color:"black"}}>Date: {new Date().toDateString()}</p>
+<br/>
                                 <table className="table table-bordered">
                                     <thead className="thead-dark">
                                     <tr>
