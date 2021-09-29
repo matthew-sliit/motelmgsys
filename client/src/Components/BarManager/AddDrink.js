@@ -42,9 +42,7 @@ export default function AddDrink(){
         }).then(r=>r.json()).then(d=>setDrinks(d)).catch(e=>console.log(e));
     }
 
-    const resetInputField = () => {
-        setDrinks("");
-    };
+
     //run once
     useEffect(async ()=>{
         await getDrinksFromDb();
@@ -75,7 +73,7 @@ export default function AddDrink(){
         </div>
         <button className={"btn btn-green"} onClick={()=>saveDrinkToDb()}>Save</button>
 
-        <button className={"btn btn-danger"} onClick={()=>resetInputField()} >Clear</button>
+
 
         <p/>
         <h5 style={{color:"inherit"}}>All Drinks</h5>

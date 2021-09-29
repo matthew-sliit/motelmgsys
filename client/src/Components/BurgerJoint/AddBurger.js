@@ -45,9 +45,6 @@ export default function AddBurger(){
             method:'get'
         }).then(r=>r.json()).then(d=>setBurgers(d)).catch(e=>console.log(e));
     }
-    const resetInputField = () => {
-        setBurgers("");
-    };
 
 
     //run once
@@ -83,8 +80,7 @@ export default function AddBurger(){
         </div>
         <button className={"btn btn-green"} onClick={()=>saveBurgerToDb()} >Save</button>
 
-        <button type="submit" name="clear" onClick={()=>resetInputField()} className="btn btn-danger">Clear
-        </button>
+
 
         <p/>
         <h5 style={{color:"inherit"}}>All Burgers</h5>
