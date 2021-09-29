@@ -132,6 +132,10 @@ function App() {
             <Route exact path={"/joint/menu"}>
                 <UserNavigationFormat navigations={BJNavigations()} content={<BurgerMenu/>} type={"Burger Joint"}/>
             </Route>
+            <Route exact path={"/joint/edit"}>
+                <UserNavigationFormat navigations={BJNavigations()} content={<EditBurger/>} type={"Burger Joint"}/>
+            </Route>
+
             <Route exact path={"/joint/edit/:id"}>
                 <UserNavigationFormat navigations={BJNavigations()} content={<EditBurger/>} type={"Burger Joint"}/>
             </Route>

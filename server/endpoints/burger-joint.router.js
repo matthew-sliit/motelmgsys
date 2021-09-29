@@ -23,7 +23,7 @@ router.get("/:id",async ctx=>{
     ctx.response.set('content-type','application/json');
     await readDocument(BurgerJoint.COLLECTION_NAME,"_id",mongoId).then(
         function (res){
-            ctx.body = res;
+            ctx.body = res[0];
         }
     )
 })
@@ -45,7 +45,6 @@ router.post("/", async ctx=>{
         ctx.body = "Successfully Added!";
     }
 })
-
 router.put("/:id", async ctx=>{
     const id = ctx.request.params.id;
     const burgerDetails = ctx.request.body.burger;

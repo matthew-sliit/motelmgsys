@@ -46,7 +46,10 @@ export default function BDashboard(){
         //remove from db
         await fetch(getProxy("/bar/"+drinkToRemove._id.toString()),{
             method:"delete"
-        }).then(r=>r.json()).then(d=>{setList(d);console.log(JSON.stringify(d));}).catch(e=>console.log(e));
+        }).then(r=>r.text()).then(d=> {
+            alert("Successfully Deleted the Drink Details.");
+
+        }).catch(e=>console.log(e));
         //remove from drinks list
         const drinksAfterRemoved = drinkList.splice(index_of_drink,1);
         setList(drinksAfterRemoved);
