@@ -35,6 +35,7 @@ router.post("/",async ctx=>{
                             updateDocument(Profile.PROFILE_COLLECTION_NAME,'_id',mongoId,profile.getProfileData());
                             //success - pass user id
                             ctx.body = "success:" + profile.role + ":" + profile._id.toString();
+                            console.log("logged in user:"+profile._id.toString());
                         }
                     }else{
                         //user verified and has no previous bans
@@ -44,6 +45,7 @@ router.post("/",async ctx=>{
                         updateDocument(Profile.PROFILE_COLLECTION_NAME,'_id',mongoId,profile.getProfileData());
                         //success - pass user id
                         ctx.body = "success:" + profile.role + ":" + profile._id.toString();
+                        console.log("logged in user:"+profile._id.toString());
                     }
                 } else {
                     //error - warn user
@@ -69,6 +71,7 @@ router.put("/logout/:id",async ctx=>{
             updateDocument(Profile.PROFILE_COLLECTION_NAME,"_id",mongoId,profile.getProfileData());
         }
     )
+    console.log("logged out user:"+profile_id);
     ctx.response.set('content-type','application/json');
     ctx.body = "success";
 })

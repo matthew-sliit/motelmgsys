@@ -151,7 +151,6 @@ export default function EmployeeRecruitment(){
         <p/>
         <p/>
         <div ref={pdfExportComponent} id={"abc"}>
-            <h4 style={{fontfamily:"fontawesome", color:"#566573", textAlign:"center", width:"inherit", position:"relative"}}>Employee Recruitments</h4>
             <table style={{position:"relative"}} className={"table"}>
             <thead><tr>
                 <th style={{width:"50px"}}>ID</th>

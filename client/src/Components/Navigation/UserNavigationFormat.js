@@ -5,6 +5,7 @@ import "../../assets/fonts/fontawesome/css/fontawesome-all.min.css";
 import "../../assets/plugins/animation/css/animate.min.css";
 import "../../assets/css/style.css";
 import Cookie from "js-cookie";
+import getProxy from "../../proxyConfig";
 export default function UserNavigationFormat(props){
     let profileNic = Cookie.get('id');
     const {navigations, content, type} = props;
@@ -33,6 +34,11 @@ export default function UserNavigationFormat(props){
         navigationContent.push(navigationItemHolder(key,value));
     }
     function logout(){
+        //log user out
+        fetch(getProxy("/login/logout/"+Cookie.get('id')),{
+            method:"put",
+            body:{}
+        }).catch(e => console.log(e));
         Cookie.remove('role');
         Cookie.remove('id');
         window.location.href = "/login";

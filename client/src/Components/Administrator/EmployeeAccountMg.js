@@ -8,6 +8,7 @@ import ReportGenerationV1 from "../../assets/js/report-generation-v1";
 export default function EmployeeAccountMg(){
     let [profiles, setProfiles] = useState([]);
     let [profileList, setList] = useState([]);
+    let [roles, setRoles] = useState([]);
     let [newPassword, setNewPassword] = useState(null);
     let [errorMsg, setErrorMsg] = useState(null);
     let [popup, togglePopup] = useState(false);
@@ -16,6 +17,7 @@ export default function EmployeeAccountMg(){
     useEffect(async ()=>{
         //get records from server database
         await fetchUserProfilesFromServer();
+        await fetchUserRoles();
     },[]);
     const onClickSetUserBanStatus = async (index, status) =>{
         //tell server to accept
@@ -33,6 +35,14 @@ export default function EmployeeAccountMg(){
         }).then(r=>r.json()).then(d=>{
             setProfiles(d);
             setList(d);
+            console.log(JSON.stringify(d));
+        });
+    }
+    const fetchUserRoles = async () =>{
+        await fetch(getProxy("/register/roles"),{
+            method:"get"
+        }).then(r=>r.json()).then(d=>{
+            setRoles(d);
             console.log(JSON.stringify(d));
         });
     }
@@ -93,6 +103,10 @@ export default function EmployeeAccountMg(){
                     suggestRecruitments.push(recruitment);
                 }
                 pushed = true;
+            }else if(role==="any"){
+
+            }else{
+                roleSelected = true;
             }
         });
         if(!name&&!referenceno&&!roleSelected&&suggestRecruitments.length<=0){
@@ -153,7 +167,7 @@ export default function EmployeeAccountMg(){
     }
     return <div style={{position:"relative"}}>
         {popup!==false?popup:""}
-        <h4 style={{fontfamily:"fontawesome", color:"#566573"}}>User Account Control</h4>
+        <h4 style={{fontfamily:"fontawesome", color:"#566573", position:"relative", top:"-50px"}}>User Account Control</h4>
         <p/>
         <div style={{display:"table-cell", padding:"6px", border:"1px solid #7DCEA0"}}>
             <label>Name</label>
@@ -163,7 +177,7 @@ export default function EmployeeAccountMg(){
             <label className={"mx-1"}>Role</label>
             <select id={"user-role"} onChange={()=>searchProfiles()}>
                 <option>any</option>
-                {Profile.getUserRoles().map(role => {return <option>{role}</option>})}
+                {roles.map(role => {return <option>{role}</option>})}
             </select>
             <button className={"btn btn-green mx-1"} onClick={()=>searchProfiles()} style={{display:"none"}}>Search</button>
         </div>
@@ -175,7 +189,6 @@ export default function EmployeeAccountMg(){
         <span style={{color:"red"}}>{errorMsg!==null?errorMsg:""}</span>
         <p/>
         <div ref={pdfExportComponent}>
-            <h4 style={{fontfamily:"fontawesome", color:"#566573", width:"inherit", textAlign:"center"}}>Employee Accounts</h4>
             <table style={{position:"relative", maxWidth:"100px"}} className={"table"}>
             <thead><tr style={{textAlign:"center"}}>
                 <th scope="col" style={{width:"50px"}}>ID</th>

@@ -12,6 +12,7 @@ exports.Profile = class Profile{
         this.contact="";
         this.role="";
         //this.status = "pending";
+        this.active = false;
     }
     setBan(){
         this.status = "ban";
@@ -43,9 +44,9 @@ exports.Profile = class Profile{
     }
     getProfileData(){
         if(this.status!==undefined){
-            return {"fullname":this.fullname,"nic":this.nic,"email":this.email,"contact":this.contact,"role":this.role,"address":this.address,"password":this.#password, "status":this.status};
+            return {"fullname":this.fullname,"nic":this.nic,"email":this.email,"contact":this.contact,"role":this.role,"address":this.address,"password":this.#password, "status":this.status, "active":this.active};
         }
-        return {"fullname":this.fullname,"nic":this.nic,"email":this.email,"contact":this.contact,"role":this.role,"address":this.address,"password":this.#password};
+        return {"fullname":this.fullname,"nic":this.nic,"email":this.email,"contact":this.contact,"role":this.role,"address":this.address,"password":this.#password, "active":this.active};
     }
     getProfileDataWithoutPassword(){
         if(this.status!==undefined){

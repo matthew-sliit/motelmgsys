@@ -1,5 +1,6 @@
 import React from "react";
 import Profile from "../models/Profile";
+import eyeIcon from '../assets/svg/eye.svg';
 export default function RegisterLayout(props){
     const {register, role,roles, profileData, saveFunction,popup} = props;
     let prefix = "",profile=new Profile();
@@ -55,6 +56,22 @@ export default function RegisterLayout(props){
             }
         }
         return null;
+    }
+    let clicked = [], clickedOn = [];
+    function viewPassword(elem_id){
+        let i = clickedOn.indexOf(elem_id);
+        if(i<-1){
+            //new
+            clickedOn.push(elem_id);
+            clicked.push(true);
+            i = clickedOn.indexOf(elem_id);
+        }else{
+            clicked[i] =!clicked[i];
+        }
+        if(clicked[i])
+            document.querySelector('#'+elem_id).setAttribute('type', 'text');
+        else
+            document.querySelector('#'+elem_id).setAttribute('type', 'password');
     }
     function getProfile(){
         let editedProfile = new Profile();
@@ -173,14 +190,16 @@ export default function RegisterLayout(props){
                 <span style={{color:"#ECF0F1", backgroundColor:"#DE3163"}} id={"password-error"}></span>
                 <span><br/>Password must have more than 6 characters, at least 1 number and 1 symbol</span>
                 <input type="password" className="form-control" placeholder="New Password" id={"user-new-password"} onChange={()=>checkPassword()}/>
+                <img src={eyeIcon} style={{position:"relative", left:"490px", top:"-34px"}} onClick={()=>viewPassword('user-new-password')} alt={"view password"}/>
             </div>:""}
 
             <div className="form-group mb-2">
-                <label>{prefix==="Enter "?prefix:"Confirm "}Password</label>
+                <label>{prefix==="Enter "?prefix:"Enter Current "}Password</label>
                 {register?<span><br/>Password must have more than 6 characters, at least 1 number and 1 symbol</span>:""}
                 <br/>
                 <span style={{color:"#ECF0F1", backgroundColor:"#DE3163"}} id={"password-error"}></span>
-                <input type="password" className="form-control" placeholder="Password" id={"user-password"} onChange={()=>checkPassword()}/>
+                <input type="password" className="form-control" placeholder={register?"Enter password again":"Enter current password"} id={"user-password"} onChange={()=>checkPassword()}/>
+                <img src={eyeIcon} style={{position:"relative", left:"490px", top:"-34px"}} onClick={()=>viewPassword('user-password')} alt={"view password"}/>
             </div>
             <div className="form-group mb-2">
                 <label>{prefix==="Enter "?"Select ":""}Role&nbsp;</label>
