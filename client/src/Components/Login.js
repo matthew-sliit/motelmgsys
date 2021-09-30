@@ -65,8 +65,8 @@ export default function Login(){
         <div style={{position:"relative", left:"100px", top:"200px", width:"30%", color:"inherit"}}>
             <h3 style={{color:"inherit"}}>{resetPassword?"Employee Reset Password":"Employee Login"}</h3>
             <span style={{color:"#ECF0F1", backgroundColor:"#DE3163"}}><b>{errorMsg!==null?errorMsg:""}</b></span>
-            <span style={{color:"#00802b", fontSize:"18px"}}>{newPassword!==""?"New Password is: ":""}</span>
-            <span style={{color:"#00802b", fontSize:"18px"}}><b>{newPassword}</b></span>
+            <span style={{color:"#C2FED4", fontSize:"18px"}}>{newPassword!==""?"New Password is: ":""}</span>
+            <span style={{color:"#FBFEC2", fontSize:"18px"}}><b>{newPassword}</b></span>
             <div className="form-group mb-2">
                 <label>Enter National Identity Card Number</label>
                 <input type={"text"} className="form-control" placeholder={"122313821V/X"} id={"user-nic"}/>

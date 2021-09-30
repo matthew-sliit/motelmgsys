@@ -95,15 +95,18 @@ export default function RegisterLayout(props){
             errorMsgSpan.innerText = "Name cannot be empty!";
             return null;
         }
-        //   790029871V - 10
+        //   79002987V - 9
         //197900209871  - 12
-        if(editedProfile.nic.length!==10 && editedProfile.nic.length!==12){
+        if(!editedProfile.isNicValid()){
             errorMsgSpan.innerText = "Invalid National Identity Card Number!";
             return null;
         }
-        //can have extensions, 0119876824-34
-        if(editedProfile.contact.length<10 || /[a-zA-Z]/.test(editedProfile.contact)){
-            //less than 10 or contains letters
+        if(!editedProfile.isEmailValid()){
+            errorMsgSpan.innerText = "Invalid Email Address!";
+            return null;
+        }
+        //without extensions
+        if(!editedProfile.isContactValid()){
             errorMsgSpan.innerText = "Invalid Contact Number!";
             return null;
         }
@@ -138,10 +141,7 @@ export default function RegisterLayout(props){
                 return null;
             }
         }
-        if(editedProfile.email.length<4){
-            errorMsgSpan.innerText = "Invalid Email Address!";
-            return null;
-        }
+
         if(register) {
             if (roles.indexOf(editedProfile.role) < 0 || editedProfile.role.length < 3) {
                 errorMsgSpan.innerText = "Invalid Role!";
@@ -185,7 +185,7 @@ export default function RegisterLayout(props){
                        placeholder="no 8/1, Green bay avenue, park 3, Edinberg" defaultValue={profile.address} id={"user-address"}/>
             </div>
             <p/>
-            {!register?<div className="form-group mb-2">
+            {!register?<div className="form-group mb-2" style={{minWidth:"520px", maxWidth:"520px"}}>
                 <label>Change Password</label>
                 <span style={{color:"#ECF0F1", backgroundColor:"#DE3163"}} id={"password-error"}></span>
                 <span><br/>Password must have more than 6 characters, at least 1 number and 1 symbol</span>
@@ -193,7 +193,7 @@ export default function RegisterLayout(props){
                 <img src={eyeIcon} style={{position:"relative", left:"490px", top:"-34px"}} onClick={()=>viewPassword('user-new-password')} alt={"view password"}/>
             </div>:""}
 
-            <div className="form-group mb-2">
+            <div className="form-group mb-2" style={{minWidth:"520px", maxWidth:"520px"}}>
                 <label>{prefix==="Enter "?prefix:"Enter Current "}Password</label>
                 {register?<span><br/>Password must have more than 6 characters, at least 1 number and 1 symbol</span>:""}
                 <br/>

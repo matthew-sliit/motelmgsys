@@ -28,12 +28,26 @@ export default class Profile{
         }
         return true;
     }
-    isEmailValid(email){
-        const email_regex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return email_regex.test(String(email).toLowerCase());
+    isContactValid(){
+        const number_regex = /^[\d]{1,15}$/;
+        return number_regex.test(this.contact);
+    }
+    isEmailValid(){
+        const email_regex = /[\w]*[@]([\w]*\.[\w]{1,})$/;
+        return email_regex.test(this.email);
     }
     setPassword(password){
         this.#password = crypto.createHash('sha256').update(password).digest('hex');
+    }
+    isNicValid(){
+        const nic_regex_old = /^[0-9]{8}[vxVX]$/; //8 digits + 1 special character
+        //11 digits + VX or vx or a number
+        const nic_regex_2016 = /^[0-9]{11}([vxVX]|[0-9])$/;
+        console.log(this.nic);
+        if(nic_regex_old.test(this.nic)){
+            //has 9 digits
+            return true;
+        }else return nic_regex_2016.test(this.nic);
     }
     getProfileData(){
         if(this.#passwordNew!==undefined){
