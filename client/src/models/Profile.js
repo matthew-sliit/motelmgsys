@@ -29,7 +29,7 @@ export default class Profile{
         return true;
     }
     isContactValid(){
-        const number_regex = /^[\d]{1,15}$/;
+        const number_regex = /^[\d]{10,15}$/;
         return number_regex.test(this.contact);
     }
     isEmailValid(){
@@ -43,7 +43,6 @@ export default class Profile{
         const nic_regex_old = /^[0-9]{8}[vxVX]$/; //8 digits + 1 special character
         //11 digits + VX or vx or a number
         const nic_regex_2016 = /^[0-9]{11}([vxVX]|[0-9])$/;
-        console.log(this.nic);
         if(nic_regex_old.test(this.nic)){
             //has 9 digits
             return true;

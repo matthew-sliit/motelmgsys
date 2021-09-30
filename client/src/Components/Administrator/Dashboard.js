@@ -72,7 +72,6 @@ export default function Dashboard(){
             chart.draw(chart3angle, "Housekeeping todo", ""+housekeepingDirty, "housekeeping-task-remain");
             chart.draw(chart4angle, "Maintenance todo", ""+maintenanceOpened, "maintenance-task-remain");
             setChartUpdated(true);
-            //ssh-keygen -t rsa -b 4096 -C "it19126098@my.sliit.lk"
         }
     },[componentDidMount])
     async function getReservedRoomCount(reservationList){
