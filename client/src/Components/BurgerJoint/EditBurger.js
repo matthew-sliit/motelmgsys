@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import getProxy from "../../proxyConfig";
 import File2base64 from "../../assets/js/file2base64";
 import PopupSuccess from "../PopupSuccess";
-export default function EditBurger(){
+export default function EditBurger() {
     let [burgerId, setBurgerId] = useState(null);
     //on mount
     useEffect(() => {
@@ -50,13 +50,11 @@ export default function EditBurger(){
                     "image": imageBase64
                 }
             })
-        }).then(r => r.text()).then(d => {
-            //location.reload();
+        }) .then(r=>r.text()).then(d=> {
+            alert("Successfully Updated Burger Details.");
         }).catch(e => console.log(e));
         //re render this page?
     }
-
-
 
     return <div style={{position:"relative"}}>
         <h3 style={{color:"inherit"}}>Update Burgers</h3>
@@ -65,7 +63,7 @@ export default function EditBurger(){
             <input type="text" className="form-control" aria-describedby="emailHelp"
                    placeholder="CheeseBurger" id={"type"}/>
         </div>
-        <div className="form-group mb-2">
+        <div className="form-group mb-2" >
             <label>Enter the Price</label>
             <input type="text" className="form-control" aria-describedby="emailHelp"
                    placeholder="price" id={"price"}/>

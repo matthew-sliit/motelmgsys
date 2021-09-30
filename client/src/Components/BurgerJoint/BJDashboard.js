@@ -4,28 +4,22 @@ import "../../assets/images/favicon.ico";
 import "../../assets/fonts/fontawesome/css/fontawesome-all.min.css";
 import "../../assets/plugins/animation/css/animate.min.css";
 import "../../assets/css/style.css";
-import logo3 from '../../assets/images/logo.png';
 import getProxy from "../../proxyConfig";
+import logo3 from '../../assets/images/logo.png';
 import {PDFExport, savePDF} from "@progress/kendo-react-pdf";
-import logo from "../../assets/images/logo.png";
-export default function BJDashboard(){
+export default function BDashboard(){
 
-    let [burgers, setBurger] = useState([]);
+    let [burgers, setSuggestedBurgers] = useState([]);
     let [burgerList, setList] = useState([]);
     let pdfExportComponent = useRef(null);
 
-
-
     const searchBurgers = () =>{
         const nameLike = document.getElementById("type").value;
-        const burgerListOriginal = [...burgerList];
+        const BurgerListOriginal = [...burgerList];
         let pushed, suggestBurgers = [];
         pushed = false;
         //console.log("n: "+nameLike+" r:"+reference+" r:"+role);
-        burgerListOriginal.map(burgers=>{
-            //profile = new Profile();
-            console.log(burgers.type);
-            //Object.assign(profile,recruitment);
+        BurgerListOriginal.map(burgers=>{
             if(nameLike.length>0 && nameLike!=="all" && burgers.type.includes(nameLike)){
                 pushed = true;
                 suggestBurgers.push(burgers);
@@ -33,18 +27,18 @@ export default function BJDashboard(){
         });
         console.log(nameLike);
         if(pushed){
-            setBurger(suggestBurgers);
-
+            setSuggestedBurgers(suggestBurgers);
         }else{
             //console.log("setting suggest!");
-            setBurger(burgerListOriginal);
+            setSuggestedBurgers(BurgerListOriginal);
 
         }
     }
+    //on mount
     useEffect(async ()=>{
         await fetch(getProxy("/joint"),{
             method:"get"
-        }).then(r=>r.json()).then(d=>{setBurger(d);setList(d);console.log(JSON.stringify(d));}).catch(e=>console.log(e));
+        }).then(r=>r.json()).then(b=>{setSuggestedBurgers(b);setList(b);}).catch(e=>console.log(e));
     },[]);
 
     async function removeBurger(index_of_burger) {
@@ -52,7 +46,10 @@ export default function BJDashboard(){
         //remove from db
         await fetch(getProxy("/joint/"+burgerToRemove._id.toString()),{
             method:"delete"
-        }).then(r=>r.json()).then(d=>{setList(d);console.log(JSON.stringify(d));}).catch(e=>console.log(e));
+        }).then(r=>r.text()).then(b=> {
+            alert("Successfully Deleted the Burger Details.");
+
+        }).catch(e=>console.log(e));
         //remove from burgers list
         const burgersAfterRemoved = burgerList.splice(index_of_burger,1);
         setList(burgersAfterRemoved);
@@ -143,8 +140,7 @@ export default function BJDashboard(){
                             position: "absolute",
                             left: "-1000px",
                             top: 0,
-                        }}
-                    >
+                        }}>
                         <PDFExport paperSize="A4" margin="0.8cm" fileName="Burgers_Menu" ref={pdfExportComponent}>
                             <div>
                                 <div className={"text-right"}>
@@ -157,7 +153,7 @@ export default function BJDashboard(){
                                 <p style={{fontSize:"12px",color:"black"}}>Date: {new Date().toLocaleDateString(['ban', 'id'])}<br/><br/>
 
                                 </p>
-                                <table className="table table-striped">
+                                <table className="table table-bordered">
                                     <thead className="thead-dark">
                                     <tr>
 
