@@ -5,7 +5,7 @@ Member Details :
 |Mamber|Student ID|Username|
 |--|--|--|
 |Member 01|IT19126098|[matthew-sliit](https://github.com/matthew-sliit)|
-|Member 02|IT19|Vidura|
+|Member 02|IT19036144|Vidura|(https://github.com/vidurasathsara99)|
 |Member 03|IT19|Amanda|
 |Member 04|IT19|Deshani|
 <h2>Project Description</h2>  
