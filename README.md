@@ -14,12 +14,14 @@ Purpose of the app
 Used Technologies 
 <h2>How to get started with your app</h2>  
 
-Prerquisites  
+<h3>Prerquisites</h3>  
+
   1. [Node JS](https://nodejs.org/en/) 
   2. [Mongo DB](https://www.mongodb.com/try/download/community)
   3. Something  
   
-Procedure of setting up prerequisites and run the project  
+<h3>Procedure of setting up prerequisites and run the project</h3>  
+
   1. Install Node Js according to your computer environment
   2. ...
   3. Clone master  
