@@ -7,11 +7,12 @@ Member Details :
 |Member 01|IT19126098|[matthew-sliit](https://github.com/matthew-sliit)|
 |Member 02|IT19036144|Vidura|(https://github.com/vidurasathsara99)|
 |Member 03|IT19|Amanda|
-|Member 04|IT19|Deshani|
+|Member 04|IT19015736|Deshani|(https://github.com/DeshaniMAWD)
 <h2>Project Description</h2>  
-Purpose of the app   
+We implemented an online managing system suits for a Motel.
 <h2>Technologies</h2>
-Used Technologies 
+React js
+
 <h2>How to get started with your app</h2>  
 
 <h3>Prerquisites</h3>  
