@@ -6,7 +6,7 @@ Member Details :
 |--|--|--|
 |Member 01|IT19126098|[matthew-sliit](https://github.com/matthew-sliit)|
 |Member 02|IT19036144|Vidura|(https://github.com/vidurasathsara99)|
-|Member 03|IT19|Amanda|
+|Member 03|IT19164472|Amanda|(https://github.com/amandaaaim-sliit)
 |Member 04|IT19015736|[DeshaniMAWD]|(https://github.com/DeshaniMAWD)
 <h2>Project Description</h2>  
 We implemented an online managing system suits for a Motel.
