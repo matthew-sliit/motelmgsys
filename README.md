@@ -6,10 +6,13 @@ Member Details :
 |--|--|--|
 |Member 01|IT19126098|[matthew-sliit](https://github.com/matthew-sliit)|
 |Member 02|IT19036144|Vidura|(https://github.com/vidurasathsara99)|
-|Member 03|IT19164472|Amanda|(https://github.com/amandaaaim-sliit)
-|Member 04|IT19015736|(https://github.com/DeshaniMAWD)
+|Member 03|IT19164472|Amanda|(https://github.com/amandaaaim-sliit)|
+|Member 04|IT19015736|DeshaniMAWD|(https://github.com/DeshaniMAWD)|
 <h2>Project Description</h2>  
-We implemented an online managing system suits for a Motel.
+Implementation of an online managing system suits for a Motel. Maintenance management, Employee management, Reservation management, Bar
+management and Burger joint management areas mainly implemented. In the frontend a user can log in to the system and make reservations and
+proceed with any task related to the reservation. 
+
 <h2>Technologies</h2>
 React js
 
