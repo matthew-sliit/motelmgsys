@@ -42,3 +42,4 @@ Node JavaScript
       1. Change directory to server & run `npm install`
       2. Then In directory client run `npm install`
   5. Easy way; only for windows - run `installall.bat` 
+  6. Then 'npm start' in client and server directories, or in windows, run 'startall.bat' in project directory
