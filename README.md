@@ -9,25 +9,34 @@ Member Details :
 |Member 03|IT19164472|Amanda|(https://github.com/amandaaaim-sliit)|
 |Member 04|IT19015736|DeshaniMAWD|(https://github.com/DeshaniMAWD)|
 <h2>Project Description</h2>  
-Implementation of an online managing system suits for a Motel. Maintenance management, Employee management, Reservation management, Bar
-management and Burger joint management areas mainly implemented. In the frontend a user can log in to the system and make reservations and
-proceed with any task related to the reservation. 
+Implementation of an online managing system suits for a Motel.  
+
+  * Maintenance management,  
+  * Employee management,  
+  * Reservation management,  
+  * Bar management and Burger joint management
+  
+In the frontend there are two flows,   
+user as a customer flow start `http://localhost:3000/motelhome/index.html`   
+user as an employee flow start  `http://localhost:3000/motelhome/login`
 
 <h2>Technologies</h2>
-React js
+Mongo Database
+React JavaScript
+Koa JavaScript
+Node JavaScript
 
 <h2>How to get started with your app</h2>  
 
 <h3>Prerquisites</h3>  
 
   1. [Node JS](https://nodejs.org/en/) 
-  2. [Mongo DB](https://www.mongodb.com/try/download/community)
-  3. Something  
+  2. [Mongo DB](https://www.mongodb.com/try/download/community)  
   
 <h3>Procedure of setting up prerequisites and run the project</h3>  
 
   1. Install Node Js according to your computer environment
-  2. ...
+  2. Also setup mongo database local instance
   3. Clone master  
   4. Manual way;
       1. Change directory to server & run `npm install`
